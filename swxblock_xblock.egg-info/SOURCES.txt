@@ -1,0 +1,12 @@
+swxblock/__init__.py
+swxblock/swxblock.py
+swxblock/static/README.txt
+swxblock/static/css/swxblock.css
+swxblock/static/html/swxblock.html
+swxblock/static/js/src/swxblock.js
+swxblock_xblock.egg-info/PKG-INFO
+swxblock_xblock.egg-info/SOURCES.txt
+swxblock_xblock.egg-info/dependency_links.txt
+swxblock_xblock.egg-info/entry_points.txt
+swxblock_xblock.egg-info/requires.txt
+swxblock_xblock.egg-info/top_level.txt
