@@ -12,7 +12,7 @@ These instructions are based on [Lawrence McDaniel's](https://blog.lawrencemcdan
    * `sudo chown -R edxapp xblock`
    * `sudo chgrp -R edxapp xblock`
 4. Install it.  Note that most web documentation says the command is `pip install -e .` but Lawrence says to use the following and it seems to work but you MUST use the -H or there will be errors.
-   * `sudo -u -H edxapp /edx/bin/pip.edxapp install /home/ubuntu/xblock`
+   * `sudo -H -u edxapp /edx/bin/pip.edxapp install /home/ubuntu/xblock`
 5. Compile the assets.  Note that the two paver processes take FOREVER.
    * `sudo -H -u edxapp bash`
    * `source /edx/app/edxapp/edxapp_env`
