@@ -1,6 +1,5 @@
-/* Javascript for SWXStudio. */
-function SWXStudio(runtime, element, question) {
- 
+/* Javascript for SWXBlock. */
+function SWXBlock(runtime, element, question) {
  
     var handlerUrl = runtime.handlerUrl(element, 'save_question');
 
@@ -27,7 +26,7 @@ function SWXStudio(runtime, element, question) {
 
     /* PAGE LOAD EVENT */
     $(function ($) {
-
+        //$('#definition', element).val("Poop");
     });
 }
 
