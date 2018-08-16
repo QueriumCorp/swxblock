@@ -4,7 +4,7 @@ The StepWise xBlock for the edX LMS platform
 # HOW TO WORK DEV CYCLE
 More to come
 
-# HOW TO INSTALL TO PRODUCTOIN
+# HOW TO INSTALL TO PRODUCTION
 These instructions are based on [Lawrence McDaniel's](https://blog.lawrencemcdaniel.com/how-to-install-an-xblock/ "How to Install and xBlock") blog post.  For purposes of these instructions the xblock is called "xblock".
 1. Take a snapshot of your VM.  edX is fragile and you can easily blow stuff up.  If you are prompted at any time to upgrade anything, DON'T!!!  Your edX will invariably be permanently maimed and you'll have to restore from this snapshot.
 2. Clone the xBlock's github repository to `/home/ubuntu` using `git clone git@github.com:QueriumCorp/swxblock.git`.  The repository reference can be copied from the GitHub repositories front page with `Clone or download > Clone with SSH`.  Note that the repository is private so the current user (probably root) needs to have a copy of the private key in ~/.ssh, that key needs to be `chmod 700 keyfile` and the corresponding public key has to be in your GitHub acct.
@@ -30,5 +30,8 @@ These instructions are based on [Lawrence McDaniel's](https://blog.lawrencemcdan
 Just running the install process WILL NOT WORK!  You have to delete the old xblock from the server and then install it from scratch.
 1. Verify the location of the installed xblock
    * `find / -name swxblock.py`
-      > `/home/ubuntu/swxblock/swxblock/swxblock.py`
-      > `/edx/app/edxapp/venvs/edxapp/lib/python2.7/site-packages/swxblock/swxblock.py`
+      * `/home/ubuntu/swxblock/swxblock/swxblock.py`
+      * `/edx/app/edxapp/venvs/edxapp/lib/python2.7/site-packages/swxblock/swxblock.py`
+2. Delete both directories and their contents
+   * `rm -Rf ` followed by the two paths found in the previous step
+3. Start the "HOW TO INSTALL TO PRODUCTION" instructions above
