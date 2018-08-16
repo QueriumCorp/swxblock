@@ -7,12 +7,12 @@ More to come
 # HOW TO INSTALL TO PRODUCTOIN
 These instructions are based on [Lawrence McDaniel's](https://blog.lawrencemcdaniel.com/how-to-install-an-xblock/ "How to Install and xBlock") blog post.  For purposes of these instructions the xblock is called "xblock".
 1. Take a snapshot of your VM.  edX is fragile and you can easily blow stuff up.  If you are prompted at any time to upgrade anything, DON'T!!!  Your edX will invariably be permanently maimed and you'll have to restore from this snapshot.
-2. Clone the xBlock's github repository to `/home/ubuntu` using `git clone git@github.com:QueriumCorp/xblock.git`.  The repository reference can be copied from the GitHub repositories front page with `Clone or download > Clone with SSH`.  Note that the repository is private so the current user (probably root) needs to have a copy of the private key in ~/.ssh, that key needs to be `chmod 700 keyfile` and the corresponding public key has to be in your GitHub acct.
+2. Clone the xBlock's github repository to `/home/ubuntu` using `git clone git@github.com:QueriumCorp/swxblock.git`.  The repository reference can be copied from the GitHub repositories front page with `Clone or download > Clone with SSH`.  Note that the repository is private so the current user (probably root) needs to have a copy of the private key in ~/.ssh, that key needs to be `chmod 700 keyfile` and the corresponding public key has to be in your GitHub acct.
 3. Make edxapp the owner and group of the xblock's files.
-   * `sudo chown -R edxapp xblock`
-   * `sudo chgrp -R edxapp xblock`
+   * `sudo chown -R edxapp swxblock`
+   * `sudo chgrp -R edxapp swxblock`
 4. Install it.  Note that most web documentation says the command is `pip install -e .` but Lawrence says to use the following and it seems to work but you MUST use the -H or there will be errors.
-   * `sudo -H -u edxapp /edx/bin/pip.edxapp install /home/ubuntu/xblock`
+   * `sudo -H -u edxapp /edx/bin/pip.edxapp install /home/ubuntu/swxblock`
 5. Compile the assets.  Note that the two paver processes take FOREVER.
    * `sudo -H -u edxapp bash`
    * `source /edx/app/edxapp/edxapp_env`
@@ -27,4 +27,8 @@ These instructions are based on [Lawrence McDaniel's](https://blog.lawrencemcdan
 8. Enable the xBlock in your course. The xBlock should be in your edX instance, but the course owner must enable it for each course before it can be used in the course.  While in Studio, use `Settings > Advanced Settings`.  The first configuration property should be 'Advanced Module List'.  Why it says 'module' and not 'xBlock' is unknown but these 'modules' are 'xBlocks'.  This is a list or array and uses square brackets notation; aka "JSON" format.  So if there are no xBlocks enabled for this course the field should have an empty array (`[]`).  Enter your xBlock's name wrapped in double quotes (`[ "xblock" ]`).  Separate the xBlock names with commas like this (`[ "existing_xblock", "my_new_xblock" ]`).  You must check to make sure the quotes and commas are all correct as edX does no validation on that string.
 9. Go to the unit in which you want to use your xBlock.  Click the green Advanced button with the flask icon and hopefully you'll see your xBlock.  If you don't, you're probably screwed and will have to start over.
 # HOW TO UPGRADE YOUR XBLOCK
-No idea.  Re-running the install process has not had any effect so far.
+Just running the install process WILL NOT WORK!  You have to delete the old xblock from the server and then install it from scratch.
+1. Verify the location of the installed xblock
+   * `find / -name swxblock.py`
+      * `/home/ubuntu/swxblock/swxblock/swxblock.py`
+      * `/edx/app/edxapp/venvs/edxapp/lib/python2.7/site-packages/swxblock/swxblock.py`
