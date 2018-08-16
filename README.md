@@ -30,5 +30,5 @@ These instructions are based on [Lawrence McDaniel's](https://blog.lawrencemcdan
 Just running the install process WILL NOT WORK!  You have to delete the old xblock from the server and then install it from scratch.
 1. Verify the location of the installed xblock
    * `find / -name swxblock.py`
-      * `/home/ubuntu/swxblock/swxblock/swxblock.py`
-      * `/edx/app/edxapp/venvs/edxapp/lib/python2.7/site-packages/swxblock/swxblock.py`
+      > `/home/ubuntu/swxblock/swxblock/swxblock.py`
+      > `/edx/app/edxapp/venvs/edxapp/lib/python2.7/site-packages/swxblock/swxblock.py`
