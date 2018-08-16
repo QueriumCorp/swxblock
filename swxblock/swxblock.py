@@ -112,6 +112,20 @@ class SWXBlock(XBlock):
 
         frag.initialize_js('SWxStudio')
         return frag
+
+    def author_view(self, context=None):
+        """
+        The AUTHOR view of the SWXBlock, shown to instructors
+        when previewing courses.
+        """
+        html = self.resource_string("static/html/swxstudio.html")
+        frag = Fragment(html.format(self=self))
+        frag.add_css(self.resource_string("static/css/swxstudio.css"))
+        frag.add_javascript(self.resource_string("static/js/src/swxstudio.js"))
+
+        frag.initialize_js('SWxAuthor')
+        return frag
+        
     # SAVE QUESTION
     @XBlock.json_handler
     def save_question(self, data, suffix=''):

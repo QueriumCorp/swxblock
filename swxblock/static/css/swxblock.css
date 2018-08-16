@@ -1,6 +1,8 @@
 /* CSS for SWXBlock */
 
 .swxblock_block {
+    position: relative;
+    min-height: 600px;
     background: yellow;
 }
 .swxblock_block .count {
