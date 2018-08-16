@@ -4,14 +4,11 @@ swxblock/swxblock.py
 swxblock/static/.DS_Store
 swxblock/static/._.DS_Store
 swxblock/static/README.txt
-swxblock/static/css/querium-stepwise-1.6.5.css
 swxblock/static/css/swxblock.css
 swxblock/static/css/swxstudio.css
 swxblock/static/html/swxblock.html
 swxblock/static/html/swxstudio.html
 swxblock/static/js/.DS_Store
-swxblock/static/js/._.DS_Store
-swxblock/static/js/src/querium-stepwise-1.6.5.js
 swxblock/static/js/src/swxblock.js
 swxblock/static/js/src/swxstudio.js
 swxblock_xblock.egg-info/PKG-INFO

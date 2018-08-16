@@ -55,15 +55,15 @@ class SWXBlock(XBlock):
         frag = Fragment(html.format(self=self))
         frag.add_css(self.resource_string("static/css/swxblock.css"))
 
-        frag.add_css(self.resource_string("static/css/querium-stepwise-1.6.5.css"))
+        frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.4.css")
         
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript_url("//stepwise.querium.com/libs/mathquill/mathquill.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-sanitize.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js")
+        frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.4.js")
 
-        frag.add_javascript(self.resource_string("static/js/src/querium-stepwise-1.6.5.js"))
         frag.add_javascript(self.resource_string("static/js/src/swxblock.js"))
         frag.initialize_js('SWXBlock', question)
         return frag
@@ -110,7 +110,7 @@ class SWXBlock(XBlock):
         frag.add_css(self.resource_string("static/css/swxstudio.css"))
         frag.add_javascript(self.resource_string("static/js/src/swxstudio.js"))
 
-        frag.initialize_js('SWXStudio')
+        frag.initialize_js('SWxStudio')
         return frag
     # SAVE QUESTION
     @XBlock.json_handler

@@ -1,5 +1,5 @@
-/* Javascript for SWXBlock. */
-function SWXBlock(runtime, element, question) {
+/* Javascript for SWxStudio. */
+function SWxStudio(runtime, element, question) {
  
     var handlerUrl = runtime.handlerUrl(element, 'save_question');
 

@@ -1,10 +1,10 @@
 # swxblock
 The StepWise xBlock for the edX LMS platform
 
-# HOW TO BUILD
+# HOW TO WORK DEV CYCLE
 More to come
 
-# HOW TO INSTALL
+# HOW TO INSTALL TO PRODUCTOIN
 These instructions are based on [Lawrence McDaniel's](https://blog.lawrencemcdaniel.com/how-to-install-an-xblock/ "How to Install and xBlock") blog post.  For purposes of these instructions the xblock is called "xblock".
 1. Take a snapshot of your VM.  edX is fragile and you can easily blow stuff up.  If you are prompted at any time to upgrade anything, DON'T!!!  Your edX will invariably be permanently maimed and you'll have to restore from this snapshot.
 2. Clone the xBlock's github repository to `/home/ubuntu` using `git clone git@github.com:QueriumCorp/xblock.git`.  The repository reference can be copied from the GitHub repositories front page with `Clone or download > Clone with SSH`.  Note that the repository is private so the current user (probably root) needs to have a copy of the private key in ~/.ssh, that key needs to be `chmod 700 keyfile` and the corresponding public key has to be in your GitHub acct.
