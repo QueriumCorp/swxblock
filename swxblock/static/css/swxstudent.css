@@ -1,0 +1,14 @@
+/* CSS for SWXBlock */
+
+.swxblock_block {
+    position: relative;
+    min-height: 600px;
+    background: green;
+}
+.swxblock_block .count {
+    font-weight: bold;
+}
+
+.swxblock_block p {
+    cursor: pointer;
+}

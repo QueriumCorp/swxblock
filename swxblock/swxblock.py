@@ -46,10 +46,12 @@ class SWXBlock(XBlock):
             "hint3" :  self.hint3
         }
 
-        html = self.resource_string("static/html/swxblock.html")
+        html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
-        frag.add_css(self.resource_string("static/css/swxblock.css"))
+        frag.add_css(self.resource_string("static/css/swxstudent.css"))
 
+        frag.add_css_url("//stepwise.querium.com/libs/mathquill/mathquill.css")
+        frag.add_css_url("//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css")
         frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.4.css")
         
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
@@ -59,8 +61,8 @@ class SWXBlock(XBlock):
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js")
         frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.4.js")
 
-        frag.add_javascript(self.resource_string("static/js/src/swxblock.js"))
-        frag.initialize_js('SWXBlock', question)
+        frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
+        frag.initialize_js('SWXStudent', question)
         return frag
     # SAVE GRADE
     @XBlock.json_handler
