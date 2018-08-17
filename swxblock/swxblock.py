@@ -15,12 +15,7 @@ class SWXBlock(XBlock):
     # self.<fieldname>.
 
     # FIELDS
-    count = Integer(
-        default=0, scope=Scope.user_state,
-        help="A simple counter, to show something happening",
-    )
-
-    label = String(help="Question label", default=None, scope=Scope.content)
+    label = String(help="Question label", default="", scope=Scope.content)
     description = String(help="Stimulus", default='Solve for \\(a\\).', scope=Scope.content)
     definition = String(help="Definition", default='SolveFor[5a+4=2a-5,a]', scope=Scope.content)
     qtype = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
@@ -118,10 +113,10 @@ class SWXBlock(XBlock):
         The AUTHOR view of the SWXBlock, shown to instructors
         when previewing courses.
         """
-        html = self.resource_string("static/html/swxstudio.html")
+        html = self.resource_string("static/html/swxauthor.html")
         frag = Fragment(html.format(self=self))
-        frag.add_css(self.resource_string("static/css/swxstudio.css"))
-        frag.add_javascript(self.resource_string("static/js/src/swxstudio.js"))
+        frag.add_css(self.resource_string("static/css/swxauthor.css"))
+        frag.add_javascript(self.resource_string("static/js/src/swxauthor.js"))
 
         frag.initialize_js('SWxAuthor')
         return frag
