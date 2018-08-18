@@ -135,6 +135,6 @@ class SWXBlock(XBlock):
         self.hint1 = data['hint1']
         self.hint2 = data['hint2']
         self.hint3 = data['hint3']
-
+        return {'result': 'success'}
         # self.runtime.publish(self, 'grade', {'value': grade, 'max_value': 3})
 

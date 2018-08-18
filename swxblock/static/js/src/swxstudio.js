@@ -3,7 +3,7 @@ function SWxStudio(runtime, element, question) {
  
     var handlerUrl = runtime.handlerUrl(element, 'save_question');
 
-    $('#save', element).click(function(eventObject) {
+    $('.save-button', element).click(function(eventObject) {
         var data = {
             label : $('#label', element).val(),
             description : $('#description', element).val(),
@@ -15,15 +15,21 @@ function SWxStudio(runtime, element, question) {
             hint3 : $('#hint3', element).val(),
         }
 
-        console.info( data );
+        runtime.notify('save', {state:'start'});
         $.ajax({
             type: "POST",
             url: handlerUrl,
             data: JSON.stringify(data),
             success: null
+        }).done( function(response){
+            runtime.notify('save', {state:'end'});
         });
     });
 
+    $('.cancel-button', element).click(function(eventObject) {
+        runtime.notify('cancel', {});
+    });
+ 
     /* PAGE LOAD EVENT */
     $(function ($) {
         //$('#definition', element).val("Poop");
