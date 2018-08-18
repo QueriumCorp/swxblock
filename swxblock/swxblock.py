@@ -10,7 +10,8 @@ class SWXBlock(XBlock):
     """
     TO-DO: document what your XBlock does.
     """
-
+    has_author_view = True # tells the xblock to use the AuthorView
+    
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
 
