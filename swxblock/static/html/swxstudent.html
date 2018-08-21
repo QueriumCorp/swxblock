@@ -1,6 +1,26 @@
 <div class="swxblock_block" data-ng-strict-di>
-    <div id='stepwise' style='position: absolute; left:0px; top:0px; width: 100%; height: 100%;'>
-        <querium></querium>
+    <div class='stepwise_container' style='position: absolute; left:0px; top:0px; width: 100%; height: 100%;'>
+        <querium style='display: none;'></querium>
+        <div class='qq_preview' style='position: absolute; left:0px; top:0px; width: 100%; height: 100%; z-index:1200;'>
+            <div class="questionTitle">
+                    <p>{self.label}</p>
+            </div>
+            <div class='practice-problem'>
+                <p>{self.description}</p>
+                <p>{self.mathml}</p>
+            </div>
+            <hr/>
+            <div class="star-box">
+                <span class="star1 star-icon full">☆</span>
+                <span class="star2 star-icon half">☆</span>
+                <span class="star3 star-icon">☆</span>
+            </div>
+            <div class='submit-attempt-container'>
+                <button type='button' class='preview-begin submit btn-brand'>
+                    <span class='submit-label'>Begin</span>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 

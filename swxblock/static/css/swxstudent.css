@@ -3,7 +3,6 @@
 .swxblock_block {
     position: relative;
     min-height: 600px;
-    background: green;
 }
 .swxblock_block .count {
     font-weight: bold;
@@ -11,4 +10,37 @@
 
 .swxblock_block p {
     cursor: pointer;
+}
+
+.swxblock_block .star-box {
+    text-align: center;
+    user-select: none;
+}
+
+.swxblock_block .star-icon {
+    color: #ddd;
+    font-size: 2em;
+    position: relative;
+}
+.swxblock_block .star-icon.full:before {
+    text-shadow: none;
+    color: #FDE16D;
+    content: '\2605'; /* Full star in UTF-8 */
+    position: absolute;
+    left: 0;
+}
+.swxblock_block .star-icon.half:before {
+    text-shadow: none;
+    color: #FDE16D;
+    content: '\2605'; /* Full star in UTF-8 */
+    position: absolute;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+}
+@-moz-document url-prefix() { /* Firefox Hack :( */
+.swxblock_block .star-icon {
+    font-size: 50px;
+    line-height: 34px;
+  }
 }

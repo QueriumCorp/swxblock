@@ -53,14 +53,14 @@ class SWXBlock(XBlock):
 
         frag.add_css_url("//stepwise.querium.com/libs/mathquill/mathquill.css")
         frag.add_css_url("//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css")
-        frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.4.css")
+        frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.5.css")
         
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript_url("//stepwise.querium.com/libs/mathquill/mathquill.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-sanitize.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js")
-        frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.4.js")
+        frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.5.js")
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
         frag.initialize_js('SWXStudent', question)
@@ -70,14 +70,18 @@ class SWXBlock(XBlock):
     def save_grade(self, data, suffix=''):
         if data['usedShowMe']:
             grade=0
-        elif data['errors']<2 and data['hints']<3:
-            grade=1
         elif data['errors']==0 and data['hints']==0:
             grade=3
-        else:
+        elif data['errors']<2 and data['hints']<3:
             grade=2
+        else:
+            grade=1
 
-        self.runtime.publish(self, 'grade', {'value': grade, 'max_value': 3})
+        self.runtime.publish(self, 'grade', 
+            {   'value': grade, 
+                'max_value': 3, 
+                'details': data
+            })
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
