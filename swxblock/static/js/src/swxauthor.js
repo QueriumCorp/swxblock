@@ -26,7 +26,6 @@ function SWxAuthor(runtime, element, question) {
 
     /* PAGE LOAD EVENT */
     $(function ($) {
-        //$('#definition', element).val("Poop");
     });
 }
 
