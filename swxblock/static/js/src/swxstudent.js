@@ -93,10 +93,10 @@ function SWXStudent(runtime, element, question) {
     
         var qDef = {
             label: ( question.q_label ? question.q_label : "" ),
-            description: question.q_description,
+            description: question.q_stimulus,
             definition: question.q_definition,
             type: question.q_type,
-            display_math: question.q_display_math,
+            mathml: question.q_display_math,
             hint1: question.q_hint1,
             hint2: question.q_hint2,
             hint3: question.q_hint3

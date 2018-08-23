@@ -1,4 +1,4 @@
-"""TO-DO: Write a description of what this XBlock is."""
+"""TO-DO: Write a stimulus of what this XBlock is."""
 
 import pkg_resources
 from xblock.core import XBlock
@@ -17,7 +17,7 @@ class SWXBlock(XBlock):
 
     # FIELDS
     q_label = String(help="Question label", default="", scope=Scope.content)
-    q_description = String(help="Stimulus", default='Solve for \\(a\\).', scope=Scope.content)
+    q_stimulus = String(help="Stimulus", default='Solve for \\(a\\).', scope=Scope.content)
     q_definition = String(help="Definition", default='SolveFor[5a+4=2a-5,a]', scope=Scope.content)
     q_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
     q_display_math = String(help="Display Math", default='\\(5a+4=2a-5\\)', scope=Scope.content)
@@ -38,7 +38,7 @@ class SWXBlock(XBlock):
         """
         question = {
             "q_label" : self.q_label,
-            "q_description" : self.q_description,
+            "q_stimulus" : self.q_stimulus,
             "q_definition" : self.q_definition,
             "q_type" :  self.q_type,
             "q_display_math" :  self.q_display_math,
@@ -123,6 +123,7 @@ class SWXBlock(XBlock):
         html = self.resource_string("static/html/swxauthor.html")
         frag = Fragment(html.format(self=self))
         frag.add_css(self.resource_string("static/css/swxauthor.css"))
+        frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript(self.resource_string("static/js/src/swxauthor.js"))
 
         frag.initialize_js('SWxAuthor')
@@ -132,7 +133,7 @@ class SWXBlock(XBlock):
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
         self.q_label = data['label']
-        self.q_description = data['description']
+        self.q_stimulus = data['stimulus']
         self.q_definition = data['definition']
         self.q_type = data['qtype']
         self.q_display_math = data['display_math']

@@ -6,7 +6,7 @@ function SWxStudio(runtime, element, question) {
     $('.save-button', element).click(function(eventObject) {
         var data = {
             label : $('#label', element).val(),
-            description : $('#description', element).val(),
+            stimulus : $('#stimulus', element).val(),
             definition : $('#definition', element).val(),
             qtype : $('#qtype', element).val(),
             display_math : $('#display_math', element).val(),
