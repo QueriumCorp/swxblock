@@ -2,6 +2,8 @@
 function SWXStudent(runtime, element, question) {
 
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
+    var swxblock_block = $('.swxblock_block', element)[0];
+    console.info(swxblock_block);
     var stepwise_element = $('querium', element)[0];
     var preview_element = $('.qq_preview', element)[0];
     var preview_begin = $('.preview-begin', element)[0];
@@ -22,6 +24,9 @@ function SWXStudent(runtime, element, question) {
         };
     
         function celebrate(stats) {
+            swxblock_block.classList.remove("block_working");
+            swxblock_block.classList.add("block_worked");
+
             console.info("Celebrate", stats);
             if( stats.usedShowMe ){
                 grade=0;
@@ -104,6 +109,7 @@ function SWXStudent(runtime, element, question) {
     
         preview_element.style.display = 'none';
         stepwise_element.style.display = 'block';
+        swxblock_block.classList.add("block_working");
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }
 
