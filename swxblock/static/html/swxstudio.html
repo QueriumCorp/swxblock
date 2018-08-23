@@ -1,23 +1,66 @@
 <div class="wrapper-comp-settings is-active editor-with-buttons">
-    <span class='stdLbl'>label:</span> <input id='label' type="text" name="label" value="{self.q_label}"><br>
-    <span class='stdLbl'>stimulus:</span> <input id='stimulus' type="text" name="stimulus" value="{self.q_stimulus}"><br>
-    <span class='stdLbl'>definition:</span> <input id='definition' type="text" name="definition" value="{self.q_definition}"><br>
-    <span class='stdLbl'>qtype:</span> <input id='qtype' type="text" name="qtype" value="{self.q_type}"><br>
-    <span class='stdLbl'>display_math:</span> <input id='display_math' type="text" name="display_math" value="{self.q_display_math}"><br>
-    <span class='stdLbl'>hint1:</span> <input id='hint1' type="text" name="hint1" value="{self.q_hint1}"><br>
-    <span class='stdLbl'>hint2:</span> <input id='hint2' type="text" name="hint2" value="{self.q_hint2}"><br>
-    <span class='stdLbl'>hint3:</span> <input id='hint3' type="text" name="hint3" value="{self.q_hint3}"><br>
-    <div class="xblock-actions">
-        <ul>
-            <li class="action-item">
-                <a href="#" class="button action-primary save-button">Save</a>
-            </li>
-            <li class="action-item">
-                <a href="#" class="button cancel-button">Cancel</a>
-            </li>
-        </ul>
-    </div>
-    
+  <div class="modal-content">
+    <ul class="list-input settings-list">
+      <li class="field comp-setting-entry metadata_entry">
+        <div class="wrapper-comp-setting">
+          <label class='label setting-label' for='q_label'>Label:</label>
+          <input id='q_label' type="text" name="label" value="{self.q_label}">
+        </div>
+      </li>
+      <li class="field comp-setting-entry metadata_entry">
+        <div class="wrapper-comp-setting">
+          <label class='label setting-label' for='q_stimulus'>Stimulus:</label>
+          <input id='q_stimulus' type="text" name="stimulus" value="{self.q_stimulus}">
+        </div>
+      </li>
+      <li class="field comp-setting-entry metadata_entry">
+        <div class="wrapper-comp-setting">
+          <label class='label setting-label' for='q_definition'>Definition:</label>
+          <input id='q_definition' type="text" name="definition" value="{self.q_definition}">
+        </div>
+      </li>
+      <li class="field comp-setting-entry metadata_entry">
+        <div class="wrapper-comp-setting">
+          <label class='label setting-label' for='q_qtype'>Type:</label>
+          <input id='q_qtype' type="text" name="qtype" value="{self.q_type}">
+        </div>
+      </li>
+      <li class="field comp-setting-entry metadata_entry">
+        <div class="wrapper-comp-setting">
+          <label class='label setting-label' for='q_display_math'>Display Math:</label>
+          <input id='q_display_math' type="text" name="display_math" value="{self.q_display_math}">
+        </div>
+      </li>
+      <li class="field comp-setting-entry metadata_entry">
+        <div class="wrapper-comp-setting">
+          <label class='label setting-label' for='q_hint1'>Hint1:</label>
+          <input id='q_hint1' type="text" name="hint1" value="{self.q_hint1}">
+        </div>
+      </li>
+      <li class="field comp-setting-entry metadata_entry">
+        <div class="wrapper-comp-setting">
+          <label class='label setting-label' for='q_hint2'>Hint2:</label>
+          <input id='q_hint2' type="text" name="hint2" value="{self.q_hint2}">
+        </div>
+      </li>
+      <li class="field comp-setting-entry metadata_entry">
+        <div class="wrapper-comp-setting">
+          <label class='label setting-label' for='q_hint3'>Hint3:</label>
+          <input id='q_hint3' type="text" name="hint3" value="{self.q_hint3}">
+        </div>
+      </li>
+    </ul>
+
+  </div>
+  <div class="modal-actions">
+    <ul>
+      <li class="action-item">
+        <a href="#" class="button action-primary save-button">Save</a>
+      </li>
+      <li class="action-item">
+        <a href="#" class="button cancel-button">Cancel</a>
+      </li>
+    </ul>
+  </div>
+
 </div>
-
-
