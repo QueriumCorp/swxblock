@@ -87,24 +87,24 @@ function SWXStudent(runtime, element, question) {
             });
         }
             
-        querium.callbacks = {
+        var callbacks = {
             success: celebrate
         };
     
         var qDef = {
-            label: ( question.label ? question.label : "" ),
-            description: question.description,
-            definition: question.definition,
-            type: question.qtype,
-            mathml: question.mathml,
-            hint1: question.hint1,
-            hint2: question.hint2,
-            hint3: question.hint3
+            label: ( question.q_label ? question.q_label : "" ),
+            description: question.q_description,
+            definition: question.q_definition,
+            type: question.q_type,
+            display_math: question.q_display_math,
+            hint1: question.q_hint1,
+            hint2: question.q_hint2,
+            hint3: question.q_hint3
         };
     
         preview_element.style.display = 'none';
         stepwise_element.style.display = 'block';
-        querium.startQuestion( 'OpenStaxHomework', sId, qDef, querium.callbacks, options, stepwise_element );    
+        querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }
 
     localStorage.setItem( "server", "https://stepwiseai04.querium.com/webMathematica/api/")

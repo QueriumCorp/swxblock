@@ -9,7 +9,7 @@ function SWxStudio(runtime, element, question) {
             description : $('#description', element).val(),
             definition : $('#definition', element).val(),
             qtype : $('#qtype', element).val(),
-            mathml : $('#mathml', element).val(),
+            display_math : $('#display_math', element).val(),
             hint1 : $('#hint1', element).val(),
             hint2 : $('#hint2', element).val(),
             hint3 : $('#hint3', element).val(),

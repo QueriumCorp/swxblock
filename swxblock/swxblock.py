@@ -16,14 +16,14 @@ class SWXBlock(XBlock):
     # self.<fieldname>.
 
     # FIELDS
-    label = String(help="Question label", default="", scope=Scope.content)
-    description = String(help="Stimulus", default='Solve for \\(a\\).', scope=Scope.content)
-    definition = String(help="Definition", default='SolveFor[5a+4=2a-5,a]', scope=Scope.content)
-    qtype = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
-    mathml = String(help="Display Math", default='\\(5a+4=2a-5\\)', scope=Scope.content)
-    hint1 = String(help="First Hint", default='', scope=Scope.content)
-    hint2 = String(help="Second Hint", default='', scope=Scope.content)
-    hint3 = String(help="Third Hint", default='', scope=Scope.content)
+    q_label = String(help="Question label", default="", scope=Scope.content)
+    q_description = String(help="Stimulus", default='Solve for \\(a\\).', scope=Scope.content)
+    q_definition = String(help="Definition", default='SolveFor[5a+4=2a-5,a]', scope=Scope.content)
+    q_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
+    q_display_math = String(help="Display Math", default='\\(5a+4=2a-5\\)', scope=Scope.content)
+    q_hint1 = String(help="First Hint", default='', scope=Scope.content)
+    q_hint2 = String(help="Second Hint", default='', scope=Scope.content)
+    q_hint3 = String(help="Third Hint", default='', scope=Scope.content)
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -37,14 +37,14 @@ class SWXBlock(XBlock):
         when viewing courses.
         """
         question = {
-            "label" : self.label,
-            "description" : self.description,
-            "definition" : self.definition,
-            "qtype" :  self.qtype,
-            "mathml" :  self.mathml,
-            "hint1" :  self.hint1,
-            "hint2" :  self.hint2,
-            "hint3" :  self.hint3
+            "q_label" : self.q_label,
+            "q_description" : self.q_description,
+            "q_definition" : self.q_definition,
+            "q_type" :  self.q_type,
+            "q_display_math" :  self.q_display_math,
+            "q_hint1" :  self.q_hint1,
+            "q_hint2" :  self.q_hint2,
+            "q_hint3" :  self.q_hint3
         }
 
         html = self.resource_string("static/html/swxstudent.html")
@@ -131,14 +131,13 @@ class SWXBlock(XBlock):
     # SAVE QUESTION
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
-        self.label = data['label']
-        self.description = data['description']
-        self.definition = data['definition']
-        self.qtype = data['qtype']
-        self.mathml = data['mathml']
-        self.hint1 = data['hint1']
-        self.hint2 = data['hint2']
-        self.hint3 = data['hint3']
+        self.q_label = data['label']
+        self.q_description = data['description']
+        self.q_definition = data['definition']
+        self.q_type = data['qtype']
+        self.q_display_math = data['display_math']
+        self.q_hint1 = data['hint1']
+        self.q_hint2 = data['hint2']
+        self.q_hint3 = data['hint3']
         return {'result': 'success'}
-        # self.runtime.publish(self, 'grade', {'value': grade, 'max_value': 3})
 
