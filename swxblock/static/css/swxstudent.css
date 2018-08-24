@@ -4,14 +4,14 @@
     position: relative;
     transition: min-height 0.35s ease-out;
     overflow: hidden;
-    min-height: 130px;
+    min-height: 200px;
 }
 
 .block_working {
     min-height: 600px;
 }
 .block_worked {
-    min-height: 180px;
+    min-height: 260px;
 }
 .swxblock_block .count {
     font-weight: bold;
