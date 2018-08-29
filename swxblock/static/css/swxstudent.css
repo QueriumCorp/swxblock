@@ -115,3 +115,7 @@
     border-bottom: 3px solid #0075b4;
     padding-top: 2px;
 }
+
+div#practice-page {
+    border:none;
+}
