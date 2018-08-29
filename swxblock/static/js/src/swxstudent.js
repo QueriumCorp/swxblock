@@ -110,6 +110,7 @@ function SWXStudent(runtime, element, question) {
         preview_element.style.display = 'none';
         stepwise_element.style.display = 'block';
         swxblock_block.classList.add("block_working");
+        swxblock_block.classList.remove("block_worked");
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }
 
