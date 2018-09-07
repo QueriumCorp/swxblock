@@ -4,9 +4,9 @@ import pkg_resources
 from xblock.core import XBlock
 from xblock.fields import Integer, String, Scope
 from xblock.fragment import Fragment
+from xblockutils.studio_editable import StudioEditableXBlockMixin
 
-
-class SWXBlock(XBlock):
+class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     TO-DO: document what your XBlock does.
     """
@@ -16,6 +16,7 @@ class SWXBlock(XBlock):
     # self.<fieldname>.
 
     # FIELDS
+    display_name = String(display_name="Display name", default='StepWise', scope=Scope.settings)
     q_label = String(help="Question label", default="", scope=Scope.content)
     q_stimulus = String(help="Stimulus", default='Solve for \\(a\\).', scope=Scope.content)
     q_definition = String(help="Definition", default='SolveFor[5a+4=2a-5,a]', scope=Scope.content)
