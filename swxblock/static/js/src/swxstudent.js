@@ -114,7 +114,7 @@ function SWXStudent(runtime, element, question) {
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }
 
-    localStorage.setItem( "server", "https://stepwiseai04.querium.com/webMathematica/api/")
+    
 
     // get student id
     var sIdRegEx = /student=(.*?)&/;
@@ -124,6 +124,61 @@ function SWXStudent(runtime, element, question) {
 
     /* PAGE LOAD EVENT */
     $(function ($) {
+        var lastUpdate = localStorage.getItem( 'oscaServerLastSet' );
+        if( 
+            (!lastUpdate) || // no server assignment update timestamp
+            (lastUpdate && ((Date.now() - lastUpdate) > 21600000) ) // if lastUpdate was more than 6 hours ago
+        ){ 
+            fetch( 'https://editorial.querium.com/cgi-bin/getserver.cgi?appId=OSCA' )
+            .then( (resp) => resp.json() )
+            .then( function( response ){
+                var newServer = response.result;
+                console.info('New server assigned:', newServer);
+                if( newServer && newServer.length ){
+                    localStorage.setItem("server", newServer);
+                    localStorage.setItem( 'oscaServerLastSet', Date.now() );
+                }
+            })
+            .catch( function (err) {
+                    console.info('Dispatcher ERRORED. Current server value is:', localStorage.getItem("server") );
+            });
+        }else{
+            console.info(
+                'Server already assigned. Current server value is:', 
+                localStorage.getItem("server"), 
+                'and last updated', 
+                timeSince(lastUpdate) 
+            );
+
+        }
+
+        function timeSince(date) {
+            if( typeof date !== 'number' ){
+                return "INVALID-DATE"
+            }
+            var seconds = Math.floor((new Date() - date) / 1000);
+            var interval = Math.floor(seconds / 31536000);
+            if (interval > 1) {
+                return interval + " years";
+            }
+            interval = Math.floor(seconds / 2592000);
+            if (interval > 1) {
+                return interval + " months";
+            }
+            interval = Math.floor(seconds / 86400);
+            if (interval > 1) {
+                return interval + " days";
+            }
+            interval = Math.floor(seconds / 3600);
+            if (interval > 1) {
+                return interval + " hours";
+            }
+            interval = Math.floor(seconds / 60);
+            if (interval > 1) {
+                return interval + " minutes";
+            }
+            return Math.floor(seconds) + " seconds";
+        }
     });
 }
 
