@@ -20,7 +20,7 @@ class SWXBlock(XBlock):
     q_stimulus = String(help="Stimulus", default='Solve for \\(a\\).', scope=Scope.content)
     q_definition = String(help="Definition", default='SolveFor[5a+4=2a-5,a]', scope=Scope.content)
     q_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
-    q_display_math = String(help="Display Math", default='\\(5a+4=2a-5\\)', scope=Scope.content)
+    q_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
     q_hint1 = String(help="First Hint", default='', scope=Scope.content)
     q_hint2 = String(help="Second Hint", default='', scope=Scope.content)
     q_hint3 = String(help="Third Hint", default='', scope=Scope.content)
