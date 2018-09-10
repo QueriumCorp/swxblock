@@ -111,7 +111,7 @@ function SWXStudent(runtime, element, question) {
         stepwise_element.style.display = 'block';
         swxblock_block.classList.add("block_working");
         swxblock_block.classList.remove("block_worked");
-        swxblock_block.scrollIntoView({ "behavior":"smooth"});
+        swxblock_block.scrollIntoView({ behavior:"smooth"});
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }
 
