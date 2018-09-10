@@ -14,7 +14,7 @@ function SWXStudent(runtime, element, question) {
 
     var grade=-1;
 
-    preview_begin.onclick = function(){ 
+    preview_element.onclick = function(){ 
         var options = {
             hideMenu: true,
             showMe: true,
@@ -111,6 +111,7 @@ function SWXStudent(runtime, element, question) {
         stepwise_element.style.display = 'block';
         swxblock_block.classList.add("block_working");
         swxblock_block.classList.remove("block_worked");
+        swxblock_block.scrollIntoView({ "behavior":"smooth"});
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }
 
@@ -149,7 +150,6 @@ function SWXStudent(runtime, element, question) {
                 'and last updated', 
                 timeSince(lastUpdate) 
             );
-
         }
 
         function timeSince(date) {
