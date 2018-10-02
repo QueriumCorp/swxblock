@@ -1,6 +1,8 @@
 """TO-DO: Write a stimulus of what this XBlock is."""
 
 import pkg_resources
+import random
+
 from xblock.core import XBlock
 from xblock.fields import Integer, String, Scope
 from xblock.fragment import Fragment
@@ -17,6 +19,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     # FIELDS
     display_name = String(display_name="Display name", default='StepWise', scope=Scope.settings)
+    
     q_label = String(help="Question label", default="", scope=Scope.content)
     q_stimulus = String(help="Stimulus", default='Solve for \\(a\\).', scope=Scope.content)
     q_definition = String(help="Definition", default='SolveFor[5a+4=2a-5,a]', scope=Scope.content)
@@ -25,6 +28,24 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q_hint1 = String(help="First Hint", default='', scope=Scope.content)
     q_hint2 = String(help="Second Hint", default='', scope=Scope.content)
     q_hint3 = String(help="Third Hint", default='', scope=Scope.content)
+
+    q1_label = String(help="Question Alternate 1", default="", scope=Scope.content)
+    q1_stimulus = String(help="Stimulus", default='', scope=Scope.content)
+    q1_definition = String(help="Definition", default='', scope=Scope.content)
+    q1_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
+    q1_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
+    q1_hint1 = String(help="First Hint", default='', scope=Scope.content)
+    q1_hint2 = String(help="Second Hint", default='', scope=Scope.content)
+    q1_hint3 = String(help="Third Hint", default='', scope=Scope.content)
+    
+    q2_label = String(help="Question Alternate 2", default="", scope=Scope.content)
+    q2_stimulus = String(help="Stimulus", default='', scope=Scope.content)
+    q2_definition = String(help="Definition", default='', scope=Scope.content)
+    q2_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
+    q2_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
+    q2_hint1 = String(help="First Hint", default='', scope=Scope.content)
+    q2_hint2 = String(help="Second Hint", default='', scope=Scope.content)
+    q2_hint3 = String(help="Third Hint", default='', scope=Scope.content)
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -37,16 +58,54 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         The STUDENT view of the SWXBlock, shown to students
         when viewing courses.
         """
-        question = {
-            "q_label" : self.q_label,
-            "q_stimulus" : self.q_stimulus,
-            "q_definition" : self.q_definition,
-            "q_type" :  self.q_type,
-            "q_display_math" :  self.q_display_math,
-            "q_hint1" :  self.q_hint1,
-            "q_hint2" :  self.q_hint2,
-            "q_hint3" :  self.q_hint3
-        }
+        print "q0"
+        print len(self.q_definition) 
+        print "q1"
+        print len(self.q1_definition)
+        print "q2"
+        print len(self.q2_definition)
+
+        if len(self.q_definition)==0 and len(self.q1_definition)==0 and len(self.q2_definition)==0:
+            q_index = random.randint(0, 2)
+        else:
+            q_index = 0
+
+        print "q_index"
+        print q_index
+
+        if q_index == 0:
+            question = {
+                "q_label" : self.q_label,
+                "q_stimulus" : self.q_stimulus,
+                "q_definition" : self.q_definition,
+                "q_type" :  self.q_type,
+                "q_display_math" :  self.q_display_math,
+                "q_hint1" :  self.q_hint1,
+                "q_hint2" :  self.q_hint2,
+                "q_hint3" :  self.q_hint3
+            }
+        elif q_index == 1:
+            question = {
+                "q_label" : self.q1_label,
+                "q_stimulus" : self.q1_stimulus,
+                "q_definition" : self.q1_definition,
+                "q_type" :  self.q1_type,
+                "q_display_math" :  self.q1_display_math,
+                "q_hint1" :  self.q1_hint1,
+                "q_hint2" :  self.q1_hint2,
+                "q_hint3" :  self.q1_hint3
+            } 
+        else:
+            question = {
+                "q_label" : self.q2_label,
+                "q_stimulus" : self.q2_stimulus,
+                "q_definition" : self.q2_definition,
+                "q_type" :  self.q2_type,
+                "q_display_math" :  self.q2_display_math,
+                "q_hint1" :  self.q2_hint1,
+                "q_hint2" :  self.q2_hint2,
+                "q_hint3" :  self.q2_hint3
+            }
 
         html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
@@ -141,5 +200,24 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         self.q_hint1 = data['hint1']
         self.q_hint2 = data['hint2']
         self.q_hint3 = data['hint3']
+
+        self.q1_label = data['q1_label']
+        self.q1_stimulus = data['q1_stimulus']
+        self.q1_definition = data['q1_definition']
+        self.q1_type = data['q1_qtype']
+        self.q1_display_math = data['q1_display_math']
+        self.q1_hint1 = data['q1_hint1']
+        self.q1_hint2 = data['q1_hint2']
+        self.q1_hint3 = data['q1_hint3']
+
+        self.q2_label = data['q2_label']
+        self.q2_stimulus = data['q2_stimulus']
+        self.q2_definition = data['q2_definition']
+        self.q2_type = data['q2_qtype']
+        self.q2_display_math = data['q2_display_math']
+        self.q2_hint1 = data['q2_hint1']
+        self.q2_hint2 = data['q2_hint2']
+        self.q2_hint3 = data['q2_hint3']
+
         return {'result': 'success'}
 
