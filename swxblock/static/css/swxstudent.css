@@ -119,3 +119,7 @@
 div#practice-page {
     border:none;
 }
+
+.preview_hidden {
+    display: none;
+}

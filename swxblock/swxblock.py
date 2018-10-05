@@ -58,23 +58,18 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         The STUDENT view of the SWXBlock, shown to students
         when viewing courses.
         """
-        print "q0"
-        print len(self.q_definition) 
-        print "q1"
-        print len(self.q1_definition)
-        print "q2"
-        print len(self.q2_definition)
 
-        if len(self.q_definition)==0 and len(self.q1_definition)==0 and len(self.q2_definition)==0:
-            q_index = random.randint(0, 2)
+        if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
+            q_index = random.randint(0, 300)
         else:
             q_index = 0
 
         print "q_index"
         print q_index
 
-        if q_index == 0:
+        if q_index>0 and q_index<100:
             question = {
+                "q_index" : 0,
                 "q_label" : self.q_label,
                 "q_stimulus" : self.q_stimulus,
                 "q_definition" : self.q_definition,
@@ -84,8 +79,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q_hint2,
                 "q_hint3" :  self.q_hint3
             }
-        elif q_index == 1:
+        elif q_index>=100 and q_index<200:
             question = {
+                "q_index" : 1,
                 "q_label" : self.q1_label,
                 "q_stimulus" : self.q1_stimulus,
                 "q_definition" : self.q1_definition,
@@ -97,6 +93,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             } 
         else:
             question = {
+                "q_index" : 2,
                 "q_label" : self.q2_label,
                 "q_stimulus" : self.q2_stimulus,
                 "q_definition" : self.q2_definition,

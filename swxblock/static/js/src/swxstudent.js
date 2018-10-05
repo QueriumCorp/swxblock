@@ -1,12 +1,14 @@
 /* Javascript for SWXBlock. */
 function SWXStudent(runtime, element, question) {
 
+    console.info( question );
+
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
     var swxblock_block = $('.swxblock_block', element)[0];
-    console.info(swxblock_block);
     var stepwise_element = $('querium', element)[0];
-    var preview_element = $('.qq_preview', element)[0];
-    var preview_begin = $('.preview-begin', element)[0];
+    var preview_element0 = $('.qq_preview0', element)[0];
+    var preview_element1 = $('.qq_preview1', element)[0];
+    var preview_element2 = $('.qq_preview2', element)[0];
     var star_box = $('.star-box', element)[0];
     var star1 = $('.star1', element)[0];
     var star2 = $('.star2', element)[0];
@@ -14,7 +16,25 @@ function SWXStudent(runtime, element, question) {
 
     var grade=-1;
 
-    preview_element.onclick = function(){ 
+    switch( question.q_index ){
+        case 0:
+            preview_element0.classList.remove("preview_hidden");
+            break;
+        case 1:
+            preview_element1.classList.remove("preview_hidden");
+            break;
+        case 2:
+            preview_element2.classList.remove("preview_hidden");
+            break;
+        default:
+        preview_element0.classList.remove("preview_hidden");
+    }
+
+    preview_element0.onclick = previewClicked;
+    preview_element1.onclick = previewClicked;
+    preview_element2.onclick = previewClicked;
+    
+    function previewClicked(){ 
         var options = {
             hideMenu: true,
             showMe: true,
@@ -107,12 +127,14 @@ function SWXStudent(runtime, element, question) {
             hint3: question.q_hint3
         };
     
-        preview_element.style.display = 'none';
+        preview_element0.classList.add("preview_hidden");
+        preview_element1.classList.add("preview_hidden");
+        preview_element2.classList.add("preview_hidden");
+
         stepwise_element.style.display = 'block';
         swxblock_block.classList.add("block_working");
         swxblock_block.classList.remove("block_worked");
         setTimeout( function(){
-            console.info("scrolling");
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
@@ -146,13 +168,6 @@ function SWXStudent(runtime, element, question) {
             .catch( function (err) {
                     console.info('Dispatcher ERRORED. Current server value is:', localStorage.getItem("server") );
             });
-        }else{
-            console.info(
-                'Server already assigned. Current server value is:', 
-                localStorage.getItem("server"), 
-                'and last updated', 
-                timeSince(lastUpdate) 
-            );
         }
 
         function timeSince(date) {

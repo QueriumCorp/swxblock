@@ -1,5 +1,9 @@
 /* Javascript for SWxStudio. */
 function SWxStudio(runtime, element, question) {
+    // Stub notify so xblock doesnt crash in dev
+    if( typeof runtime.notify === "undefined" ){
+        runtime.notify = function(){ console.info(arguments); }
+    }
  
     var handlerUrl = runtime.handlerUrl(element, 'save_question');
 
