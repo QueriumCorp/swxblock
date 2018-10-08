@@ -52,12 +52,17 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
 
-    # TO-DO: change this view to display your data your own way.
+    # STUDENT_VIEW
     def student_view(self, context=None):
         """
         The STUDENT view of the SWXBlock, shown to students
         when viewing courses.
         """
+
+        print "definition lengths"
+        print len(self.q_definition)
+        print len(self.q1_definition)
+        print len(self.q2_definition)
 
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
             q_index = random.randint(0, 300)
@@ -67,7 +72,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         print "q_index"
         print q_index
 
-        if q_index>0 and q_index<100:
+        if q_index>=0 and q_index<100:
             question = {
                 "q_index" : 0,
                 "q_label" : self.q_label,
@@ -104,6 +109,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint3" :  self.q2_hint3
             }
 
+        print question
+
         html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
         frag.add_css(self.resource_string("static/css/swxstudent.css"))
@@ -122,6 +129,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
         frag.initialize_js('SWXStudent', question)
         return frag
+
     # SAVE GRADE
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
