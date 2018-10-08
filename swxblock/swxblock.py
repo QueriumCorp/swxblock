@@ -59,18 +59,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         when viewing courses.
         """
 
-        print "definition lengths"
-        print len(self.q_definition)
-        print len(self.q1_definition)
-        print len(self.q2_definition)
-
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
             q_index = random.randint(0, 300)
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0:
+            q_index = random.randint(0, 199)
         else:
             q_index = 0
-
-        print "q_index"
-        print q_index
 
         if q_index>=0 and q_index<100:
             question = {
@@ -108,8 +102,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q2_hint2,
                 "q_hint3" :  self.q2_hint3
             }
-
-        print question
 
         html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
