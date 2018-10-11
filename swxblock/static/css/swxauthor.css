@@ -10,6 +10,7 @@
 .xblock-author_view-swxblock .problemSet {
     display: flex;
     align-items: stretch;
+    justify-content: stretch;
 }
 
 .xblock-author_view-swxblock .problemSet .problem {
@@ -19,4 +20,5 @@
     border: 1px solid #e5e5e5;
     background-color: #f9f9f9;
     margin: 3px;
+    flex-grow: 1;
 }
