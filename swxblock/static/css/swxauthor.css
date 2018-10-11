@@ -1,12 +1,22 @@
-.stepwise_logo {
+.xblock-author_view-swxblock .stepwise_logo {
     bottom: 10px;
     right: 20px;
     width: 64px;
     height: 32px;
     position: absolute;
-    opacity: 0.25;
+    opacity: 0.5;
 }
 
-.problemSet {
+.xblock-author_view-swxblock .problemSet {
     display: flex;
+    align-items: stretch;
+}
+
+.xblock-author_view-swxblock .problemSet .problem {
+    font-size: 75%;
+    border-radius: 7px;
+    padding: 5px;
+    border: 1px solid #e5e5e5;
+    background-color: #f9f9f9;
+    margin: 3px;
 }

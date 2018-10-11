@@ -216,5 +216,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         self.q2_hint2 = data['q2_hint2']
         self.q2_hint3 = data['q2_hint3']
 
+        if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
+            self.display_name = "Step-by-Step Dynamic"
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0:
+            self.display_name = "Step-by-Step Dynamic"
+        else:
+            self.display_name = "Step-by-Step"        
+
         return {'result': 'success'}
 
