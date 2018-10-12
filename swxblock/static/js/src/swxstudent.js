@@ -39,7 +39,6 @@ function SWXStudent(runtime, element, question) {
             hideMenu: true,
             showMe: true,
             assessing: false,
-            issueSubmit: false,
             scribbles: false
         };
     
