@@ -1,4 +1,4 @@
-.xblock-author_view-swxblock .stepwise_logo {
+.problems-wrapper .stepwise_logo {
     bottom: 10px;
     right: 20px;
     width: 64px;
@@ -7,18 +7,22 @@
     opacity: 0.5;
 }
 
-.xblock-author_view-swxblock .problemSet {
+.problems-wrapper .problemSet {
     display: flex;
     align-items: stretch;
     justify-content: stretch;
 }
 
-.xblock-author_view-swxblock .problemSet .problem {
+.problems-wrapper .problemSet .problem {
     font-size: 75%;
     border-radius: 7px;
-    padding: 5px;
+    padding: 5px 5px 10px 5px;
     border: 1px solid #e5e5e5;
     background-color: #f9f9f9;
     margin: 3px;
     flex-grow: 1;
+}
+
+.problems-wrapper .problemSet .problem-empty {
+    display: none;
 }

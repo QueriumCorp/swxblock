@@ -183,7 +183,15 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript(self.resource_string("static/js/src/swxauthor.js"))
 
-        frag.initialize_js('SWxAuthor')
+        # tell author_view how many variants are defined
+        if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
+            variants = 3
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0:
+            variants = 2
+        else:
+            variants = 1        
+
+        frag.initialize_js('SWxAuthor', variants)
         return frag
         
     # SAVE QUESTION
@@ -223,5 +231,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             self.display_name = "Step-by-Step"        
 
+        print self.display_name
+        
         return {'result': 'success'}
 
