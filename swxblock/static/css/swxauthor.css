@@ -23,6 +23,12 @@
     flex-grow: 1;
 }
 
+.problems-wrapper .problemSet .problem h3 {
+    margin-top: 5px;
+    font-size: 125%;
+    font-weight: 600;
+}
+
 .problems-wrapper .problemSet .problem-empty {
     display: none;
 }
