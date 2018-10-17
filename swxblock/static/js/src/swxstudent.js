@@ -6,6 +6,7 @@ function SWXStudent(runtime, element, question) {
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
     var swxblock_block = $('.swxblock_block', element)[0];
     var stepwise_element = $('querium', element)[0];
+    var preview_element;
     var preview_element0 = $('.qq_preview0', element)[0];
     var preview_element1 = $('.qq_preview1', element)[0];
     var preview_element2 = $('.qq_preview2', element)[0];
@@ -19,15 +20,19 @@ function SWXStudent(runtime, element, question) {
     switch( question.q_index ){
         case 0:
             preview_element0.classList.remove("preview_hidden");
+            preview_element = preview_element0;
             break;
         case 1:
             preview_element1.classList.remove("preview_hidden");
+            preview_element = preview_element1;
             break;
         case 2:
             preview_element2.classList.remove("preview_hidden");
+            preview_element = preview_element2;
             break;
         default:
-        preview_element0.classList.remove("preview_hidden");
+            preview_element0.classList.remove("preview_hidden");
+            preview_element = preview_element0;
     }
 
     preview_element0.onclick = previewClicked;
