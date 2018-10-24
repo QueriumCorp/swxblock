@@ -4,7 +4,6 @@
     position: relative;
     transition: min-height 0.35s ease-out;
     overflow: hidden;
-    min-height: 200px;
 }
 
 .block_working {
