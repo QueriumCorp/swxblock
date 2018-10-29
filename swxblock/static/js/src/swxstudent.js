@@ -4,6 +4,9 @@ function SWXStudent(runtime, element, question) {
     console.info( question );
 
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
+
+    console.info( handlerUrl );
+
     var swxblock_block = $('.swxblock_block', element)[0];
     var stepwise_element = $('querium', element)[0];
     var preview_element;
@@ -148,10 +151,18 @@ function SWXStudent(runtime, element, question) {
 
     // get student id
     var sIdRegEx = /student=(.*?)&/;
+
+    console.info( handlerUrl );
+
     var tempStudentId = sIdRegEx.exec( handlerUrl );
+
+    console.info( tempStudentId );
+
     var sId = ( Array.isArray(tempStudentId) && tempStudentId.length>1 ? tempStudentId[1] : "UnknownStudent");
 
+    console.info( sId );
 
+    tempStudentId
     /* PAGE LOAD EVENT */
     $(function ($) {
         var lastUpdate = localStorage.getItem( 'oscaServerLastSet' );
