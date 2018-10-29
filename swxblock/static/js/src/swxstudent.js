@@ -167,7 +167,7 @@ function SWXStudent(runtime, element, question) {
         var lastUpdate = localStorage.getItem( 'oscaServerLastSet' );
         if( 
             (!lastUpdate) || // no server assignment update timestamp
-            (lastUpdate && ((Date.now() - lastUpdate) > 21600000) ) // if lastUpdate was more than 6 hours ago
+            (lastUpdate && ((Date.now() - lastUpdate) > 600000) ) // if lastUpdate was more than 10 minutes ago
         ){ 
             fetch( 'https://editorial.querium.com/cgi-bin/getserver.cgi?appId=OSCA' )
             .then( (resp) => resp.json() )
