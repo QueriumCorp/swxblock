@@ -37,15 +37,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         The STUDENT view of the SWXBlock, shown to students
         when viewing courses.
-        """
 
         user_service = self.runtime.service(self, 'user')
         xb_user = user_service.get_current_user()
-        """
             xb_user.emails[0]
         """
         question = {
-            "q_user" : "I am a student",
             "q_label" : self.q_label,
             "q_stimulus" : self.q_stimulus,
             "q_definition" : self.q_definition,

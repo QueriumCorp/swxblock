@@ -115,7 +115,7 @@ function SWXStudent(runtime, element, question) {
             console.info("scrolling");
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
-        querium.startQuestion( 'OpenStaxHomework', question.q_user, qDef, callbacks, options, stepwise_element );    
+        querium.startQuestion( 'OpenStaxHomework', "Test Student", qDef, callbacks, options, stepwise_element );    
     }
 
 
