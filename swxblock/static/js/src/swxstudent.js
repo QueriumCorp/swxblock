@@ -162,7 +162,6 @@ function SWXStudent(runtime, element, question) {
 
     console.info( sId );
 
-    tempStudentId
     /* PAGE LOAD EVENT */
     $(function ($) {
         var lastUpdate = localStorage.getItem( 'oscaServerLastSet' );
