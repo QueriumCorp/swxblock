@@ -58,6 +58,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         The STUDENT view of the SWXBlock, shown to students
         when viewing courses.
         """
+        user_service = self.runtime.service( self, 'user')
+        xb_user = user_service.get_current_user()
+        print xb_user
 
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
             q_index = random.randint(0, 300)
