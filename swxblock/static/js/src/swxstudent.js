@@ -115,15 +115,8 @@ function SWXStudent(runtime, element, question) {
             console.info("scrolling");
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
-        querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
+        querium.startQuestion( 'OpenStaxHomework', question.q_user, qDef, callbacks, options, stepwise_element );    
     }
-
-    
-
-    // get student id
-    var sIdRegEx = /student=(.*?)&/;
-    var tempStudentId = sIdRegEx.exec( handlerUrl );
-    var sId = ( Array.isArray(tempStudentId) && tempStudentId.length>1 ? tempStudentId[1] : "UnknownStudent");
 
 
     /* PAGE LOAD EVENT */
@@ -131,7 +124,7 @@ function SWXStudent(runtime, element, question) {
         var lastUpdate = localStorage.getItem( 'oscaServerLastSet' );
         if( 
             (!lastUpdate) || // no server assignment update timestamp
-            (lastUpdate && ((Date.now() - lastUpdate) > 21600000) ) // if lastUpdate was more than 6 hours ago
+            (lastUpdate && ((Date.now() - lastUpdate) > 600000) ) // if lastUpdate was more than 10 minutes ago
         ){ 
             fetch( 'https://editorial.querium.com/cgi-bin/getserver.cgi?appId=OSCA' )
             .then( (resp) => resp.json() )

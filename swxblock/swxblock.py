@@ -6,6 +6,7 @@ from xblock.fields import Integer, String, Scope
 from xblock.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 
+@XBlock.wants('user')
 class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     TO-DO: document what your XBlock does.
@@ -39,8 +40,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
 
         user_service = self.runtime.service(self, 'user')
+        xb_user = user_service.get_current_user()
         
         question = {
+            "q_user" : xb_user.emails[0],
             "q_label" : self.q_label,
             "q_stimulus" : self.q_stimulus,
             "q_definition" : self.q_definition,
