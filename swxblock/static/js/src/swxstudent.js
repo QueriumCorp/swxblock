@@ -149,16 +149,8 @@ function SWXStudent(runtime, element, question) {
 
     
 
-    // get student id
-    var sIdRegEx = /student=(.*?)&/;
-
-    console.info( handlerUrl );
-
-    var tempStudentId = sIdRegEx.exec( handlerUrl );
-
-    console.info( tempStudentId );
-
-    var sId = ( Array.isArray(tempStudentId) && tempStudentId.length>1 ? tempStudentId[1] : "UnknownStudent");
+    // set student id
+    var sId = ( question.q_user.length>1 ? question.q_user : "UnknownStudent");
 
     console.info( sId );
 
