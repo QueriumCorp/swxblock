@@ -61,7 +61,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
-        print xb_user
 
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
             q_index = random.randint(0, 300)
@@ -72,6 +71,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         if q_index>=0 and q_index<100:
             question = {
+                "q_user" : xb_user.emails[0],
                 "q_index" : 0,
                 "q_label" : self.q_label,
                 "q_stimulus" : self.q_stimulus,
@@ -84,6 +84,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             }
         elif q_index>=100 and q_index<200:
             question = {
+                "q_user" : xb_user.emails[0],
                 "q_index" : 1,
                 "q_label" : self.q1_label,
                 "q_stimulus" : self.q1_stimulus,
@@ -96,6 +97,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             } 
         else:
             question = {
+                "q_user" : xb_user.emails[0],
                 "q_index" : 2,
                 "q_label" : self.q2_label,
                 "q_stimulus" : self.q2_stimulus,
