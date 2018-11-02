@@ -1,47 +1,46 @@
 /* Javascript for SWXBlock. */
 function SWXStudent(runtime, element, question) {
-
     console.info( question );
-
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
+    var grade=-1;
 
-    console.info( handlerUrl );
-
+    // Get Primary Element Handles
     var swxblock_block = $('.swxblock_block', element)[0];
     var stepwise_element = $('querium', element)[0];
     var preview_element;
-    var preview_element0 = $('.qq_preview0', element)[0];
-    var preview_element1 = $('.qq_preview1', element)[0];
-    var preview_element2 = $('.qq_preview2', element)[0];
-    var star_box = $('.star-box', element)[0];
-    var star1 = $('.star1', element)[0];
-    var star2 = $('.star2', element)[0];
-    var star3 = $('.star3', element)[0];
-
-    var grade=-1;
 
     switch( question.q_index ){
         case 0:
-            preview_element0.classList.remove("preview_hidden");
-            preview_element = preview_element0;
+            preview_element = $('.qq_preview0', element)[0];
             break;
         case 1:
-            preview_element1.classList.remove("preview_hidden");
-            preview_element = preview_element1;
+            preview_element = $('.qq_preview1', element)[0];
             break;
         case 2:
-            preview_element2.classList.remove("preview_hidden");
-            preview_element = preview_element2;
+            preview_element = $('.qq_preview2', element)[0];
             break;
         default:
-            preview_element0.classList.remove("preview_hidden");
-            preview_element = preview_element0;
+            preview_element = $('.qq_preview0', element)[0];
     }
 
-    preview_element0.onclick = previewClicked;
-    preview_element1.onclick = previewClicked;
-    preview_element2.onclick = previewClicked;
+    // Get Active Preview Element Handles
+    var star_box = $('.star-box', preview_element)[0];
+    var star1 = $('.star1', preview_element)[0];
+    var star2 = $('.star2', preview_element)[0];
+    var star3 = $('.star3', preview_element)[0];
+    var display_math = $('.display-math', preview_element)[0];
     
+    // Hide Display Math if empty
+    if ( display_math.innerText.length>5 ){
+        display_math.classList.remove("preview_hidden");
+    }else{
+        display_math.classList.add("preview_hidden");
+    }
+
+    // Show the active question preview
+    preview_element.classList.remove("preview_hidden");
+    preview_element.onclick = previewClicked;
+  
     function previewClicked(){ 
         var options = {
             hideMenu: true,
@@ -108,7 +107,7 @@ function SWXStudent(runtime, element, question) {
                 default:
                     console.error('bad grade value:', grade)
             }
-            preview_element.style.display = 'initial';
+            preview_element.classList.remove("preview_hidden");
             stepwise_element.style.display = 'none';
 
             $.ajax({
@@ -134,9 +133,7 @@ function SWXStudent(runtime, element, question) {
             hint3: question.q_hint3
         };
     
-        preview_element0.classList.add("preview_hidden");
-        preview_element1.classList.add("preview_hidden");
-        preview_element2.classList.add("preview_hidden");
+        preview_element.classList.add("preview_hidden");
 
         stepwise_element.style.display = 'block';
         swxblock_block.classList.add("block_working");
@@ -145,9 +142,7 @@ function SWXStudent(runtime, element, question) {
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
-    }
-
-    
+    }   
 
     // set student id
     var sId = ( question.q_user.length>1 ? question.q_user : "UnknownStudent");
