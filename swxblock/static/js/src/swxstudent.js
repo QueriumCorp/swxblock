@@ -123,6 +123,7 @@ function SWXStudent(runtime, element, question) {
         };
     
         var qDef = {
+            id: ( question.q_id ? question.q_id : false ),
             label: ( question.q_label ? question.q_label : "" ),
             description: question.q_stimulus,
             definition: question.q_definition,

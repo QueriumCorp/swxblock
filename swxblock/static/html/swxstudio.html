@@ -5,10 +5,17 @@
     <h2>Question Specification</h2>
     <li class="field comp-setting-entry metadata_entry">
       <div class="wrapper-comp-setting">
+        <label for="id" class="label setting-label">Id</label>
+        <input id='id' type="text" name="id" value="{self.q_id}" class="input setting-input">
+      </div>
+      <span class="tip setting-help">The optional id for this question.</span>
+    </li>
+    <li class="field comp-setting-entry metadata_entry">
+      <div class="wrapper-comp-setting">
         <label for="label" class="label setting-label">Label</label>
         <input id='label' type="text" name="label" value="{self.q_label}" class="input setting-input">
       </div>
-      <span class="tip setting-help">The label for this question.</span>
+      <span class="tip setting-help">The optional label for this question.</span>
     </li>
     <li class="field comp-setting-entry metadata_entry">
       <div class="wrapper-comp-setting">
@@ -61,6 +68,13 @@
 
     <!-- Alternative Question 1 -->
     <h2>Question Specification First Alternate</h2>
+    <li class="field comp-setting-entry metadata_entry">
+      <div class="wrapper-comp-setting">
+        <label for="q1_id" class="label setting-label">Id</label>
+        <input id='q1_id' type="text" name="q1_id" value="{self.q1_id}" class="input setting-input">
+      </div>
+      <span class="tip setting-help">The optional id for this question.</span>
+    </li>
     <li class="field comp-setting-entry metadata_entry">
       <div class="wrapper-comp-setting">
         <label for="label" class="label setting-label">Label</label>
@@ -119,6 +133,13 @@
 
     <!-- Alternative Question 2 -->
     <h2>Question Specification Second Alternate</h2>
+    <li class="field comp-setting-entry metadata_entry">
+      <div class="wrapper-comp-setting">
+        <label for="q2_id" class="label setting-label">Id</label>
+        <input id='q2_id' type="text" name="q2_id" value="{self.q2_id}" class="input setting-input">
+      </div>
+      <span class="tip setting-help">The optional id for this question.</span>
+    </li>
     <li class="field comp-setting-entry metadata_entry">
       <div class="wrapper-comp-setting">
         <label for="label" class="label setting-label">Label</label>

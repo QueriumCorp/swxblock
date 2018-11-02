@@ -9,6 +9,7 @@ function SWxStudio(runtime, element, question) {
 
     $('.save-button', element).click(function(eventObject) {
         var data = {
+            id : $('#id', element).val(),
             label : $('#label', element).val(),
             stimulus : $('#stimulus', element).val(),
             definition : $('#definition', element).val(),
@@ -18,6 +19,7 @@ function SWxStudio(runtime, element, question) {
             hint2 : $('#hint2', element).val(),
             hint3 : $('#hint3', element).val(),
 
+            q1_id : $('#q1_id', element).val(),
             q1_label : $('#q1_label', element).val(),
             q1_stimulus : $('#q1_stimulus', element).val(),
             q1_definition : $('#q1_definition', element).val(),
@@ -27,6 +29,7 @@ function SWxStudio(runtime, element, question) {
             q1_hint2 : $('#q1_hint2', element).val(),
             q1_hint3 : $('#q1_hint3', element).val(),
 
+            q2_id : $('#q2_id', element).val(),
             q2_label : $('#q2_label', element).val(),
             q2_stimulus : $('#q2_stimulus', element).val(),
             q2_definition : $('#q2_definition', element).val(),

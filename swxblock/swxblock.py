@@ -21,6 +21,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # FIELDS
     display_name = String(display_name="Display name", default='StepWise', scope=Scope.settings)
     
+    q_id = String(help="Question ID", default="", scope=Scope.content)
     q_label = String(help="Question label", default="", scope=Scope.content)
     q_stimulus = String(help="Stimulus", default='Solve for \\(a\\).', scope=Scope.content)
     q_definition = String(help="Definition", default='SolveFor[5a+4=2a-5,a]', scope=Scope.content)
@@ -30,6 +31,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q_hint2 = String(help="Second Hint", default='', scope=Scope.content)
     q_hint3 = String(help="Third Hint", default='', scope=Scope.content)
 
+    q1_id = String(help="Question ID", default="", scope=Scope.content)
     q1_label = String(help="Question Alternate 1", default="", scope=Scope.content)
     q1_stimulus = String(help="Stimulus", default='', scope=Scope.content)
     q1_definition = String(help="Definition", default='', scope=Scope.content)
@@ -39,6 +41,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q1_hint2 = String(help="Second Hint", default='', scope=Scope.content)
     q1_hint3 = String(help="Third Hint", default='', scope=Scope.content)
     
+    q2_id = String(help="Question ID", default="", scope=Scope.content)
     q2_label = String(help="Question Alternate 2", default="", scope=Scope.content)
     q2_stimulus = String(help="Stimulus", default='', scope=Scope.content)
     q2_definition = String(help="Definition", default='', scope=Scope.content)
@@ -71,6 +74,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         if q_index>=0 and q_index<100:
             question = {
+                "q_id" : self.q_id,
                 "q_user" : xb_user.emails[0],
                 "q_index" : 0,
                 "q_label" : self.q_label,
@@ -84,6 +88,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             }
         elif q_index>=100 and q_index<200:
             question = {
+                "q_id" : self.q1_id,
                 "q_user" : xb_user.emails[0],
                 "q_index" : 1,
                 "q_label" : self.q1_label,
@@ -97,6 +102,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             } 
         else:
             question = {
+                "q_id" : self.q2_id,
                 "q_user" : xb_user.emails[0],
                 "q_index" : 2,
                 "q_label" : self.q2_label,
@@ -203,6 +209,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # SAVE QUESTION
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
+        self.q_id = data['id']
         self.q_label = data['label']
         self.q_stimulus = data['stimulus']
         self.q_definition = data['definition']
@@ -212,6 +219,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         self.q_hint2 = data['hint2']
         self.q_hint3 = data['hint3']
 
+        self.q1_id = data['q1_id']
         self.q1_label = data['q1_label']
         self.q1_stimulus = data['q1_stimulus']
         self.q1_definition = data['q1_definition']
@@ -221,6 +229,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         self.q1_hint2 = data['q1_hint2']
         self.q1_hint3 = data['q1_hint3']
 
+        self.q2_id = data['q2_id']
         self.q2_label = data['q2_label']
         self.q2_stimulus = data['q2_stimulus']
         self.q2_definition = data['q2_definition']
