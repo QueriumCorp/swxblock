@@ -14,6 +14,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     TO-DO: document what your XBlock does.
     """
     has_author_view = True # tells the xblock to use the AuthorView
+    has_score = True # tells the xblock to accept a grade
     
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
@@ -148,9 +149,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         self.runtime.publish(self, 'grade', 
             {   'value': grade, 
-                'max_value': 3, 
-                'details': data
+                'max_value': 3 
             })
+
+        # I think we need to add code here to save the session details outside of edX.  
+        # I don't think that edX can handle it.
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
