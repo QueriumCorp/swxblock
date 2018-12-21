@@ -200,5 +200,8 @@ function SWXStudent(runtime, element, question) {
             return Math.floor(seconds) + " seconds";
         }
     });
+
+    // wrap element as core.js may pass a raw element or an wrapped one
+    angular.bootstrap($(element), ['querium-stepwise'])
 }
 

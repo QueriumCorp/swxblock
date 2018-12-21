@@ -58,5 +58,6 @@ function SWxStudio(runtime, element, question) {
     /* PAGE LOAD EVENT */
     $(function ($) {
     });
+
 }
 
