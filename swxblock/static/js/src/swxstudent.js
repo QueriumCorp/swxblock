@@ -202,6 +202,7 @@ function SWXStudent(runtime, element, question) {
     });
 
     // wrap element as core.js may pass a raw element or an wrapped one
-    angular.bootstrap($(element), ['querium-stepwise'])
+    angular.bootstrap($(element), ['querium-stepwise']);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
 
