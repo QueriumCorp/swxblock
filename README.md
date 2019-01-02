@@ -2,7 +2,15 @@
 The StepWise xBlock for the edX LMS platform
 
 # HOW TO WORK DEV CYCLE
-More to come
+The edX documentation on setting up a dev environment with the xBlock SDK has two major missing steps. In section 3.2.3, you'll need to add these two commands at step 0 and 3.5: 
+
+The var directory needs to exist or the manage.py commands will fail when they try to write to their log files which they expect to be in a var directory.
+0. mkdir var
+
+After you run the `pip install -r requirements/base.txt` command, you need to run `make install` or the test page UI will crash with an error about `PluginMissingError: vertical_demo`
+3.5 make install
+
+
 
 # HOW TO INSTALL TO PRODUCTION
 These instructions are based on [Lawrence McDaniel's](https://blog.lawrencemcdaniel.com/how-to-install-an-xblock/ "How to Install and xBlock") blog post.  For purposes of these instructions the xblock is called "swxblock".
