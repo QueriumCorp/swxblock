@@ -11,7 +11,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     TO-DO: document what your XBlock does.
     """
-    has_author_view = True # tells the xblock to use the AuthorView
+    has_author_view = True # tells the xblock to not ignore the AuthorView
+    has_score = True       # tells the xblock to not ignore the grade event
     
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.

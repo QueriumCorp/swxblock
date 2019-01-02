@@ -1,4 +1,5 @@
 README.md
+setup.py
 swxblock/__init__.py
 swxblock/swxblock.py
 swxblock/static/.DS_Store
