@@ -4,14 +4,13 @@
     position: relative;
     transition: min-height 0.35s ease-out;
     overflow: hidden;
-    min-height: 200px;
 }
 
 .block_working {
     min-height: 95vh;
 }
 .block_worked {
-    min-height: 260px;
+    min-height: 100px;
 }
 .swxblock_block .count {
     font-weight: bold;
@@ -21,9 +20,14 @@
     cursor: pointer;
 }
 
+.swxblock_block p.stimulus {
+    margin-bottom: 5px;
+}
+
 .swxblock_block .star-box {
     text-align: center;
     user-select: none;
+    margin-bottom: 10px;
 }
 
 .swxblock_block .star-icon {
@@ -118,4 +122,8 @@
 
 div#practice-page {
     border:none;
+}
+
+.preview_hidden {
+    display: none;
 }

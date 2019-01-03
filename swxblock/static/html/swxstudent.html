@@ -1,24 +1,41 @@
 <div class="swxblock_block" data-ng-strict-di>
     <div class='stepwise_container'>
         <querium style='display: none;'></querium>
-        <div class='qq_preview'>
+        <div class='qq_preview0 preview_hidden'>
             <h3 class="hd hd-3 problem-header">{self.q_label}</h3>
             <div class='practice-problem'>
-                <p>{self.q_stimulus}</p>
-                <p>{self.q_display_math}</p>
+                <p class='stimulus'>{self.q_stimulus}</p>
+                <p class='display-math'>{self.q_display_math}</p>
             </div>
             <div class="star-box" style="display: none;">
                 <span class="star1 star-icon">☆</span>
                 <span class="star2 star-icon">☆</span>
                 <span class="star3 star-icon">☆</span>
             </div>
-            <!--
-            <div class='submit-attempt-container'>
-                <button type='button' class='preview-begin submit btn-brand'>
-                    <span class='submit-label'>Begin</span>
-                </button>
+        </div>
+        <div class='qq_preview1 preview_hidden'>
+            <h3 class="hd hd-3 problem-header">{self.q1_label}</h3>
+            <div class='practice-problem'>
+                <p class='stimulus'>{self.q1_stimulus}</p>
+                <p class='display-math'>{self.q1_display_math}</p>
             </div>
-            -->
+            <div class="star-box" style="display: none;">
+                <span class="star1 star-icon">☆</span>
+                <span class="star2 star-icon">☆</span>
+                <span class="star3 star-icon">☆</span>
+            </div>
+        </div>
+        <div class='qq_preview2 preview_hidden'>
+            <h3 class="hd hd-3 problem-header">{self.q2_label}</h3>
+            <div class='practice-problem'>
+                <p class='stimulus'>{self.q2_stimulus}</p>
+                <p class='display-math'>{self.q2_display_math}</p>
+            </div>
+            <div class="star-box" style="display: none;">
+                <span class="star1 star-icon">☆</span>
+                <span class="star2 star-icon">☆</span>
+                <span class="star3 star-icon">☆</span>
+            </div>
         </div>
     </div>
 </div>

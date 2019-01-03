@@ -1,25 +1,51 @@
 /* Javascript for SWXBlock. */
 function SWXStudent(runtime, element, question) {
-
+    console.info( question );
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
-    var swxblock_block = $('.swxblock_block', element)[0];
-    console.info(swxblock_block);
-    var stepwise_element = $('querium', element)[0];
-    var preview_element = $('.qq_preview', element)[0];
-    var preview_begin = $('.preview-begin', element)[0];
-    var star_box = $('.star-box', element)[0];
-    var star1 = $('.star1', element)[0];
-    var star2 = $('.star2', element)[0];
-    var star3 = $('.star3', element)[0];
-
     var grade=-1;
 
-    preview_element.onclick = function(){ 
+    // Get Primary Element Handles
+    var swxblock_block = $('.swxblock_block', element)[0];
+    var stepwise_element = $('querium', element)[0];
+    var preview_element;
+
+    switch( question.q_index ){
+        case 0:
+            preview_element = $('.qq_preview0', element)[0];
+            break;
+        case 1:
+            preview_element = $('.qq_preview1', element)[0];
+            break;
+        case 2:
+            preview_element = $('.qq_preview2', element)[0];
+            break;
+        default:
+            preview_element = $('.qq_preview0', element)[0];
+    }
+
+    // Get Active Preview Element Handles
+    var star_box = $('.star-box', preview_element)[0];
+    var star1 = $('.star1', preview_element)[0];
+    var star2 = $('.star2', preview_element)[0];
+    var star3 = $('.star3', preview_element)[0];
+    var display_math = $('.display-math', preview_element)[0];
+    
+    // Hide Display Math if empty
+    if ( display_math.innerText.length>5 ){
+        display_math.classList.remove("preview_hidden");
+    }else{
+        display_math.classList.add("preview_hidden");
+    }
+
+    // Show the active question preview
+    preview_element.classList.remove("preview_hidden");
+    preview_element.onclick = previewClicked;
+  
+    function previewClicked(){ 
         var options = {
             hideMenu: true,
             showMe: true,
             assessing: false,
-            issueSubmit: false,
             scribbles: false
         };
     
@@ -81,7 +107,7 @@ function SWXStudent(runtime, element, question) {
                 default:
                     console.error('bad grade value:', grade)
             }
-            preview_element.style.display = 'initial';
+            preview_element.classList.remove("preview_hidden");
             stepwise_element.style.display = 'none';
 
             $.ajax({
@@ -97,6 +123,7 @@ function SWXStudent(runtime, element, question) {
         };
     
         var qDef = {
+            id: ( question.q_id ? question.q_id : false ),
             label: ( question.q_label ? question.q_label : "" ),
             description: question.q_stimulus,
             definition: question.q_definition,
@@ -107,17 +134,21 @@ function SWXStudent(runtime, element, question) {
             hint3: question.q_hint3
         };
     
-        preview_element.style.display = 'none';
+        preview_element.classList.add("preview_hidden");
+
         stepwise_element.style.display = 'block';
         swxblock_block.classList.add("block_working");
         swxblock_block.classList.remove("block_worked");
         setTimeout( function(){
-            console.info("scrolling");
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
-        querium.startQuestion( 'OpenStaxHomework', "Test Student", qDef, callbacks, options, stepwise_element );    
-    }
+        querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
+    }   
 
+    // set student id
+    var sId = ( question.q_user.length>1 ? question.q_user : "UnknownStudent");
+
+    console.info( sId );
 
     /* PAGE LOAD EVENT */
     $(function ($) {
@@ -139,13 +170,6 @@ function SWXStudent(runtime, element, question) {
             .catch( function (err) {
                     console.info('Dispatcher ERRORED. Current server value is:', localStorage.getItem("server") );
             });
-        }else{
-            console.info(
-                'Server already assigned. Current server value is:', 
-                localStorage.getItem("server"), 
-                'and last updated', 
-                timeSince(lastUpdate) 
-            );
         }
 
         function timeSince(date) {
@@ -176,5 +200,9 @@ function SWXStudent(runtime, element, question) {
             return Math.floor(seconds) + " seconds";
         }
     });
+
+    // wrap element as core.js may pass a raw element or an wrapped one
+    angular.bootstrap($(element), ['querium-stepwise']);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
 
