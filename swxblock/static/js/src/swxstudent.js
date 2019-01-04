@@ -2,15 +2,16 @@
 function SWXStudent(runtime, element, data) {
     // Get our context variables
     var question = data.question;
-    var grade= data.grade;
+    var grade = data.grade;
+    var solution = data.solution;
+
+    console.info( solution );
 
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
-
 
     // Get Primary Element Handles
     var swxblock_block = $('.swxblock_block', element)[0];
     var stepwise_element = $('querium', element)[0];
-
 
     // Get Active Preview Element Handles
     var preview_element;
@@ -46,7 +47,13 @@ function SWXStudent(runtime, element, data) {
     var star2 = $('.star2', swxblock_block)[0];
     var star3 = $('.star3', swxblock_block)[0];
 
+    // Get Solution Element Handles
+    var solution_element = $('.solution', element)[0];
+    var solution_details = $('pre', solution_element)[0];
+
+    // Init preview mode
     updateStars();
+    updateSolution();
     
     function previewClicked(){ 
         var options = {
@@ -61,6 +68,8 @@ function SWXStudent(runtime, element, data) {
             swxblock_block.classList.add("block_worked");
 
             console.info("Celebrate", stats);
+            solution = stats;
+
             if( stats.usedShowMe ){
                 grade=0;
             }else if( stats.errors==0 && stats.hints==0 ){
@@ -72,11 +81,14 @@ function SWXStudent(runtime, element, data) {
             }
 
             updateStars();
+            updateSolution();
+
             preview_element.classList.remove("preview_hidden");
             stepwise_element.style.display = 'none';
 
             stats.grade = grade;
-
+            
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             $.ajax({
                 type: "POST",
                 url: handlerUrl,
@@ -158,6 +170,19 @@ function SWXStudent(runtime, element, data) {
                 console.error('bad grade value:', grade)
         }
 
+    }
+
+    function updateSolution(){
+        if( grade==-1){
+            solution_element.classList.add("preview_hidden");
+        }else{
+            solution_element.classList.remove("preview_hidden");
+            if( Object.keys(solution).length ){
+                solution_details.innerText=JSON.stringify(solution, null, 2);
+            }else{
+                solution_details.innerText="No solution"
+            }      
+        }
     }
 
     // set student id

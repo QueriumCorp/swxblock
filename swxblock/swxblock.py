@@ -4,7 +4,7 @@ import pkg_resources
 import random
 
 from xblock.core import XBlock
-from xblock.fields import Integer, String, Scope
+from xblock.fields import Integer, String, Scope, Dict
 from xblock.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 
@@ -19,7 +19,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
 
-    # FIELDS
+    # QUESTION DEFINITION FIELDS
     display_name = String(display_name="Display name", default='StepWise', scope=Scope.content)
     
     q_id = String(help="Question ID", default="", scope=Scope.content)
@@ -52,7 +52,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q2_hint2 = String(help="Second Hint", default='', scope=Scope.content)
     q2_hint3 = String(help="Third Hint", default='', scope=Scope.content)
 
+    # STUDENT'S QUESTION PERFORMANCE FIELDS
     grade = Integer(help="The student's grade", default=-1, scope=Scope.user_state)
+    solution = Dict(help="The student's last solution", default={}, scope=Scope.user_state)
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -124,7 +126,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         data = {
             "question" : question,
-            "grade" :self.grade
+            "grade" :self.grade,
+            "solution" : self.solution
         } 
 
         html = self.resource_string("static/html/swxstudent.html")
@@ -163,6 +166,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 'max_value': 3 
             })
 
+        self.solution = data
         self.grade = grade
 
 
