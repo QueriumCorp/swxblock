@@ -1,8 +1,10 @@
 /* Javascript for SWXBlock. */
-function SWXStudent(runtime, element, question) {
-    console.info( question );
+function SWXStudent(runtime, element, data) {
+    var question = data.question;
+    var grade= data.grade;
+
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
-    var grade=-1;
+
 
     // Get Primary Element Handles
     var swxblock_block = $('.swxblock_block', element)[0];
@@ -110,6 +112,8 @@ function SWXStudent(runtime, element, question) {
             preview_element.classList.remove("preview_hidden");
             stepwise_element.style.display = 'none';
 
+            stats.grade = grade;
+            
             $.ajax({
                 type: "POST",
                 url: handlerUrl,

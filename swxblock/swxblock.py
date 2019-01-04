@@ -20,7 +20,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # self.<fieldname>.
 
     # FIELDS
-    display_name = String(display_name="Display name", default='StepWise', scope=Scope.settings)
+    display_name = String(display_name="Display name", default='StepWise', scope=Scope.content)
     
     q_id = String(help="Question ID", default="", scope=Scope.content)
     q_label = String(help="Question label", default="", scope=Scope.content)
@@ -51,6 +51,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q2_hint1 = String(help="First Hint", default='', scope=Scope.content)
     q2_hint2 = String(help="Second Hint", default='', scope=Scope.content)
     q2_hint3 = String(help="Third Hint", default='', scope=Scope.content)
+
+    grade = Integer(help="The student's grade", default=-1, scope=Scope.user_state)
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -120,6 +122,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint3" :  self.q2_hint3
             }
 
+        data = {
+            "question" : question,
+            "grade" :self.grade
+        } 
+
         html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
         frag.add_css(self.resource_string("static/css/swxstudent.css"))
@@ -136,7 +143,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.6.js")
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
-        frag.initialize_js('SWXStudent', question)
+        frag.initialize_js('SWXStudent', data)
         return frag
 
     # SAVE GRADE
@@ -156,8 +163,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 'max_value': 3 
             })
 
-        # I think we need to add code here to save the session details outside of edX.  
-        # I don't think that edX can handle it.
+        print self.grade
+        self.grade = grade
+        print self.grade
+
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
