@@ -163,9 +163,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 'max_value': 3 
             })
 
-        print self.grade
         self.grade = grade
-        print self.grade
 
 
     # TO-DO: change this to create the scenarios you'd like to see in the
