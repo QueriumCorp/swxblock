@@ -1,5 +1,6 @@
 /* Javascript for SWXBlock. */
 function SWXStudent(runtime, element, data) {
+    // Get our context variables
     var question = data.question;
     var grade= data.grade;
 
@@ -9,8 +10,10 @@ function SWXStudent(runtime, element, data) {
     // Get Primary Element Handles
     var swxblock_block = $('.swxblock_block', element)[0];
     var stepwise_element = $('querium', element)[0];
-    var preview_element;
 
+
+    // Get Active Preview Element Handles
+    var preview_element;
     switch( question.q_index ){
         case 0:
             preview_element = $('.qq_preview0', element)[0];
@@ -25,14 +28,8 @@ function SWXStudent(runtime, element, data) {
             preview_element = $('.qq_preview0', element)[0];
     }
 
-    // Get Active Preview Element Handles
-    var star_box = $('.star-box', preview_element)[0];
-    var star1 = $('.star1', preview_element)[0];
-    var star2 = $('.star2', preview_element)[0];
-    var star3 = $('.star3', preview_element)[0];
-    var display_math = $('.display-math', preview_element)[0];
-    
     // Hide Display Math if empty
+    var display_math = $('.display-math', preview_element)[0];
     if ( display_math.innerText.length>5 ){
         display_math.classList.remove("preview_hidden");
     }else{
@@ -42,7 +39,15 @@ function SWXStudent(runtime, element, data) {
     // Show the active question preview
     preview_element.classList.remove("preview_hidden");
     preview_element.onclick = previewClicked;
-  
+
+    // Get Star ELement Handles
+    var star_box = $('.star-box', swxblock_block)[0];
+    var star1 = $('.star1', swxblock_block)[0];
+    var star2 = $('.star2', swxblock_block)[0];
+    var star3 = $('.star3', swxblock_block)[0];
+
+    updateStars();
+    
     function previewClicked(){ 
         var options = {
             hideMenu: true,
@@ -66,54 +71,12 @@ function SWXStudent(runtime, element, data) {
                 grade=1;
             }
 
-            switch( grade ){
-                case -1:
-                    star_box.style.display = 'none';
-                    break;
-                case 0:
-                    star_box.style.display = 'block';
-                    star1.classList.remove('full');
-                    star1.classList.remove('half');
-                    star2.classList.remove('full');
-                    star2.classList.remove('half');
-                    star3.classList.remove('full');
-                    star3.classList.remove('half');
-                    break;
-                case 1:
-                    star_box.style.display = 'block';
-                    star1.classList.add('full');
-                    star1.classList.remove('half');
-                    star2.classList.remove('full');
-                    star2.classList.remove('half');
-                    star3.classList.remove('full');
-                    star3.classList.remove('half');
-                    break;
-                case 2:
-                    star_box.style.display = 'block';
-                    star1.classList.add('full');
-                    star1.classList.remove('half');
-                    star2.classList.add('full');
-                    star2.classList.remove('half');
-                    star3.classList.remove('full');
-                    star3.classList.remove('half');
-                    break;
-                case 3:
-                    star_box.style.display = 'block';
-                    star1.classList.add('full');
-                    star1.classList.remove('half');
-                    star2.classList.add('full');
-                    star2.classList.remove('half');
-                    star3.classList.add('full');
-                    star3.classList.remove('half');
-                    break;
-                default:
-                    console.error('bad grade value:', grade)
-            }
+            updateStars();
             preview_element.classList.remove("preview_hidden");
             stepwise_element.style.display = 'none';
 
             stats.grade = grade;
-            
+
             $.ajax({
                 type: "POST",
                 url: handlerUrl,
@@ -139,6 +102,7 @@ function SWXStudent(runtime, element, data) {
         };
     
         preview_element.classList.add("preview_hidden");
+        star_box.classList.add("preview_hidden");
 
         stepwise_element.style.display = 'block';
         swxblock_block.classList.add("block_working");
@@ -148,6 +112,53 @@ function SWXStudent(runtime, element, data) {
         }, 250);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
+
+    function updateStars(){
+        switch( grade ){
+            case -1:
+                star_box.classList.add("preview_hidden");
+                break;
+            case 0:
+                star_box.classList.remove("preview_hidden");
+                star1.classList.remove('full');
+                star1.classList.remove('half');
+                star2.classList.remove('full');
+                star2.classList.remove('half');
+                star3.classList.remove('full');
+                star3.classList.remove('half');
+                break;
+            case 1:
+                star_box.classList.remove("preview_hidden");
+                star1.classList.add('full');
+                star1.classList.remove('half');
+                star2.classList.remove('full');
+                star2.classList.remove('half');
+                star3.classList.remove('full');
+                star3.classList.remove('half');
+                break;
+            case 2:
+                star_box.classList.remove("preview_hidden");
+                star1.classList.add('full');
+                star1.classList.remove('half');
+                star2.classList.add('full');
+                star2.classList.remove('half');
+                star3.classList.remove('full');
+                star3.classList.remove('half');
+                break;
+            case 3:
+                star_box.classList.remove("preview_hidden");
+                star1.classList.add('full');
+                star1.classList.remove('half');
+                star2.classList.add('full');
+                star2.classList.remove('half');
+                star3.classList.add('full');
+                star3.classList.remove('half');
+                break;
+            default:
+                console.error('bad grade value:', grade)
+        }
+
+    }
 
     // set student id
     var sId = ( question.q_user.length>1 ? question.q_user : "UnknownStudent");
