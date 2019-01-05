@@ -41,18 +41,22 @@ function SWXStudent(runtime, element, data) {
     preview_element.classList.remove("preview_hidden");
     preview_element.onclick = previewClicked;
 
-    // Get Star ELement Handles
+    // Get Stat ELement Handles
     var star_box = $('.star-box', swxblock_block)[0];
     var star1 = $('.star1', swxblock_block)[0];
     var star2 = $('.star2', swxblock_block)[0];
     var star3 = $('.star3', swxblock_block)[0];
+    var elapsed_time_count = $('.elapsed-time-count', swxblock_block)[0];
+    var error_count = $('.error-count', swxblock_block)[0];
+    var hint_count = $('.hint-count', swxblock_block)[0];
+    var used_showme = $('.used-showme', swxblock_block)[0];
 
     // Get Solution Element Handles
     var solution_element = $('.solution', element)[0];
     var solution_details = $('pre', solution_element)[0];
 
     // Init preview mode
-    updateStars();
+    updateStats();
     updateSolution();
     
     function previewClicked(){ 
@@ -80,7 +84,7 @@ function SWXStudent(runtime, element, data) {
                 grade=1;
             }
 
-            updateStars();
+            updateStats();
             updateSolution();
 
             preview_element.classList.remove("preview_hidden");
@@ -125,7 +129,7 @@ function SWXStudent(runtime, element, data) {
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
 
-    function updateStars(){
+    function updateStats(){
         switch( grade ){
             case -1:
                 star_box.classList.add("preview_hidden");
@@ -170,6 +174,15 @@ function SWXStudent(runtime, element, data) {
                 console.error('bad grade value:', grade)
         }
 
+        elapsed_time_count.innerText = solution.time.toFixed();
+        error_count.innerText = solution.errors;
+        hint_count.innerText = solution.hints;
+
+        if( solution.usedShowMe ){
+            used_showme.classList.remove("preview_hidden");
+        }else{
+            used_showme.classList.add("preview_hidden");
+        }
     }
 
     function updateSolution(){
