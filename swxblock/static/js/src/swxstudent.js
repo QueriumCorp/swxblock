@@ -42,6 +42,7 @@ function SWXStudent(runtime, element, data) {
     preview_element.onclick = previewClicked;
 
     // Get Stat ELement Handles
+    var question_stats = $('.question-stats', swxblock_block)[0];
     var star_box = $('.star-box', swxblock_block)[0];
     var star1 = $('.star1', swxblock_block)[0];
     var star2 = $('.star2', swxblock_block)[0];
@@ -53,7 +54,6 @@ function SWXStudent(runtime, element, data) {
 
     // Get Solution Element Handles
     var solution_element = $('.solution', element)[0];
-    var solution_details = $('pre', solution_element)[0];
 
     // Init preview mode
     updateStats();
@@ -118,7 +118,8 @@ function SWXStudent(runtime, element, data) {
         };
     
         preview_element.classList.add("preview_hidden");
-        star_box.classList.add("preview_hidden");
+        question_stats.classList.add("preview_hidden");
+        solution_element.classList.add("preview_hidden");
 
         stepwise_element.style.display = 'block';
         swxblock_block.classList.add("block_working");
@@ -174,18 +175,25 @@ function SWXStudent(runtime, element, data) {
                 console.error('bad grade value:', grade)
         }
 
-        elapsed_time_count.innerText = solution.time.toFixed();
-        error_count.innerText = solution.errors;
-        hint_count.innerText = solution.hints;
-
-        if( solution.usedShowMe ){
-            used_showme.classList.remove("preview_hidden");
+        if( grade==-1 ){
+            question_stats.classList.add("preview_hidden");
         }else{
-            used_showme.classList.add("preview_hidden");
+            question_stats.classList.remove("preview_hidden");
+            elapsed_time_count.innerText = solution.time.toFixed();
+            error_count.innerText = solution.errors;
+            hint_count.innerText = solution.hints;
+    
+            if( solution.usedShowMe ){
+                used_showme.classList.remove("preview_hidden");
+            }else{
+                used_showme.classList.add("preview_hidden");
+            }    
         }
     }
 
     function updateSolution(){
+        if( grade==-1 ){ return; }
+
         // kill solution_element's children
         while (solution_element.firstChild) {
             solution_element.removeChild(solution_element.firstChild);
