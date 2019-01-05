@@ -87,7 +87,7 @@ function SWXStudent(runtime, element, data) {
             stepwise_element.style.display = 'none';
 
             stats.grade = grade;
-            
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             $.ajax({
                 type: "POST",
@@ -173,15 +173,68 @@ function SWXStudent(runtime, element, data) {
     }
 
     function updateSolution(){
+        // kill solution_element's children
+        while (solution_element.firstChild) {
+            solution_element.removeChild(solution_element.firstChild);
+        }
+
+        // build array of steps
+        let step_list = [];
+        var c, i, et;
+        var new_step_el, step_time_el, step_type_el, step_text_el;
+
+        for( c=0; c<solution.stepDetails.length; c++){
+            for( i=0; i<solution.stepDetails[c].info.length; i++){
+                console.info( solution.stepDetails[c].info[i])
+                // step wrapper
+                new_step_el = document.createElement("div");
+                new_step_el.classList.add("step-container");
+
+                // time of step
+                step_time_el = document.createElement("div");
+                step_time_el.classList.add("step-time");
+                et = solution.stepDetails[c].info[i].time/1000;
+                step_time_el.innerText= et.toFixed() + "s";
+
+                // step details
+                step_type_el = document.createElement("div");
+                step_type_el.classList.add("step-icon");
+                step_text_el = document.createElement("div");
+                step_text_el.classList.add("step-text");
+
+                switch( solution.stepDetails[c].info[i].status ){
+                    case 0: // victory
+                        step_type_el.classList.add("question-complete");
+                        step_text_el.innerText=solution.stepDetails[c].info[i].mathML
+                        break;
+                    case 1: // valid step
+                        step_type_el.classList.add("valid-step");
+                        step_text_el.innerText=solution.stepDetails[c].info[i].mathML
+                        break;
+                    case 3: // invalid step
+                        step_type_el.classList.add("invalid-step");
+                        step_text_el.innerText=solution.stepDetails[c].info[i].mathML
+                        break;
+                    case 4: // hint request
+                        step_type_el.classList.add("hint-request");
+                        step_text_el.innerText=solution.stepDetails[c].info[i].text
+                        break;
+                    default:
+                        console.error(solution.stepDetails[c].info[i]);
+                }
+
+                // assemble elements
+                new_step_el.appendChild(step_time_el);
+                new_step_el.appendChild(step_type_el);
+                new_step_el.appendChild(step_text_el);
+                solution_element.appendChild(new_step_el);
+            }
+        }
+        
         if( grade==-1){
             solution_element.classList.add("preview_hidden");
         }else{
             solution_element.classList.remove("preview_hidden");
-            if( Object.keys(solution).length ){
-                solution_details.innerText=JSON.stringify(solution, null, 2);
-            }else{
-                solution_details.innerText="No solution"
-            }      
         }
     }
 
