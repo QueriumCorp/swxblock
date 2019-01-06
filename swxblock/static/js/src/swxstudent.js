@@ -225,7 +225,7 @@ function SWXStudent(runtime, element, data) {
 
                 switch( solution.stepDetails[c].info[i].status ){
                     case 0: // victory
-                        step_type_el.classList.add("question-complete");
+                        step_type_el.classList.add("question-completed");
                         step_text_el.innerText=solution.stepDetails[c].info[i].mathML
                         break;
                     case 1: // valid step
