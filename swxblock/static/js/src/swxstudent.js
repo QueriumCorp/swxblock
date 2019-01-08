@@ -226,15 +226,15 @@ function SWXStudent(runtime, element, data) {
                 switch( solution.stepDetails[c].info[i].status ){
                     case 0: // victory
                         step_type_el.classList.add("question-completed");
-                        step_text_el.innerText=solution.stepDetails[c].info[i].mathML
+                        step_text_el.innerHTML=solution.stepDetails[c].info[i].mathML
                         break;
                     case 1: // valid step
                         step_type_el.classList.add("valid-step");
-                        step_text_el.innerText=solution.stepDetails[c].info[i].mathML
+                        step_text_el.innerHTML=solution.stepDetails[c].info[i].mathML
                         break;
                     case 3: // invalid step
                         step_type_el.classList.add("invalid-step");
-                        step_text_el.innerText=solution.stepDetails[c].info[i].mathML
+                        step_text_el.innerHTML=solution.stepDetails[c].info[i].mathML
                         break;
                     case 4: // hint request
                         step_type_el.classList.add("hint-request");
