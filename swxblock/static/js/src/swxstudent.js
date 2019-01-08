@@ -238,7 +238,7 @@ function SWXStudent(runtime, element, data) {
                         break;
                     case 4: // hint request
                         step_type_el.classList.add("hint-request");
-                        step_text_el.innerText=solution.stepDetails[c].info[i].text
+                        step_text_el.innerHTML=solution.stepDetails[c].info[i].text
                         break;
                     default:
                         console.error(solution.stepDetails[c].info[i]);
@@ -255,7 +255,9 @@ function SWXStudent(runtime, element, data) {
         if( grade==-1){
             solution_element.classList.add("preview_hidden");
         }else{
+            console.info('showing solution')
             solution_element.classList.remove("preview_hidden");
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
 
