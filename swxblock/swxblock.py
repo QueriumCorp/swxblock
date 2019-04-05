@@ -198,7 +198,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             grade=1
             
         logger.info("save_grade {g}".format(g=grade))
-
+        print "save_grade called"
 
         self.runtime.publish(self, 'grade', 
             {   'value': grade, 
