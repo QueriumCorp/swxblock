@@ -15,6 +15,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
+    raw_possible = 3       # Possible points
     
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
@@ -271,5 +272,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # MAX POSSIBLE POINTS FOR STEPWISE QUESTION
     # https://openedx.atlassian.net/wiki/spaces/AC/pages/161400730/Open+edX+Runtime+XBlock+API?focusedCommentId=161407121
     # Doc says this is required but we didn't have it
+    
     def max_score(self):
-        return 3
+        """Return current max possible score"""
+        return self.raw_possible
