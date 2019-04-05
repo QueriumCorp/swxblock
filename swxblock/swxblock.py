@@ -10,13 +10,8 @@ from xblock.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 
-DEBUGLVL = logging.INFO
-
-logger = logging.getLogger(__name__)
-logger.setLevel(DEBUGLVL)
-ch = logging.StreamHandler()
-ch.setLevel(DEBUGLVL)
-logger.addHandler(ch)
+logging.basicConfig(filename='/edx/var/log/swxblock.log',level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 @XBlock.wants('user')
 class SWXBlock(StudioEditableXBlockMixin, XBlock):
