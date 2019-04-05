@@ -2,11 +2,21 @@
 
 import pkg_resources
 import random
+import logging
 
 from xblock.core import XBlock
 from xblock.fields import Integer, String, Scope, Dict
 from xblock.fragment import Fragment
+from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
+
+DEBUGLVL = logging.INFO
+
+logger = logging.getLogger(__name__)
+logger.setLevel(DEBUGLVL)
+ch = logging.StreamHandler()
+ch.setLevel(DEBUGLVL)
+logger.addHandler(ch)
 
 @XBlock.wants('user')
 class SWXBlock(StudioEditableXBlockMixin, XBlock):
@@ -15,7 +25,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
-    raw_possible = 3       # Possible points
     
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
@@ -56,6 +65,37 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # STUDENT'S QUESTION PERFORMANCE FIELDS
     grade = Integer(help="The student's grade", default=-1, scope=Scope.user_state)
     solution = Dict(help="The student's last solution", default={}, scope=Scope.user_state)
+
+    raw_possible = Integer(help="Number of possible points", default=3,scope=Scope.user_state)
+
+    # FIELDS FOR THE ScorableXBlockMixin
+    
+    is_answered = Boolean(
+        default=False,
+        scope=Scope.user_state,
+        help='Will be set to "True" if successfully answered'
+    )
+
+    correct = Boolean(
+        default=False,
+        scope=Scope.user_state,
+        help='Will be set to "True" if correctly answered'
+    )
+    
+    raw_earned = Float(
+        help="Keeps maximum score achieved by student as a raw value between 0 and 1.",
+        scope=Scope.user_state,
+        default=0,
+        enforce_type=True,
+    )
+    
+    weight = Float(
+        display_name="Problem Weight",
+        help="Defines the number of points the problem is worth.",
+        scope=Scope.settings,
+        default=1,
+        enforce_type=True,
+    )
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -153,7 +193,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # SAVE GRADE
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
-        if data['usedShowMe']:
             grade=0
         elif data['errors']==0 and data['hints']==0:
             grade=3
@@ -269,10 +308,63 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         
         return {'result': 'success'}
 
-    # MAX POSSIBLE POINTS FOR STEPWISE QUESTION
-    # https://openedx.atlassian.net/wiki/spaces/AC/pages/161400730/Open+edX+Runtime+XBlock+API?focusedCommentId=161407121
-    # Doc says this is required but we didn't have it
-    
+    # Do necessary overrides from ScorableXBlockMixin
+    def has_submitted_answer(self):
+        """
+        Returns True if the problem has been answered by the runtime user.
+        """
+        return self.is_answered
+
+    def get_score(self):
+        """
+        Return a raw score already persisted on the XBlock.  Should not
+        perform new calculations.
+        Returns:
+            Score(raw_earned=float, raw_possible=float)
+        """
+        return Score(float(self.raw_earned), float(self.max_score()))
+
+    def set_score(self, score):
+        """
+        Persist a score to the XBlock.
+        The score is a named tuple with a raw_earned attribute and a
+        raw_possible attribute, reflecting the raw earned score and the maximum
+        raw score the student could have earned respectively.
+        Arguments:
+            score: Score(raw_earned=float, raw_possible=float)
+        Returns:
+            None
+        """
+        self.raw_earned = score.raw_earned
+
+    def calculate_score(self):
+        """
+        Calculate a new raw score based on the state of the problem.
+        This method should not modify the state of the XBlock.
+        Returns:
+            Score(raw_earned=float, raw_possible=float)
+        """
+        return Score(float(self.grade), float(self.max_score()))
+
+    def allows_rescore(self):
+        """
+        Boolean value: Can this problem be rescored?
+        Subtypes may wish to override this if they need conditional support for
+        rescoring.
+        """
+        return False
+
     def max_score(self):
-        """Return current max possible score"""
-        return self.raw_possible
+        """
+        Function which returns the max score for an xBlock which emits a score
+        https://openedx.atlassian.net/wiki/spaces/AC/pages/161400730/Open+edX+Runtime+XBlock+API#OpenedXRuntimeXBlockAPI-max_score(self):
+        :return: Max Score for this problem
+        """
+        return 3
+
+    def weighted_grade(self):
+        """
+        Returns the block's current saved grade multiplied by the block's
+        weight- the number of points earned by the learner.
+        """
+        return self.raw_earned * self.weight
