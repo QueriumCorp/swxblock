@@ -2,16 +2,14 @@
 
 import pkg_resources
 import random
-import logging
 
 from xblock.core import XBlock
 from xblock.fields import Integer, String, Scope, Dict
 from xblock.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
+from logging import getLogger
 
-logging.basicConfig(filename='/edx/var/log/swxblock.log',level=logging.DEBUG)
-logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 @XBlock.wants('user')
 class SWXBlock(StudioEditableXBlockMixin, XBlock):
@@ -23,6 +21,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
+
+    logger = getLogger(__name__)
 
     # QUESTION DEFINITION FIELDS
     display_name = String(display_name="Display name", default='StepWise', scope=Scope.content)
