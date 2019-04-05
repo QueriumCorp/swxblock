@@ -372,6 +372,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         :return: Max Score for this problem
         """
         logger.info("max_score 3")
+        print "max_score called"
 
         return 3
 
