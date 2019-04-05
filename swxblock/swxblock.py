@@ -193,6 +193,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # SAVE GRADE
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
+        if data['usedShowMe']:
             grade=0
         elif data['errors']==0 and data['hints']==0:
             grade=3
@@ -200,6 +201,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             grade=2
         else:
             grade=1
+            
+        logger.info("save_grade {g}".format(g=grade))
+
 
         self.runtime.publish(self, 'grade', 
             {   'value': grade, 
@@ -313,6 +317,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         Returns True if the problem has been answered by the runtime user.
         """
+        logger.info("has_submitted_answer {a}".format(a=self.is_answered))
+
         return self.is_answered
 
     def get_score(self):
@@ -322,6 +328,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Returns:
             Score(raw_earned=float, raw_possible=float)
         """
+        logger.info("get_score earned {e}".format(e=self.raw_earned))
+        logger.info("get_score max {m}".format(m=self.max_score()))
+
         return Score(float(self.raw_earned), float(self.max_score()))
 
     def set_score(self, score):
@@ -335,6 +344,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Returns:
             None
         """
+        logger.info("set_score earned {e}".format(e=score.raw_earned))
+        
         self.raw_earned = score.raw_earned
 
     def calculate_score(self):
@@ -344,6 +355,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Returns:
             Score(raw_earned=float, raw_possible=float)
         """
+        logger.info("calculate_score grade {g}".format(g=self.grade))
+        logger.info("calculate_score max {m}".format(m=self.max_score))
+
         return Score(float(self.grade), float(self.max_score()))
 
     def allows_rescore(self):
@@ -352,6 +366,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Subtypes may wish to override this if they need conditional support for
         rescoring.
         """
+        logger.info("allows_rescore False")
+
         return False
 
     def max_score(self):
@@ -360,6 +376,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         https://openedx.atlassian.net/wiki/spaces/AC/pages/161400730/Open+edX+Runtime+XBlock+API#OpenedXRuntimeXBlockAPI-max_score(self):
         :return: Max Score for this problem
         """
+        logger.info("max_score 3")
+
         return 3
 
     def weighted_grade(self):
@@ -367,4 +385,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Returns the block's current saved grade multiplied by the block's
         weight- the number of points earned by the learner.
         """
+        logger.info("weighted_grade earned {e}".format(e=self.raw_earned))
+        logger.info("weighted_grade weight {w}".format(w=self.weight))
+
         return self.raw_earned * self.weight
