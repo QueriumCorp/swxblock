@@ -268,3 +268,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         
         return {'result': 'success'}
 
+    # MAX POSSIBLE POINTS FOR STEPWISE QUESTION
+    def max_score(self):
+        return 3;
