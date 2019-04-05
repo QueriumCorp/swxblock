@@ -272,4 +272,4 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # https://openedx.atlassian.net/wiki/spaces/AC/pages/161400730/Open+edX+Runtime+XBlock+API?focusedCommentId=161407121
     # Doc says this is required but we didn't have it
     def max_score(self):
-        return 3;
+        return 3
