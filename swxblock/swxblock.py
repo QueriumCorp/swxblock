@@ -100,7 +100,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     # STUDENT_VIEW
     def student_view(self, context=None):
-        logger.info('student_view() - entered')
         """
         The STUDENT view of the SWXBlock, shown to students
         when viewing courses.
@@ -374,7 +373,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         https://openedx.atlassian.net/wiki/spaces/AC/pages/161400730/Open+edX+Runtime+XBlock+API#OpenedXRuntimeXBlockAPI-max_score(self):
         :return: Max Score for this problem
         """
-        logger.info("swxblock max_score 3")
+        # logger.info("swxblock max_score 3")
         # print "max_score called"
         return 3
 
