@@ -6,6 +6,7 @@ import random
 from xblock.core import XBlock
 from xblock.fields import Integer, String, Scope, Dict, Float, Boolean
 from web_fragments.fragment import Fragment
+# McDaniel apr-2019: this is deprecated.
 #from xblock.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
@@ -18,7 +19,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     TO-DO: document what your XBlock does.
     """
-    logger.info('SWXBlock() - instantiated')
+    logger.debug('SWXBlock() - instantiated')
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
 
@@ -109,6 +110,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         xb_user = user_service.get_current_user()
             xb_user.emails[0]
         """
+        logger.debug('student_view() - entered.')
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
 
@@ -374,7 +376,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         https://openedx.atlassian.net/wiki/spaces/AC/pages/161400730/Open+edX+Runtime+XBlock+API#OpenedXRuntimeXBlockAPI-max_score(self):
         :return: Max Score for this problem
         """
-        # logger.info("swxblock max_score 3")
+        logger.debug("swxblock max_score 3")
         # print "max_score called"
         return 3
 
