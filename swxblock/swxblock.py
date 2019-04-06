@@ -5,7 +5,8 @@ import random
 
 from xblock.core import XBlock
 from xblock.fields import Integer, String, Scope, Dict, Float, Boolean
-from xblock.fragment import Fragment
+from web_fragments import Fragment
+#from xblock.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from logging import getLogger
