@@ -4,7 +4,7 @@ import pkg_resources
 import random
 
 from xblock.core import XBlock
-from xblock.fields import Integer, String, Scope, Dict
+from xblock.fields import Integer, String, Scope, Dict, Float, Boolean
 from xblock.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
@@ -18,7 +18,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
-    
+
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
 
@@ -26,7 +26,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     # QUESTION DEFINITION FIELDS
     display_name = String(display_name="Display name", default='StepWise', scope=Scope.content)
-    
+
     q_id = String(help="Question ID", default="", scope=Scope.content)
     q_label = String(help="Question label", default="", scope=Scope.content)
     q_stimulus = String(help="Stimulus", default='Solve for \\(a\\).', scope=Scope.content)
@@ -46,7 +46,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q1_hint1 = String(help="First Hint", default='', scope=Scope.content)
     q1_hint2 = String(help="Second Hint", default='', scope=Scope.content)
     q1_hint3 = String(help="Third Hint", default='', scope=Scope.content)
-    
+
     q2_id = String(help="Question ID", default="", scope=Scope.content)
     q2_label = String(help="Question Alternate 2", default="", scope=Scope.content)
     q2_stimulus = String(help="Stimulus", default='', scope=Scope.content)
@@ -64,7 +64,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     raw_possible = Integer(help="Number of possible points", default=3,scope=Scope.user_state)
 
     # FIELDS FOR THE ScorableXBlockMixin
-    
+
     is_answered = Boolean(
         default=False,
         scope=Scope.user_state,
@@ -76,14 +76,14 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         scope=Scope.user_state,
         help='Will be set to "True" if correctly answered'
     )
-    
+
     raw_earned = Float(
         help="Keeps maximum score achieved by student as a raw value between 0 and 1.",
         scope=Scope.user_state,
         default=0,
         enforce_type=True,
     )
-    
+
     weight = Float(
         display_name="Problem Weight",
         help="Defines the number of points the problem is worth.",
@@ -144,7 +144,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q1_hint1,
                 "q_hint2" :  self.q1_hint2,
                 "q_hint3" :  self.q1_hint3
-            } 
+            }
         else:
             question = {
                 "q_id" : self.q2_id,
@@ -164,7 +164,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             "question" : question,
             "grade" :self.grade,
             "solution" : self.solution
-        } 
+        }
 
         html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
@@ -173,7 +173,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_css_url("//stepwise.querium.com/libs/mathquill/mathquill.css")
         frag.add_css_url("//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css")
         frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.6.css")
-        
+
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript_url("//stepwise.querium.com/libs/mathquill/mathquill.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js")
@@ -196,13 +196,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             grade=2
         else:
             grade=1
-            
+
         logger.info("save_grade {g}".format(g=grade))
         print "save_grade called"
 
-        self.runtime.publish(self, 'grade', 
-            {   'value': grade, 
-                'max_value': 3 
+        self.runtime.publish(self, 'grade',
+            {   'value': grade,
+                'max_value': 3
             })
 
         self.solution = data
@@ -227,7 +227,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
              """),
         ]
 
-    
+
     def studio_view(self, context=None):
         """
         The STUDIO view of the SWXBlock, shown to instructors
@@ -258,11 +258,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif len(self.q_definition)>0 and len(self.q1_definition)>0:
             variants = 2
         else:
-            variants = 1        
+            variants = 1
 
         frag.initialize_js('SWxAuthor', variants)
         return frag
-        
+
     # SAVE QUESTION
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
@@ -301,10 +301,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif len(self.q_definition)>0 and len(self.q1_definition)>0:
             self.display_name = "Step-by-Step Dynamic"
         else:
-            self.display_name = "Step-by-Step"        
+            self.display_name = "Step-by-Step"
 
         print self.display_name
-        
+
         return {'result': 'success'}
 
     # Do necessary overrides from ScorableXBlockMixin
@@ -340,7 +340,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             None
         """
         logger.info("set_score earned {e}".format(e=score.raw_earned))
-        
+
         self.raw_earned = score.raw_earned
 
     def calculate_score(self):
