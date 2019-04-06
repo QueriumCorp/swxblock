@@ -17,6 +17,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     TO-DO: document what your XBlock does.
     """
+    logger.info('SWXBlock() - instantiated')
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
 
@@ -99,6 +100,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     # STUDENT_VIEW
     def student_view(self, context=None):
+        logger.info('student_view() - entered')
         """
         The STUDENT view of the SWXBlock, shown to students
         when viewing courses.
@@ -188,6 +190,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # SAVE GRADE
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
+        logger.info('save_grade() - entered')
         if data['usedShowMe']:
             grade=0
         elif data['errors']==0 and data['hints']==0:
@@ -213,6 +216,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # workbench while developing your XBlock.
     @staticmethod
     def workbench_scenarios():
+        logger.info('workbench_scenarios() - entered')
         """A canned scenario for display in the workbench."""
         return [
             ("SWXBlock",
@@ -229,6 +233,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
 
     def studio_view(self, context=None):
+        logger.info('studio_view() - entered')
         """
         The STUDIO view of the SWXBlock, shown to instructors
         when authoring courses.
@@ -242,6 +247,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         return frag
 
     def author_view(self, context=None):
+        logger.info('author_view() - entered')
         """
         The AUTHOR view of the SWXBlock, shown to instructors
         when previewing courses.
@@ -266,6 +272,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # SAVE QUESTION
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
+        logger.info('save_question() - entered')
         self.q_id = data['id']
         self.q_label = data['label']
         self.q_stimulus = data['stimulus']
@@ -308,6 +315,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     # Do necessary overrides from ScorableXBlockMixin
     def has_submitted_answer(self):
+        logger.info('has_submitted_answer() - entered')
         """
         Returns True if the problem has been answered by the runtime user.
         """
@@ -315,6 +323,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         return self.is_answered
 
     def get_score(self):
+        logger.info('get_score() - entered')
         """
         Return a raw score already persisted on the XBlock.  Should not
         perform new calculations.
