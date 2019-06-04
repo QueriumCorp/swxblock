@@ -11,6 +11,7 @@
     display: flex;
     align-items: stretch;
     justify-content: stretch;
+    overflow-x: scroll;
 }
 
 .problems-wrapper .problemSet .problem {
