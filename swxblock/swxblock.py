@@ -60,6 +60,76 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q2_hint2 = String(help="Second Hint", default='', scope=Scope.content)
     q2_hint3 = String(help="Third Hint", default='', scope=Scope.content)
 
+    q3_id = String(help="Question ID", default="", scope=Scope.content)
+    q3_label = String(help="Question Alternate 3", default="", scope=Scope.content)
+    q3_stimulus = String(help="Stimulus", default='', scope=Scope.content)
+    q3_definition = String(help="Definition", default='', scope=Scope.content)
+    q3_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
+    q3_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
+    q3_hint1 = String(help="First Hint", default='', scope=Scope.content)
+    q3_hint3 = String(help="Second Hint", default='', scope=Scope.content)
+    q3_hint3 = String(help="Third Hint", default='', scope=Scope.content)
+
+    q4_id = String(help="Question ID", default="", scope=Scope.content)
+    q4_label = String(help="Question Alternate 4", default="", scope=Scope.content)
+    q4_stimulus = String(help="Stimulus", default='', scope=Scope.content)
+    q4_definition = String(help="Definition", default='', scope=Scope.content)
+    q4_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
+    q4_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
+    q4_hint1 = String(help="First Hint", default='', scope=Scope.content)
+    q4_hint2 = String(help="Second Hint", default='', scope=Scope.content)
+    q4_hint3 = String(help="Third Hint", default='', scope=Scope.content)
+
+    q5_id = String(help="Question ID", default="", scope=Scope.content)
+    q5_label = String(help="Question Alternate 5", default="", scope=Scope.content)
+    q5_stimulus = String(help="Stimulus", default='', scope=Scope.content)
+    q5_definition = String(help="Definition", default='', scope=Scope.content)
+    q5_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
+    q5_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
+    q5_hint1 = String(help="First Hint", default='', scope=Scope.content)
+    q5_hint2 = String(help="Second Hint", default='', scope=Scope.content)
+    q5_hint3 = String(help="Third Hint", default='', scope=Scope.content)
+
+    q6_id = String(help="Question ID", default="", scope=Scope.content)
+    q6_label = String(help="Question Alternate 6", default="", scope=Scope.content)
+    q6_stimulus = String(help="Stimulus", default='', scope=Scope.content)
+    q6_definition = String(help="Definition", default='', scope=Scope.content)
+    q6_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
+    q6_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
+    q6_hint1 = String(help="First Hint", default='', scope=Scope.content)
+    q6_hint2 = String(help="Second Hint", default='', scope=Scope.content)
+    q6_hint3 = String(help="Third Hint", default='', scope=Scope.content)
+
+    q7_id = String(help="Question ID", default="", scope=Scope.content)
+    q7_label = String(help="Question Alternate 7", default="", scope=Scope.content)
+    q7_stimulus = String(help="Stimulus", default='', scope=Scope.content)
+    q7_definition = String(help="Definition", default='', scope=Scope.content)
+    q7_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
+    q7_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
+    q7_hint1 = String(help="First Hint", default='', scope=Scope.content)
+    q7_hint2 = String(help="Second Hint", default='', scope=Scope.content)
+    q7_hint3 = String(help="Third Hint", default='', scope=Scope.content)
+
+    q8_id = String(help="Question ID", default="", scope=Scope.content)
+    q8_label = String(help="Question Alternate 8", default="", scope=Scope.content)
+    q8_stimulus = String(help="Stimulus", default='', scope=Scope.content)
+    q8_definition = String(help="Definition", default='', scope=Scope.content)
+    q8_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
+    q8_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
+    q8_hint1 = String(help="First Hint", default='', scope=Scope.content)
+    q8_hint2 = String(help="Second Hint", default='', scope=Scope.content)
+    q8_hint3 = String(help="Third Hint", default='', scope=Scope.content)
+
+    q9_id = String(help="Question ID", default="", scope=Scope.content)
+    q9_label = String(help="Question Alternate 9", default="", scope=Scope.content)
+    q9_stimulus = String(help="Stimulus", default='', scope=Scope.content)
+    q9_definition = String(help="Definition", default='', scope=Scope.content)
+    q9_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
+    q9_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
+    q9_hint1 = String(help="First Hint", default='', scope=Scope.content)
+    q9_hint2 = String(help="Second Hint", default='', scope=Scope.content)
+    q9_hint3 = String(help="Third Hint", default='', scope=Scope.content)
+
     # STUDENT'S QUESTION PERFORMANCE FIELDS
     grade = Integer(help="The student's grade", default=-1, scope=Scope.user_state)
     solution = Dict(help="The student's last solution", default={}, scope=Scope.user_state)
@@ -114,8 +184,29 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
 
-        if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
-            q_index = random.randint(0, 300)
+        # if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
+        #     q_index = random.randint(0, 300)
+        # elif len(self.q_definition)>0 and len(self.q1_definition)>0:
+        #     q_index = random.randint(0, 199)
+        # else:
+        #     q_index = 0
+
+        if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0  and len(self.q9_definition)>0:
+            q_index = random.randint(0, 999)
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0:
+            q_index = random.randint(0, 899)
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0:
+            q_index = random.randint(0, 799)
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0:
+            q_index = random.randint(0, 699)
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0:
+            q_index = random.randint(0, 599)
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0:
+            q_index = random.randint(0, 499)
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0:
+            q_index = random.randint(0, 399)
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
+            q_index = random.randint(0, 299)
         elif len(self.q_definition)>0 and len(self.q1_definition)>0:
             q_index = random.randint(0, 199)
         else:
@@ -149,7 +240,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q1_hint2,
                 "q_hint3" :  self.q1_hint3
             }
-        else:
+        elif q_index>=200 and q_index<300:
             question = {
                 "q_id" : self.q2_id,
                 "q_user" : xb_user.emails[0],
@@ -162,6 +253,104 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q2_hint1,
                 "q_hint2" :  self.q2_hint2,
                 "q_hint3" :  self.q2_hint3
+            }
+        elif q_index>=300 and q_index<400:
+            question = {
+                "q_id" : self.q3_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 3,
+                "q_label" : self.q3_label,
+                "q_stimulus" : self.q3_stimulus,
+                "q_definition" : self.q3_definition,
+                "q_type" :  self.q3_type,
+                "q_display_math" :  self.q3_display_math,
+                "q_hint1" :  self.q3_hint1,
+                "q_hint2" :  self.q3_hint2,
+                "q_hint3" :  self.q3_hint3
+            }
+        elif q_index>=400 and q_index<500:
+            question = {
+                "q_id" : self.q4_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 4,
+                "q_label" : self.q4_label,
+                "q_stimulus" : self.q4_stimulus,
+                "q_definition" : self.q4_definition,
+                "q_type" :  self.q4_type,
+                "q_display_math" :  self.q4_display_math,
+                "q_hint1" :  self.q4_hint1,
+                "q_hint2" :  self.q4_hint2,
+                "q_hint3" :  self.q4_hint3
+            }
+        elif q_index>=500 and q_index<600:
+            question = {
+                "q_id" : self.q5_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 5,
+                "q_label" : self.q5_label,
+                "q_stimulus" : self.q5_stimulus,
+                "q_definition" : self.q5_definition,
+                "q_type" :  self.q5_type,
+                "q_display_math" :  self.q5_display_math,
+                "q_hint1" :  self.q5_hint1,
+                "q_hint2" :  self.q5_hint2,
+                "q_hint3" :  self.q5_hint3
+            }
+        elif q_index>=600 and q_index<700:
+            question = {
+                "q_id" : self.q6_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 6,
+                "q_label" : self.q6_label,
+                "q_stimulus" : self.q6_stimulus,
+                "q_definition" : self.q6_definition,
+                "q_type" :  self.q6_type,
+                "q_display_math" :  self.q6_display_math,
+                "q_hint1" :  self.q6_hint1,
+                "q_hint2" :  self.q6_hint2,
+                "q_hint3" :  self.q6_hint3
+            }
+        elif q_index>=700 and q_index<800:
+            question = {
+                "q_id" : self.q7_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 7,
+                "q_label" : self.q7_label,
+                "q_stimulus" : self.q7_stimulus,
+                "q_definition" : self.q7_definition,
+                "q_type" :  self.q7_type,
+                "q_display_math" :  self.q7_display_math,
+                "q_hint1" :  self.q7_hint1,
+                "q_hint2" :  self.q7_hint2,
+                "q_hint3" :  self.q7_hint3
+            }
+        elif q_index>=800 and q_index<900:
+            question = {
+                "q_id" : self.q8_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 8,
+                "q_label" : self.q8_label,
+                "q_stimulus" : self.q8_stimulus,
+                "q_definition" : self.q8_definition,
+                "q_type" :  self.q8_type,
+                "q_display_math" :  self.q8_display_math,
+                "q_hint1" :  self.q8_hint1,
+                "q_hint2" :  self.q8_hint2,
+                "q_hint3" :  self.q8_hint3
+            }
+        else:
+            question = {
+                "q_id" : self.q9_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 9,
+                "q_label" : self.q9_label,
+                "q_stimulus" : self.q9_stimulus,
+                "q_definition" : self.q9_definition,
+                "q_type" :  self.q9_type,
+                "q_display_math" :  self.q9_display_math,
+                "q_hint1" :  self.q9_hint1,
+                "q_hint2" :  self.q9_hint2,
+                "q_hint3" :  self.q9_hint3
             }
 
         data = {
@@ -261,7 +450,21 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript(self.resource_string("static/js/src/swxauthor.js"))
 
         # tell author_view how many variants are defined
-        if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
+        if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0 and len(self.q9_definition)>0:
+            variants = 10
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0:
+            variants = 9
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0:
+            variants = 8
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0:
+            variants = 7
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0:
+            variants = 6
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0:
+            variants = 5
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0:
+            variants = 4
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
             variants = 3
         elif len(self.q_definition)>0 and len(self.q1_definition)>0:
             variants = 2
@@ -305,7 +508,91 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         self.q2_hint2 = data['q2_hint2']
         self.q2_hint3 = data['q2_hint3']
 
-        if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
+        self.q3_id = data['q3_id']
+        self.q3_label = data['q3_label']
+        self.q3_stimulus = data['q3_stimulus']
+        self.q3_definition = data['q3_definition']
+        self.q3_type = data['q3_qtype']
+        self.q3_display_math = data['q3_display_math']
+        self.q3_hint1 = data['q3_hint1']
+        self.q3_hint2 = data['q3_hint2']
+        self.q3_hint3 = data['q3_hint3']
+
+        self.q4_id = data['q4_id']
+        self.q4_label = data['q4_label']
+        self.q4_stimulus = data['q4_stimulus']
+        self.q4_definition = data['q4_definition']
+        self.q4_type = data['q4_qtype']
+        self.q4_display_math = data['q4_display_math']
+        self.q4_hint1 = data['q4_hint1']
+        self.q4_hint2 = data['q4_hint2']
+        self.q4_hint3 = data['q4_hint3']
+
+        self.q5_id = data['q5_id']
+        self.q5_label = data['q5_label']
+        self.q5_stimulus = data['q5_stimulus']
+        self.q5_definition = data['q5_definition']
+        self.q5_type = data['q5_qtype']
+        self.q5_display_math = data['q5_display_math']
+        self.q5_hint1 = data['q5_hint1']
+        self.q5_hint2 = data['q5_hint2']
+        self.q5_hint3 = data['q5_hint3']
+
+        self.q6_id = data['q6_id']
+        self.q6_label = data['q6_label']
+        self.q6_stimulus = data['q6_stimulus']
+        self.q6_definition = data['q6_definition']
+        self.q6_type = data['q6_qtype']
+        self.q6_display_math = data['q6_display_math']
+        self.q6_hint1 = data['q6_hint1']
+        self.q6_hint2 = data['q6_hint2']
+        self.q6_hint3 = data['q6_hint3']
+
+        self.q7_id = data['q7_id']
+        self.q7_label = data['q7_label']
+        self.q7_stimulus = data['q7_stimulus']
+        self.q7_definition = data['q7_definition']
+        self.q7_type = data['q7_qtype']
+        self.q7_display_math = data['q7_display_math']
+        self.q7_hint1 = data['q7_hint1']
+        self.q7_hint2 = data['q7_hint2']
+        self.q7_hint3 = data['q7_hint3']
+
+        self.q8_id = data['q8_id']
+        self.q8_label = data['q8_label']
+        self.q8_stimulus = data['q8_stimulus']
+        self.q8_definition = data['q8_definition']
+        self.q8_type = data['q8_qtype']
+        self.q8_display_math = data['q8_display_math']
+        self.q8_hint1 = data['q8_hint1']
+        self.q8_hint2 = data['q8_hint2']
+        self.q8_hint3 = data['q8_hint3']
+
+        self.q9_id = data['q9_id']
+        self.q9_label = data['q9_label']
+        self.q9_stimulus = data['q9_stimulus']
+        self.q9_definition = data['q9_definition']
+        self.q9_type = data['q9_qtype']
+        self.q9_display_math = data['q9_display_math']
+        self.q9_hint1 = data['q9_hint1']
+        self.q9_hint2 = data['q9_hint2']
+        self.q9_hint3 = data['q9_hint3']
+
+        if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0 and len(self.q9_definition)>0:
+            self.display_name = "Step-by-Step Dynamic"
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0:
+            self.display_name = "Step-by-Step Dynamic"
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0:
+            self.display_name = "Step-by-Step Dynamic"
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0:
+            self.display_name = "Step-by-Step Dynamic"
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0:
+            self.display_name = "Step-by-Step Dynamic"
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0:
+            self.display_name = "Step-by-Step Dynamic"
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0:
+            self.display_name = "Step-by-Step Dynamic"
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
             self.display_name = "Step-by-Step Dynamic"
         elif len(self.q_definition)>0 and len(self.q1_definition)>0:
             self.display_name = "Step-by-Step Dynamic"

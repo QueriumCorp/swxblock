@@ -25,6 +25,27 @@ function SWXStudent(runtime, element, data) {
         case 2:
             preview_element = $('.qq_preview2', element)[0];
             break;
+        case 3:
+            preview_element = $('.qq_preview3', element)[0];
+            break;
+        case 4:
+            preview_element = $('.qq_preview4', element)[0];
+            break;
+        case 5:
+            preview_element = $('.qq_preview5', element)[0];
+            break;
+        case 6:
+            preview_element = $('.qq_preview6', element)[0];
+            break;
+        case 7:
+            preview_element = $('.qq_preview7', element)[0];
+            break;
+        case 8:
+            preview_element = $('.qq_preview8', element)[0];
+            break;
+        case 9:
+            preview_element = $('.qq_preview9', element)[0];
+            break;
         default:
             preview_element = $('.qq_preview0', element)[0];
     }
