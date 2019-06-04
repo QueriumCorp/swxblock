@@ -12,6 +12,15 @@ function SWXStudent(runtime, element, data) {
     console.info("enable_hint",enable_hint);
     console.info("solution",solution);
 
+    if (typeof enable_showme === 'undefined') {
+        console.info("enable_showme is undefined");
+        enable_showme = true;
+    };
+    if (typeof enable_hint === 'undefined') {
+        console.info("enable_hint is undefined");
+        enable_hint = true;
+    };
+
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
 
     // Get Primary Element Handles
@@ -88,7 +97,7 @@ function SWXStudent(runtime, element, data) {
     function previewClicked(){ 
         var options = {
             hideMenu: true,
-            showMe: true,
+            showMe: enable_showme,
             assessing: false,
             scribbles: false
         };
