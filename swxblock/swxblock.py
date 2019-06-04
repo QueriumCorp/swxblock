@@ -516,6 +516,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
         logger.info('save_question() - entered')
+	self.q_option_showme = data['q_option_showme']
+	self.q_option_hint = data['q_option_hint']
         self.q_id = data['id']
         self.q_label = data['label']
         self.q_stimulus = data['stimulus']
