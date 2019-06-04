@@ -67,7 +67,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q3_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
     q3_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
     q3_hint1 = String(help="First Hint", default='', scope=Scope.content)
-    q3_hint3 = String(help="Second Hint", default='', scope=Scope.content)
+    q3_hint2 = String(help="Second Hint", default='', scope=Scope.content)
     q3_hint3 = String(help="Third Hint", default='', scope=Scope.content)
 
     q4_id = String(help="Question ID", default="", scope=Scope.content)
