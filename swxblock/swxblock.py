@@ -232,7 +232,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_display_math" :  self.q_display_math,
                 "q_hint1" :  self.q_hint1,
                 "q_hint2" :  self.q_hint2,
-                "q_hint3" :  self.q_hint3
+                "q_hint3" :  self.q_hint3,
+                "q_option_hint" : self.q_option_hint,
+                "q_option_showme" : self.q_option_showme
             }
         elif q_index>=100 and q_index<200:
             question = {
@@ -246,7 +248,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_display_math" :  self.q1_display_math,
                 "q_hint1" :  self.q1_hint1,
                 "q_hint2" :  self.q1_hint2,
-                "q_hint3" :  self.q1_hint3
+                "q_hint3" :  self.q1_hint3,
+                "q_option_hint" : self.q_option_hint,
+                "q_option_showme" : self.q_option_showme
             }
         elif q_index>=200 and q_index<300:
             question = {
@@ -260,7 +264,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_display_math" :  self.q2_display_math,
                 "q_hint1" :  self.q2_hint1,
                 "q_hint2" :  self.q2_hint2,
-                "q_hint3" :  self.q2_hint3
+                "q_hint3" :  self.q2_hint3,
+                "q_option_hint" : self.q_option_hint,
+                "q_option_showme" : self.q_option_showme
             }
         elif q_index>=300 and q_index<400:
             question = {
@@ -274,7 +280,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_display_math" :  self.q3_display_math,
                 "q_hint1" :  self.q3_hint1,
                 "q_hint2" :  self.q3_hint2,
-                "q_hint3" :  self.q3_hint3
+                "q_hint3" :  self.q3_hint3,
+                "q_option_hint" : self.q_option_hint,
+                "q_option_showme" : self.q_option_showme
             }
         elif q_index>=400 and q_index<500:
             question = {
@@ -288,7 +296,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_display_math" :  self.q4_display_math,
                 "q_hint1" :  self.q4_hint1,
                 "q_hint2" :  self.q4_hint2,
-                "q_hint3" :  self.q4_hint3
+                "q_hint3" :  self.q4_hint3,
+                "q_option_hint" : self.q_option_hint,
+                "q_option_showme" : self.q_option_showme
             }
         elif q_index>=500 and q_index<600:
             question = {
@@ -302,7 +312,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_display_math" :  self.q5_display_math,
                 "q_hint1" :  self.q5_hint1,
                 "q_hint2" :  self.q5_hint2,
-                "q_hint3" :  self.q5_hint3
+                "q_hint3" :  self.q5_hint3,
+                "q_option_hint" : self.q_option_hint,
+                "q_option_showme" : self.q_option_showme
             }
         elif q_index>=600 and q_index<700:
             question = {
@@ -316,7 +328,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_display_math" :  self.q6_display_math,
                 "q_hint1" :  self.q6_hint1,
                 "q_hint2" :  self.q6_hint2,
-                "q_hint3" :  self.q6_hint3
+                "q_hint3" :  self.q6_hint3,
+                "q_option_hint" : self.q_option_hint,
+                "q_option_showme" : self.q_option_showme
             }
         elif q_index>=700 and q_index<800:
             question = {
@@ -330,7 +344,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_display_math" :  self.q7_display_math,
                 "q_hint1" :  self.q7_hint1,
                 "q_hint2" :  self.q7_hint2,
-                "q_hint3" :  self.q7_hint3
+                "q_hint3" :  self.q7_hint3,
+                "q_option_hint" : self.q_option_hint,
+                "q_option_showme" : self.q_option_showme
             }
         elif q_index>=800 and q_index<900:
             question = {
@@ -344,7 +360,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_display_math" :  self.q8_display_math,
                 "q_hint1" :  self.q8_hint1,
                 "q_hint2" :  self.q8_hint2,
-                "q_hint3" :  self.q8_hint3
+                "q_hint3" :  self.q8_hint3,
+                "q_option_hint" : self.q_option_hint,
+                "q_option_showme" : self.q_option_showme
             }
         else:
             question = {
@@ -358,7 +376,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_display_math" :  self.q9_display_math,
                 "q_hint1" :  self.q9_hint1,
                 "q_hint2" :  self.q9_hint2,
-                "q_hint3" :  self.q9_hint3
+                "q_hint3" :  self.q9_hint3,
+                "q_option_hint" : self.q_option_hint,
+                "q_option_showme" : self.q_option_showme
             }
 
         data = {
