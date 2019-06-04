@@ -9,6 +9,10 @@ function SWxStudio(runtime, element, question) {
 
     $('.save-button', element).click(function(eventObject) {
         var data = {
+
+            q_option_showme : $('#q_option_showme', element).val(),
+            q_option_hint : $('#q_option_hint', element).val(),
+
             id : $('#id', element).val(),
             label : $('#label', element).val(),
             stimulus : $('#stimulus', element).val(),
