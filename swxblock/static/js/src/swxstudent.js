@@ -7,6 +7,7 @@ function SWXStudent(runtime, element, data) {
     var enable_showme = question.q_option_showme;
     var enable_hint = question.q_option_hint;
 
+    console.info("question",question);
     console.info("enable_showme",enable_showme);
     console.info("enable_hint",enable_hint);
     console.info("solution",solution);
