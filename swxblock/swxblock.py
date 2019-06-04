@@ -27,6 +27,20 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # self.<fieldname>.
 
 
+    # PER-QUESTION GRADING OPTIONS (STILL NEED TO ALLOW FOR COURSE DEFAULTS)
+    q_grade_showme_ded = Integer(help="Point deduction for using Show Solution", default=-1, scope=Scope.content)
+    q_grade_hints_counts = Integer(help="Number of Hints before deduction", default=-1, scope=Scope.content)
+    q_grade_hints_ded = Integer(help="Point deduction for using excessive Hints", default=-1, scope=Scope.content)
+    q_grade_errors_counts = Integer(help="Number of Errors before deduction", default=-1, scope=Scope.content)
+    q_grade_errors_ded = Integer(help="Point deduction for excessive Errors", default=-1, scope=Scope.content)
+
+    # PER-QUESTION HINTS/SHOW SOLUTION OPTIONS
+    q_option_hint = Boolean(help='Display Hint button if "True"', default=True, scope=Scope.content)
+    q_option_showme = Boolean(help='Display ShowSolution button if "True"', default=True, scope=Scope.content)
+
+    # MAX ATTEMPTS
+    # UNUSED FOR NOW q_max_attempts = Integer(help="Max question attempts (-1 = Use Course Default)", default=-1, scope=Scope.content)
+
     # QUESTION DEFINITION FIELDS
     display_name = String(display_name="Display name", default='StepWise', scope=Scope.content)
 
@@ -46,6 +60,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q1_definition = String(help="Definition", default='', scope=Scope.content)
     q1_type = String(help="Type", default='gradeBasicAlgebra', scope=Scope.content)
     q1_display_math = String(help="Display Math", default='\\(\\)', scope=Scope.content)
+    q_grade_hints_ded = Integer(help="Deduction for using extra Hints", default=-1, scope=Scope.content)
     q1_hint1 = String(help="First Hint", default='', scope=Scope.content)
     q1_hint2 = String(help="Second Hint", default='', scope=Scope.content)
     q1_hint3 = String(help="Third Hint", default='', scope=Scope.content)
@@ -183,13 +198,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.debug('student_view() - entered.')
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
-
-        # if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
-        #     q_index = random.randint(0, 300)
-        # elif len(self.q_definition)>0 and len(self.q1_definition)>0:
-        #     q_index = random.randint(0, 199)
-        # else:
-        #     q_index = 0
 
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0  and len(self.q9_definition)>0:
             q_index = random.randint(0, 999)
@@ -382,14 +390,24 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
         logger.info('save_grade() - entered')
+#        if data['usedShowMe']:
+#            grade=0
+#        elif data['errors']==0 and data['hints']==0:
+#            grade=3
+#        elif data['errors']<2 and data['hints']<3:
+#            grade=2
+#        else:
+#            grade=1
+
+	grade=3
+        if data['errors']>self.q_grade_errors_counts:
+            grade=grade-self.q_grade_errors_ded
+        if data['hints']>self.q_grade_hints_counts:
+            grade=grade-self.q_grade_hints_ded
         if data['usedShowMe']:
+            grade=grade-self.q_grade_showme_ded
+        if grade<0:
             grade=0
-        elif data['errors']==0 and data['hints']==0:
-            grade=3
-        elif data['errors']<2 and data['hints']<3:
-            grade=2
-        else:
-            grade=1
 
         logger.info("swxblock save_grade {g}".format(g=grade))
         # print "save_grade called"

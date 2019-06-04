@@ -4,8 +4,12 @@ function SWXStudent(runtime, element, data) {
     var question = data.question;
     var grade = data.grade;
     var solution = data.solution;
+    var enable_showme = data.q_option_showme;
+    var enable_hint = data.q_option_hint;
 
-    console.info( solution );
+    console.info("enable_showme",enable_showme);
+    console.info("enable_hint",enable_hint);
+    console.info("solution",solution);
 
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
 
