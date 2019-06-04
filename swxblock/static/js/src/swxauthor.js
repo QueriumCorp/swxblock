@@ -21,6 +21,9 @@ function SWxAuthor(runtime, element, questions) {
     var qu7 = $( "#variant7", element );
     var dm7 = $( ".display_math", qu7 );
 
+    var qu8 = $( "#variant8", element );
+    var dm8 = $( ".display_math", qu8 );
+
     var qu9 = $( "#variant9", element );
     var dm9 = $( ".display_math", qu9 );
 
