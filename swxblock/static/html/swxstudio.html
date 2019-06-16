@@ -2,7 +2,7 @@
 
   <!-- The default question -->
   <ul class="list-input settings-list">
-    <h2>Question Specification</h2>
+    <h2>Question Options </h2>
     <li class="field comp-setting-entry metadata_entry">
       <div class="wrapper-comp-setting">
         <label for="q_option_showme" class="label setting-label">Show Solution Available</label>
@@ -17,6 +17,42 @@
       </div>
       <span class="tip setting-help">Display Get Hint button if True.</span>
     </li>
+    <li class="field comp-setting-entry metadata_entry">
+      <div class="wrapper-comp-setting">
+        <label for="q_grade_showme_ded" class="label setting-label">Show Solution Deduction</label>
+        <input id='q_grade_showme_ded' type="text" name="q_grade_showme_ded" value="{self.q_grade_showme_ded}" class="input setting-input">
+      </div>
+      <span class="tip setting-help">Point deduction for using Show Solution.</span>
+    </li>
+    <li class="field comp-setting-entry metadata_entry">
+      <div class="wrapper-comp-setting">
+        <label for="q_grade_hints_count" class="label setting-label">Hints Before Deduction</label>
+        <input id='q_grade_hints_count' type="text" name="q_grade_hints_count" value="{self.q_grade_hints_count}" class="input setting-input">
+      </div>
+      <span class="tip setting-help">Number of hints before a points deduction.</span>
+    </li>
+    <li class="field comp-setting-entry metadata_entry">
+      <div class="wrapper-comp-setting">
+        <label for="q_grade_hints_ded" class="label setting-label">Excessive Hints Deduction</label>
+        <input id='q_grade_hints_ded' type="text" name="q_grade_hints_ded" value="{self.q_grade_hints_ded}" class="input setting-input">
+      </div>
+      <span class="tip setting-help">Point deduction for using more than &apos;Hints Before Deduction&apos; hints.</span>
+    </li>
+    <li class="field comp-setting-entry metadata_entry">
+      <div class="wrapper-comp-setting">
+        <label for="q_grade_errors_count" class="label setting-label">Errors Before Deduction</label>
+        <input id='q_grade_errors_count' type="text" name="q_grade_errors_count" value="{self.q_grade_errors_count}" class="input setting-input">
+      </div>
+      <span class="tip setting-help">Number of errors before a points deduction.</span>
+    </li>
+    <li class="field comp-setting-entry metadata_entry">
+      <div class="wrapper-comp-setting">
+        <label for="q_grade_errors_ded" class="label setting-label">Excessive Hints Deduction</label>
+        <input id='q_grade_errros_ded' type="text" name="q_grade_errors_ded" value="{self.q_grade_errors_ded}" class="input setting-input">
+      </div>
+      <span class="tip setting-help">Point deduction for having more than &apos;Errors Before Deduction&apos; errors.</span>
+    </li>
+    <h2>Base Question Specification</h2>
     <li class="field comp-setting-entry metadata_entry">
       <div class="wrapper-comp-setting">
         <label for="id" class="label setting-label">Id</label>

@@ -29,9 +29,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     # PER-QUESTION GRADING OPTIONS (STILL NEED TO ALLOW FOR COURSE DEFAULTS)
     q_grade_showme_ded = Integer(help="Point deduction for using Show Solution", default=-1, scope=Scope.content)
-    q_grade_hints_counts = Integer(help="Number of Hints before deduction", default=-1, scope=Scope.content)
+    q_grade_hints_count = Integer(help="Number of Hints before deduction", default=-1, scope=Scope.content)
     q_grade_hints_ded = Integer(help="Point deduction for using excessive Hints", default=-1, scope=Scope.content)
-    q_grade_errors_counts = Integer(help="Number of Errors before deduction", default=-1, scope=Scope.content)
+    q_grade_errors_count = Integer(help="Number of Errors before deduction", default=-1, scope=Scope.content)
     q_grade_errors_ded = Integer(help="Point deduction for excessive Errors", default=-1, scope=Scope.content)
 
     # PER-QUESTION HINTS/SHOW SOLUTION OPTIONS
@@ -234,7 +234,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q_hint2,
                 "q_hint3" :  self.q_hint3,
                 "q_option_hint" : self.q_option_hint,
-                "q_option_showme" : self.q_option_showme
+                "q_option_showme" : self.q_option_showme,
+                "q_grade_showme_ded" : self.q_grade_showme_ded,
+                "q_grade_hints_count" : self.q_grade_hints_count,
+                "q_grade_hints_ded" : self.q_grade_hints_ded,
+                "q_grade_errors_count" : self.q_grade_errors_count,
+                "q_grade_errors_ded" : self.q_grade_errors_ded
             }
         elif q_index>=100 and q_index<200:
             question = {
@@ -250,7 +255,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q1_hint2,
                 "q_hint3" :  self.q1_hint3,
                 "q_option_hint" : self.q_option_hint,
-                "q_option_showme" : self.q_option_showme
+                "q_option_showme" : self.q_option_showme,
+                "q_grade_showme_ded" : self.q_grade_showme_ded,
+                "q_grade_hints_count" : self.q_grade_hints_count,
+                "q_grade_hints_ded" : self.q_grade_hints_ded,
+                "q_grade_errors_count" : self.q_grade_errors_count,
+                "q_grade_errors_ded" : self.q_grade_errors_ded
             }
         elif q_index>=200 and q_index<300:
             question = {
@@ -266,7 +276,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q2_hint2,
                 "q_hint3" :  self.q2_hint3,
                 "q_option_hint" : self.q_option_hint,
-                "q_option_showme" : self.q_option_showme
+                "q_option_showme" : self.q_option_showme,
+                "q_grade_showme_ded" : self.q_grade_showme_ded,
+                "q_grade_hints_count" : self.q_grade_hints_count,
+                "q_grade_hints_ded" : self.q_grade_hints_ded,
+                "q_grade_errors_count" : self.q_grade_errors_count,
+                "q_grade_errors_ded" : self.q_grade_errors_ded
             }
         elif q_index>=300 and q_index<400:
             question = {
@@ -282,7 +297,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q3_hint2,
                 "q_hint3" :  self.q3_hint3,
                 "q_option_hint" : self.q_option_hint,
-                "q_option_showme" : self.q_option_showme
+                "q_option_showme" : self.q_option_showme,
+                "q_grade_showme_ded" : self.q_grade_showme_ded,
+                "q_grade_hints_count" : self.q_grade_hints_count,
+                "q_grade_hints_ded" : self.q_grade_hints_ded,
+                "q_grade_errors_count" : self.q_grade_errors_count,
+                "q_grade_errors_ded" : self.q_grade_errors_ded
             }
         elif q_index>=400 and q_index<500:
             question = {
@@ -298,7 +318,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q4_hint2,
                 "q_hint3" :  self.q4_hint3,
                 "q_option_hint" : self.q_option_hint,
-                "q_option_showme" : self.q_option_showme
+                "q_option_showme" : self.q_option_showme,
+                "q_grade_showme_ded" : self.q_grade_showme_ded,
+                "q_grade_hints_count" : self.q_grade_hints_count,
+                "q_grade_hints_ded" : self.q_grade_hints_ded,
+                "q_grade_errors_count" : self.q_grade_errors_count,
+                "q_grade_errors_ded" : self.q_grade_errors_ded
             }
         elif q_index>=500 and q_index<600:
             question = {
@@ -314,7 +339,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q5_hint2,
                 "q_hint3" :  self.q5_hint3,
                 "q_option_hint" : self.q_option_hint,
-                "q_option_showme" : self.q_option_showme
+                "q_option_showme" : self.q_option_showme,
+                "q_grade_showme_ded" : self.q_grade_showme_ded,
+                "q_grade_hints_count" : self.q_grade_hints_count,
+                "q_grade_hints_ded" : self.q_grade_hints_ded,
+                "q_grade_errors_count" : self.q_grade_errors_count,
+                "q_grade_errors_ded" : self.q_grade_errors_ded
             }
         elif q_index>=600 and q_index<700:
             question = {
@@ -330,7 +360,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q6_hint2,
                 "q_hint3" :  self.q6_hint3,
                 "q_option_hint" : self.q_option_hint,
-                "q_option_showme" : self.q_option_showme
+                "q_option_showme" : self.q_option_showme,
+                "q_grade_showme_ded" : self.q_grade_showme_ded,
+                "q_grade_hints_count" : self.q_grade_hints_count,
+                "q_grade_hints_ded" : self.q_grade_hints_ded,
+                "q_grade_errors_count" : self.q_grade_errors_count,
+                "q_grade_errors_ded" : self.q_grade_errors_ded
             }
         elif q_index>=700 and q_index<800:
             question = {
@@ -346,7 +381,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q7_hint2,
                 "q_hint3" :  self.q7_hint3,
                 "q_option_hint" : self.q_option_hint,
-                "q_option_showme" : self.q_option_showme
+                "q_option_showme" : self.q_option_showme,
+                "q_grade_showme_ded" : self.q_grade_showme_ded,
+                "q_grade_hints_count" : self.q_grade_hints_count,
+                "q_grade_hints_ded" : self.q_grade_hints_ded,
+                "q_grade_errors_count" : self.q_grade_errors_count,
+                "q_grade_errors_ded" : self.q_grade_errors_ded
             }
         elif q_index>=800 and q_index<900:
             question = {
@@ -362,7 +402,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q8_hint2,
                 "q_hint3" :  self.q8_hint3,
                 "q_option_hint" : self.q_option_hint,
-                "q_option_showme" : self.q_option_showme
+                "q_option_showme" : self.q_option_showme,
+                "q_grade_showme_ded" : self.q_grade_showme_ded,
+                "q_grade_hints_count" : self.q_grade_hints_count,
+                "q_grade_hints_ded" : self.q_grade_hints_ded,
+                "q_grade_errors_count" : self.q_grade_errors_count,
+                "q_grade_errors_ded" : self.q_grade_errors_ded
             }
         else:
             question = {
@@ -378,7 +423,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint2" :  self.q9_hint2,
                 "q_hint3" :  self.q9_hint3,
                 "q_option_hint" : self.q_option_hint,
-                "q_option_showme" : self.q_option_showme
+                "q_option_showme" : self.q_option_showme,
+                "q_grade_showme_ded" : self.q_grade_showme_ded,
+                "q_grade_hints_count" : self.q_grade_hints_count,
+                "q_grade_hints_ded" : self.q_grade_hints_ded,
+                "q_grade_errors_count" : self.q_grade_errors_count,
+                "q_grade_errors_ded" : self.q_grade_errors_ded
             }
 
         data = {
@@ -419,10 +469,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 #        else:
 #            grade=1
 
-	grade=3
-        if data['errors']>self.q_grade_errors_counts:
+        grade=3
+        if data['errors']>self.q_grade_errors_count:
             grade=grade-self.q_grade_errors_ded
-        if data['hints']>self.q_grade_hints_counts:
+        if data['hints']>self.q_grade_hints_count:
             grade=grade-self.q_grade_hints_ded
         if data['usedShowMe']:
             grade=grade-self.q_grade_showme_ded
@@ -516,8 +566,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
         logger.info('save_question() - entered')
-	self.q_option_showme = data['q_option_showme']
-	self.q_option_hint = data['q_option_hint']
+        self.q_option_showme = data['q_option_showme']
+        self.q_option_hint = data['q_option_hint']
         self.q_id = data['id']
         self.q_label = data['label']
         self.q_stimulus = data['stimulus']

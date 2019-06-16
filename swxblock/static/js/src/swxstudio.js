@@ -12,6 +12,11 @@ function SWxStudio(runtime, element, question) {
 
             q_option_showme : $('#q_option_showme', element).val(),
             q_option_hint : $('#q_option_hint', element).val(),
+            q_grade_showme_ded : $('#q_grade_showme_ded', element).val(),
+            q_grade_hints_count : $('#q_grade_hints_count', element).val(),
+            q_grade_hints_ded : $('#q_hints_ded', element).val(),
+            q_grade_errors_count : $('#q_errors_count', element).val(),
+            q_grade_errors_ded : $('#q_errors_ded', element).val(),
 
             id : $('#id', element).val(),
             label : $('#label', element).val(),
