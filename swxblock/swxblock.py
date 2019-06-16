@@ -502,6 +502,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             logger.info('save_grade() - zero negative grade')
             grade=0
 
+        logger.info("swxblock save_grade question={a}".format(a=question))
+        logger.info("swxblock save_grade solution={a}".format(a=solution))
+        logger.info("swxblock save_grade data={a}".format(a=data))
         logger.info("swxblock save_grade grade={a}".format(a=grade))
         # print "save_grade called"
 
@@ -511,8 +514,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 #                'max_value': 3
 #            })
 
-        self.solution = data
-        self.grade = grade
+#        self.solution = data
+#        self.grade = grade
 
 
     # TO-DO: change this to create the scenarios you'd like to see in the
