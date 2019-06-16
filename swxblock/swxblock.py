@@ -488,13 +488,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.q_grade_errors_ded = 1
 
         grade=3
-        logger.info('save_grade() - initial grade={a}'.format(a=grade))
+        logger.info('save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f}'.format(a=grade,b=data['errors'],c=self.q_grade_errors_count,d=data['hints'],e=self.q_grade_hints_count,f=data['usedShowMe']))
         if data['errors']>self.q_grade_errors_count:
             grade=grade-self.q_grade_errors_ded
-            logger.info('save_grade() - errors test errors={a} errors_count={b} errors_ded={c} grade={d}'.format(a=data['errors'],b=self.q_grade_errors_count,c=self.q_grade_errors_ded,d=grade))
+            logger.info('save_grade() - errors test errors_ded={a} grade={b}'.format(a=self.q_grade_errors_ded,b=grade))
         if data['hints']>self.q_grade_hints_count:
             grade=grade-self.q_grade_hints_ded
-            logger.info('save_grade() - hints test hints={a} hints_count={b} hints_ded={c} grade={d}'.format(a=data['hints'],b=self.q_grade_hints_count,c=self.q_grade_hints_ded,d=grade))
+            logger.info('save_grade() - hints test hints_ded={a} grade={b}'.format(a=self.q_grade_hints_ded,b=grade))
         if data['usedShowMe']:
             grade=grade-self.q_grade_showme_ded
             logger.info('save_grade() - showme test showme_ded={a} grade={b}'.format(a=self.q_grade_showme_ded,b=grade))
