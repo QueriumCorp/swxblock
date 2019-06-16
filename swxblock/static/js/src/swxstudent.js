@@ -7,10 +7,10 @@ function SWXStudent(runtime, element, data) {
     var enable_showme = question.q_option_showme;
     var enable_hint = question.q_option_hint;
 
-    console.info("question",question);
-    console.info("enable_showme",enable_showme);
-    console.info("enable_hint",enable_hint);
-    console.info("solution",solution);
+    console.info("SWXStudent question",question);
+    console.info("SWXStudent enable_showme",enable_showme);
+    console.info("SWXStudent enable_hint",enable_hint);
+    console.info("SWXStudent solution",solution);
 
     if (typeof enable_showme === 'undefined') {
         console.info("enable_showme is undefined");
@@ -162,6 +162,7 @@ function SWXStudent(runtime, element, data) {
         setTimeout( function(){
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
+        console.info("calling querium.startQuestion with options ",options);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
 
