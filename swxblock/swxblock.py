@@ -505,10 +505,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("swxblock save_grade grade={a}".format(a=grade))
         # print "save_grade called"
 
-        self.runtime.publish(self, 'grade',
-            {   'value': grade,
-                'max_value': 3
-            })
+# DON'T CALL publish for now
+#        self.runtime.publish(self, 'grade',
+#            {   'value': grade,
+#                'max_value': 3
+#            })
 
         self.solution = data
         self.grade = grade
