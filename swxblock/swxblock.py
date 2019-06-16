@@ -469,6 +469,33 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 #        else:
 #            grade=1
 
+# Check for missing grading attributes
+
+	try: self.q_grade_showme_ded
+	except NameError:
+            logger.info('save_grade() - self.q_grade_showme_dev was not defined')
+            self.q_grade_showme_ded = -1
+
+	try: self.q_grade_hints_count
+	except NameError:
+            logger.info('save_grade() - self.q_grade_hints_count was not defined')
+            self.q_grade_hints_count = -1
+
+	try: self.q_grade_hints_ded
+	except NameError:
+            logger.info('save_grade() - self.q_grade_hints_ded was not defined')
+            self.q_grade_hints_ded = -1
+
+	try: self.q_grade_errors_count
+	except NameError:
+            logger.info('save_grade() - self.q_grade_errors_count was not defined')
+            self.q_grade_errors_count = -1
+
+	try: self.q_grade_errors_ded
+	except NameError:
+            logger.info('save_grade() - self.q_grade_errors_ded was not defined')
+            self.q_grade_errors_ded = -1
+
 # Grading defaults
 
         if self.q_grade_showme_ded == -1:
@@ -502,20 +529,18 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             logger.info('save_grade() - zero negative grade')
             grade=0
 
-        logger.info("swxblock save_grade question={a}".format(a=question))
-        logger.info("swxblock save_grade solution={a}".format(a=solution))
+        logger.info("swxblock save_grade self={a}".format(a=self))
         logger.info("swxblock save_grade data={a}".format(a=data))
         logger.info("swxblock save_grade grade={a}".format(a=grade))
         # print "save_grade called"
 
-# DON'T CALL publish for now
-#        self.runtime.publish(self, 'grade',
-#            {   'value': grade,
-#                'max_value': 3
-#            })
+        self.runtime.publish(self, 'grade',
+            {   'value': grade,
+                'max_value': 3
+            })
 
-#        self.solution = data
-#        self.grade = grade
+        self.solution = data
+        self.grade = grade
 
 
     # TO-DO: change this to create the scenarios you'd like to see in the
