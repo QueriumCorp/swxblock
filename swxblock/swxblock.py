@@ -469,17 +469,40 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 #        else:
 #            grade=1
 
+# Grading defaults
+
+        if self.q_grade_showme_ded == -1:
+            logger.info('save_grade() - showme default set to 3')
+            self.q_grade_showme_ded = 3
+        if self.q_grade_hints_count == -1:
+            logger.info('save_grade() - hints_count default set to 2')
+            self.q_grade_hints_count = 2
+        if self.q_grade_hints_ded == -1:
+            logger.info('save_grade() - hints_ded default set to 1')
+            self.q_grade_hints_ded = 1
+        if self.q_grade_errors_count == -1:
+            logger.info('save_grade() - errors_count default set to 3')
+            self.q_grade_errors_count = 3
+        if self.q_grade_errors_ded == -1:
+            logger.info('save_grade() - errors_ded default set to 1')
+            self.q_grade_errors_ded = 1
+
         grade=3
+        logger.info('save_grade() - initial grade={a}'.format(a=grade))
         if data['errors']>self.q_grade_errors_count:
             grade=grade-self.q_grade_errors_ded
+            logger.info('save_grade() - errors test errors={a} errors_count={b} errors_ded={c} grade={d}'.format(a=data['errors'],b=self.q_grade_errors_count,c=self.q_grade_errors_ded,d=grade))
         if data['hints']>self.q_grade_hints_count:
             grade=grade-self.q_grade_hints_ded
+            logger.info('save_grade() - hints test hints={a} hints_count={b} hints_ded={c} grade={d}'.format(a=data['hints'],b=self.q_grade_hints_count,c=self.q_grade_hints_ded,d=grade))
         if data['usedShowMe']:
             grade=grade-self.q_grade_showme_ded
+            logger.info('save_grade() - showme test showme_ded={a} grade={b}'.format(a=self.q_grade_showme_ded,b=grade))
         if grade<0:
+            logger.info('save_grade() - zero negative grade')
             grade=0
 
-        logger.info("swxblock save_grade {g}".format(g=grade))
+        logger.info("swxblock save_grade grade={a}".format(a=grade))
         # print "save_grade called"
 
         self.runtime.publish(self, 'grade',
