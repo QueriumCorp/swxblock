@@ -199,8 +199,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             xb_user.emails[0]
         """
         logger.info('SWXblock student_view() - entered.')
-        logger.info('SWXblock student_view() - self.max_attempts',self.max_attempts)
-        logger.info('SWXblock student_view() - self.matlab_api_key',self.matlab_api_key)
 
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
