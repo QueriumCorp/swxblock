@@ -631,6 +631,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.q_option_hint = True
         else:
             self.q_option_hint = False
+        self.q_grade_showme_ded = data['q_grade_showme_ded']
+        self.q_grade_hints_count = data['q_grade_hints_count']
+        self.q_grade_hints_ded = data['q_grade_hints_ded']
+        self.q_grade_errors_count = data['q_grade_errors_count']
+        self.q_grade_error_ded = data['q_grade_errors_ded']
+
         self.q_id = data['id']
         self.q_label = data['label']
         self.q_stimulus = data['stimulus']
