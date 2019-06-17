@@ -517,7 +517,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             logger.info('save_grade() - errors_ded default set to 1')
             q_grade_errors_ded = 1
 
-          grade=3
+        grade=3
 #         logger.info('save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe']))
 #         if data['errors']>q_grade_errors_count:
 #             grade=grade-q_grade_errors_ded
