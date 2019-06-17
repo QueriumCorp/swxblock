@@ -471,6 +471,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
 # Check for missing grading attributes
 
+        logger.info("swxblock save_grade initial self={a}".format(a=self))
+        logger.info("swxblock save_grade initial data={a}".format(a=data))
+
 	try: self.q_grade_showme_ded
 	except NameError:
             logger.info('save_grade() - self.q_grade_showme_dev was not defined')
@@ -529,9 +532,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             logger.info('save_grade() - zero negative grade')
             grade=0
 
-        logger.info("swxblock save_grade self={a}".format(a=self))
-        logger.info("swxblock save_grade data={a}".format(a=data))
-        logger.info("swxblock save_grade grade={a}".format(a=grade))
         # print "save_grade called"
 
         self.runtime.publish(self, 'grade',
@@ -541,6 +541,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         self.solution = data
         self.grade = grade
+        logger.info("swxblock save_grade final self={a}".format(a=self))
+        logger.info("swxblock save_grade final self.solution={a}".format(a=self.solution))
+        logger.info("swxblock save_grade final self.grade={a}".format(a=self.grade))
 
 
     # TO-DO: change this to create the scenarios you'd like to see in the
