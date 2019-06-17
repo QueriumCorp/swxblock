@@ -623,8 +623,32 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
         logger.info('save_question() - entered')
-        self.q_option_showme = data['q_option_showme']
-        self.q_option_hint = data['q_option_hint']
+        if data['q_option_showme'] === u'True':
+            self.q_option_showme = True
+        else:
+            self.q_option_showme = False
+        if data['q_option_hint'] === u'True':
+            self.q_option_hint = True
+        else:
+            self.q_option_hint = False
+        self.q_id = data['id']
+        self.q_label = data['label']
+        self.q_stimulus = data['stimulus']
+        self.q_definition = data['definition']
+        self.q_type = data['qtype']
+        self.q_display_math = data['display_math']
+        self.q_hint1 = data['hint1']
+        self.q_hint2 = data['hint2']
+        self.q_hint3 = data['hint3']
+
+        self.q1_id = data['q1_id']
+        self.q1_label = data['q1_label']
+        self.q1_stimulus = data['q1_stimulus']
+        self.q1_definition = data['q1_definition']
+        self.q1_type = data['q1_qtype']
+        self.q1_display_math = data['q1_display_math']
+        self.q1_hint1 = data['q1_hint1']
+        self.q1_hint2 = data['q1_hint2']
         self.q_id = data['id']
         self.q_label = data['label']
         self.q_stimulus = data['stimulus']
