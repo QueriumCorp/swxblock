@@ -474,60 +474,60 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("swxblock save_grade initial self={a}".format(a=self))
         logger.info("swxblock save_grade initial data={a}".format(a=data))
 
-	try: self.q_grade_showme_ded
+	try: q_grade_showme_ded = self.q_grade_showme_ded
 	except NameError:
             logger.info('save_grade() - self.q_grade_showme_dev was not defined')
-            self.q_grade_showme_ded = -1
+            q_grade_showme_ded = -1
 
-	try: self.q_grade_hints_count
+	try: q_grade_hints_count = self.q_grade_hints_count
 	except NameError:
             logger.info('save_grade() - self.q_grade_hints_count was not defined')
-            self.q_grade_hints_count = -1
+            q_grade_hints_count = -1
 
-	try: self.q_grade_hints_ded
+	try: q_grade_hints_ded = self.q_grade_hints_ded
 	except NameError:
             logger.info('save_grade() - self.q_grade_hints_ded was not defined')
-            self.q_grade_hints_ded = -1
+            q_grade_hints_ded = -1
 
-	try: self.q_grade_errors_count
+	try: q_grade_errors_count = self.q_grade_errors_count
 	except NameError:
             logger.info('save_grade() - self.q_grade_errors_count was not defined')
-            self.q_grade_errors_count = -1
+            q_grade_errors_count = -1
 
-	try: self.q_grade_errors_ded
+	try: q_grade_errors_ded self.q_grade_errors_ded
 	except NameError:
             logger.info('save_grade() - self.q_grade_errors_ded was not defined')
-            self.q_grade_errors_ded = -1
+            q_grade_errors_ded = -1
 
 # Grading defaults
 
-        if self.q_grade_showme_ded == -1:
+        if q_grade_showme_ded == -1:
             logger.info('save_grade() - showme default set to 3')
-            self.q_grade_showme_ded = 3
-        if self.q_grade_hints_count == -1:
+            q_grade_showme_ded = 3
+        if q_grade_hints_count == -1:
             logger.info('save_grade() - hints_count default set to 2')
-            self.q_grade_hints_count = 2
-        if self.q_grade_hints_ded == -1:
+            q_grade_hints_count = 2
+        if q_grade_hints_ded == -1:
             logger.info('save_grade() - hints_ded default set to 1')
-            self.q_grade_hints_ded = 1
-        if self.q_grade_errors_count == -1:
+            q_grade_hints_ded = 1
+        if q_grade_errors_count == -1:
             logger.info('save_grade() - errors_count default set to 3')
-            self.q_grade_errors_count = 3
-        if self.q_grade_errors_ded == -1:
+            q_grade_errors_count = 3
+        if q_grade_errors_ded == -1:
             logger.info('save_grade() - errors_ded default set to 1')
-            self.q_grade_errors_ded = 1
+            q_grade_errors_ded = 1
 
         grade=3
-        logger.info('save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f}'.format(a=grade,b=data['errors'],c=self.q_grade_errors_count,d=data['hints'],e=self.q_grade_hints_count,f=data['usedShowMe']))
-        if data['errors']>self.q_grade_errors_count:
-            grade=grade-self.q_grade_errors_ded
-            logger.info('save_grade() - errors test errors_ded={a} grade={b}'.format(a=self.q_grade_errors_ded,b=grade))
-        if data['hints']>self.q_grade_hints_count:
-            grade=grade-self.q_grade_hints_ded
-            logger.info('save_grade() - hints test hints_ded={a} grade={b}'.format(a=self.q_grade_hints_ded,b=grade))
+        logger.info('save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe']))
+        if data['errors']>q_grade_errors_count:
+            grade=grade-q_grade_errors_ded
+            logger.info('save_grade() - errors test errors_ded={a} grade={b}'.format(a=q_grade_errors_ded,b=grade))
+        if data['hints']>q_grade_hints_count:
+            grade=grade-q_grade_hints_ded
+            logger.info('save_grade() - hints test hints_ded={a} grade={b}'.format(a=q_grade_hints_ded,b=grade))
         if data['usedShowMe']:
-            grade=grade-self.q_grade_showme_ded
-            logger.info('save_grade() - showme test showme_ded={a} grade={b}'.format(a=self.q_grade_showme_ded,b=grade))
+            grade=grade-q_grade_showme_ded
+            logger.info('save_grade() - showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
         if grade<0:
             logger.info('save_grade() - zero negative grade')
             grade=0
