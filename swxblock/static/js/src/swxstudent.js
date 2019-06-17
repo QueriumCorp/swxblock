@@ -223,7 +223,7 @@ function SWXStudent(runtime, element, data) {
             elapsed_time_count.innerText = solution.time.toFixed();
             error_count.innerText = solution.errors;
             hint_count.innerText = solution.hints;
-            made_attempts.innerText = u'2 of unlimited';
+            made_attempts.innerText = '2 of unlimited';
     
             if( solution.usedShowMe ){
                 used_showme.classList.remove("preview_hidden");
