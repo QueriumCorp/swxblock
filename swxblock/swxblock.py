@@ -474,30 +474,30 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("swxblock save_grade initial self={a}".format(a=self))
         logger.info("swxblock save_grade initial data={a}".format(a=data))
 
-# 	try: q_grade_showme_ded = self.q_grade_showme_ded
-# 	except NameError:
-#             logger.info('save_grade() - self.q_grade_showme_dev was not defined')
-#             q_grade_showme_ded = -1
-# 
-# 	try: q_grade_hints_count = self.q_grade_hints_count
-# 	except NameError:
-#             logger.info('save_grade() - self.q_grade_hints_count was not defined')
-#             q_grade_hints_count = -1
-# 
-# 	try: q_grade_hints_ded = self.q_grade_hints_ded
-# 	except NameError:
-#             logger.info('save_grade() - self.q_grade_hints_ded was not defined')
-#             q_grade_hints_ded = -1
-# 
-# 	try: q_grade_errors_count = self.q_grade_errors_count
-# 	except NameError:
-#             logger.info('save_grade() - self.q_grade_errors_count was not defined')
-#             q_grade_errors_count = -1
-# 
-# 	try: q_grade_errors_ded self.q_grade_errors_ded
-# 	except NameError:
-#             logger.info('save_grade() - self.q_grade_errors_ded was not defined')
-#             q_grade_errors_ded = -1
+        try: q_grade_showme_ded = self.q_grade_showme_ded
+        except NameError:
+             logger.info('save_grade() - self.q_grade_showme_dev was not defined')
+             q_grade_showme_ded = -1
+
+        try: q_grade_hints_count = self.q_grade_hints_count
+        except NameError:
+             logger.info('save_grade() - self.q_grade_hints_count was not defined')
+             q_grade_hints_count = -1
+
+        try: q_grade_hints_ded = self.q_grade_hints_ded
+        except NameError:
+             logger.info('save_grade() - self.q_grade_hints_ded was not defined')
+             q_grade_hints_ded = -1
+
+        try: q_grade_errors_count = self.q_grade_errors_count
+        except NameError:
+             logger.info('save_grade() - self.q_grade_errors_count was not defined')
+             q_grade_errors_count = -1
+
+        try: q_grade_errors_ded self.q_grade_errors_ded
+        except NameError:
+             logger.info('save_grade() - self.q_grade_errors_ded was not defined')
+             q_grade_errors_ded = -1
 
 # Grading defaults
 
