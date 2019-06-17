@@ -90,6 +90,7 @@ function SWXStudent(runtime, element, data) {
     var error_count = $('.error-count', swxblock_block)[0];
     var hint_count = $('.hint-count', swxblock_block)[0];
     var used_showme = $('.used-showme', swxblock_block)[0];
+    var make_attempts = $('.made_attempts', swxblock_block)[0];
 
     // Get Solution Element Handles
     var solution_element = $('.solution', element)[0];
@@ -222,6 +223,7 @@ function SWXStudent(runtime, element, data) {
             elapsed_time_count.innerText = solution.time.toFixed();
             error_count.innerText = solution.errors;
             hint_count.innerText = solution.hints;
+            made_attempts.innerText = u'2 of unlimited';
     
             if( solution.usedShowMe ){
                 used_showme.classList.remove("preview_hidden");
