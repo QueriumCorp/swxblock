@@ -518,19 +518,19 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             q_grade_errors_ded = 1
 
         grade=3
-#         logger.info('save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe']))
-#         if data['errors']>q_grade_errors_count:
-#             grade=grade-q_grade_errors_ded
-#             logger.info('save_grade() - errors test errors_ded={a} grade={b}'.format(a=q_grade_errors_ded,b=grade))
-#         if data['hints']>q_grade_hints_count:
-#             grade=grade-q_grade_hints_ded
-#             logger.info('save_grade() - hints test hints_ded={a} grade={b}'.format(a=q_grade_hints_ded,b=grade))
-#         if data['usedShowMe']:
-#             grade=grade-q_grade_showme_ded
-#             logger.info('save_grade() - showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
-#         if grade<0:
-#             logger.info('save_grade() - zero negative grade')
-#             grade=0
+        logger.info('save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe']))
+        if data['errors']>q_grade_errors_count:
+            grade=grade-q_grade_errors_ded
+            logger.info('save_grade() - errors test errors_ded={a} grade={b}'.format(a=q_grade_errors_ded,b=grade))
+        if data['hints']>q_grade_hints_count:
+            grade=grade-q_grade_hints_ded
+            logger.info('save_grade() - hints test hints_ded={a} grade={b}'.format(a=q_grade_hints_ded,b=grade))
+        if data['usedShowMe']:
+            grade=grade-q_grade_showme_ded
+            logger.info('save_grade() - showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
+        if grade<0:
+            logger.info('save_grade() - zero negative grade')
+            grade=0
 
         # print "save_grade called"
         logger.info("swxblock save_grade final grade={a}".format(a=grade))
