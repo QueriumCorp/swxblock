@@ -623,11 +623,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
         logger.info('save_question() - entered')
-        if data['q_option_showme'] === u'True':
+        if data['q_option_showme'] == u'True':
             self.q_option_showme = True
         else:
             self.q_option_showme = False
-        if data['q_option_hint'] === u'True':
+        if data['q_option_hint'] == u'True':
             self.q_option_hint = True
         else:
             self.q_option_hint = False
