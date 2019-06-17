@@ -19,7 +19,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     TO-DO: document what your XBlock does.
     """
-    logger.info('SWXBlock() - instantiated')
+    logger.debug('SWXBlock() - instantiated')
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
 
@@ -198,11 +198,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         xb_user = user_service.get_current_user()
             xb_user.emails[0]
         """
-        logger.info('SWXblock student_view() - entered.')
-        logger.info('SWXblock student_view() - self ',self)
-        logger.info('SWXblock student_view() - self.max_attempts ',self.max_attempts)
-        logger.info('SWXblock student_view() - self.matlab_api_key ',self.matlab_api_key)
-        logger.info('SWXblock student_view() - entered 2.')
+        logger.info('SWXblock student_view() - entered')
+        logger.info("SWXblock student_view() self={a}".format(a=self))
+        logger.info("SWXblock student_view() self.max_attempts={a}".format(a=self.max_attempts))
+        logger.info("SWXblock student_view() self.matlab_api_key={a}".format(a=self.matlab_api_key))
 
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
@@ -488,8 +487,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
         logger.info('SWXblock save_grade() - entered')
-        logger.info('SWXBlock save_grade() - self.max_attempts',self.max_attempts)
-        logger.info('SWXBlock save_grade() - self.matlab_api_key',self.matlab_api_key)
+        logger.info("SWXBlock save_grade() - self.max_attempts={a}".format(a=self.max_attempts))
+        logger.info("SWXBlock save_grade() - self.matlab_api_key={a}".format(a=self.matlab_api_key))
 #        if data['usedShowMe']:
 #            grade=0
 #        elif data['errors']==0 and data['hints']==0:
