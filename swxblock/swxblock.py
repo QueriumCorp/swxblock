@@ -494,7 +494,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
              logger.info('save_grade() - self.q_grade_errors_count was not defined')
              q_grade_errors_count = -1
 
-        try: q_grade_errors_ded self.q_grade_errors_ded
+        try: q_grade_errors_ded = self.q_grade_errors_ded
         except NameError:
              logger.info('save_grade() - self.q_grade_errors_ded was not defined')
              q_grade_errors_ded = -1
