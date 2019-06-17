@@ -471,8 +471,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
 # Check for missing grading attributes
 
-#         logger.info("swxblock save_grade initial self={a}".format(a=self))
-#         logger.info("swxblock save_grade initial data={a}".format(a=data))
+        logger.info("swxblock save_grade initial self={a}".format(a=self))
+        logger.info("swxblock save_grade initial data={a}".format(a=data))
 
 # 	try: q_grade_showme_ded = self.q_grade_showme_ded
 # 	except NameError:
