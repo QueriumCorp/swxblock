@@ -26,7 +26,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
 
-
     # PER-QUESTION GRADING OPTIONS (STILL NEED TO ALLOW FOR COURSE DEFAULTS)
     q_grade_showme_ded = Integer(help="Point deduction for using Show Solution", default=-1, scope=Scope.content)
     q_grade_hints_count = Integer(help="Number of Hints before deduction", default=-1, scope=Scope.content)
@@ -34,12 +33,16 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q_grade_errors_count = Integer(help="Number of Errors before deduction", default=-1, scope=Scope.content)
     q_grade_errors_ded = Integer(help="Point deduction for excessive Errors", default=-1, scope=Scope.content)
 
+    # Keep track of the number of attempts of this question by this student so we can compare to self.max_attempts
+    # which is inherited as course Advanced Setting.
+    q_count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.content)
+
     # PER-QUESTION HINTS/SHOW SOLUTION OPTIONS
     q_option_hint = Boolean(help='Display Hint button if "True"', default=True, scope=Scope.content)
     q_option_showme = Boolean(help='Display ShowSolution button if "True"', default=True, scope=Scope.content)
 
-    # MAX ATTEMPTS
-    # UNUSED FOR NOW q_max_attempts = Integer(help="Max question attempts (-1 = Use Course Default)", default=-1, scope=Scope.content)
+    # MAX ATTEMPTS PER-QUESTION OVERRIDE OF COURSE DEFAULT
+    q_max_attempts = Integer(help="Max question attempts (-1 = Use Course Default)", default=-1, scope=Scope.content)
 
     # QUESTION DEFINITION FIELDS
     display_name = String(display_name="Display name", default='StepWise', scope=Scope.content)
@@ -233,6 +236,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q_hint1,
                 "q_hint2" :  self.q_hint2,
                 "q_hint3" :  self.q_hint3,
+                "q_count_attempts" : self.q_count_attempts,
+                "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
                 "q_grade_showme_ded" : self.q_grade_showme_ded,
@@ -254,6 +259,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q1_hint1,
                 "q_hint2" :  self.q1_hint2,
                 "q_hint3" :  self.q1_hint3,
+                "q_count_attempts" : self.q_count_attempts,
+                "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
                 "q_grade_showme_ded" : self.q_grade_showme_ded,
@@ -275,6 +282,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q2_hint1,
                 "q_hint2" :  self.q2_hint2,
                 "q_hint3" :  self.q2_hint3,
+                "q_count_attempts" : self.q_count_attempts,
+                "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
                 "q_grade_showme_ded" : self.q_grade_showme_ded,
@@ -296,6 +305,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q3_hint1,
                 "q_hint2" :  self.q3_hint2,
                 "q_hint3" :  self.q3_hint3,
+                "q_count_attempts" : self.q_count_attempts,
+                "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
                 "q_grade_showme_ded" : self.q_grade_showme_ded,
@@ -317,6 +328,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q4_hint1,
                 "q_hint2" :  self.q4_hint2,
                 "q_hint3" :  self.q4_hint3,
+                "q_count_attempts" : self.q_count_attempts,
+                "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
                 "q_grade_showme_ded" : self.q_grade_showme_ded,
@@ -338,6 +351,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q5_hint1,
                 "q_hint2" :  self.q5_hint2,
                 "q_hint3" :  self.q5_hint3,
+                "q_count_attempts" : self.q_count_attempts,
+                "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
                 "q_grade_showme_ded" : self.q_grade_showme_ded,
@@ -359,6 +374,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q6_hint1,
                 "q_hint2" :  self.q6_hint2,
                 "q_hint3" :  self.q6_hint3,
+                "q_count_attempts" : self.q_count_attempts,
+                "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
                 "q_grade_showme_ded" : self.q_grade_showme_ded,
@@ -380,6 +397,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q7_hint1,
                 "q_hint2" :  self.q7_hint2,
                 "q_hint3" :  self.q7_hint3,
+                "q_count_attempts" : self.q_count_attempts,
+                "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
                 "q_grade_showme_ded" : self.q_grade_showme_ded,
@@ -401,6 +420,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q8_hint1,
                 "q_hint2" :  self.q8_hint2,
                 "q_hint3" :  self.q8_hint3,
+                "q_count_attempts" : self.q_count_attempts,
+                "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
                 "q_grade_showme_ded" : self.q_grade_showme_ded,
@@ -422,6 +443,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q9_hint1,
                 "q_hint2" :  self.q9_hint2,
                 "q_hint3" :  self.q9_hint3,
+                "q_count_attempts" : self.q_count_attempts,
+                "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
                 "q_grade_showme_ded" : self.q_grade_showme_ded,
@@ -623,6 +646,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
         logger.info('save_question() - entered')
+        self.q_max_attempts = int(data['q_max_attempts'])
         if data['q_option_showme'] == u'True':
             self.q_option_showme = True
         else:

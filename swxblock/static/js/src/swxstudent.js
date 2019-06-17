@@ -6,11 +6,15 @@ function SWXStudent(runtime, element, data) {
     var solution = data.solution;
     var enable_showme = question.q_option_showme;
     var enable_hint = question.q_option_hint;
+    var count_attempts = question.q_count_attempts;
+    var max_attempts = question.q_max_attempts;
 
     console.info("SWXStudent question",question);
     console.info("SWXStudent enable_showme",enable_showme);
     console.info("SWXStudent enable_hint",enable_hint);
     console.info("SWXStudent solution",solution);
+    console.info("SWXStudent count_attempts",count_attempts);
+    console.info("SWXStudent max_attempts",max_attempts);
 
     if (typeof enable_showme === 'undefined') {
         console.info("enable_showme is undefined");
