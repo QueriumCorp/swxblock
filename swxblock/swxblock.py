@@ -501,23 +501,23 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
 # Grading defaults
 
-#         if q_grade_showme_ded == -1:
-#             logger.info('save_grade() - showme default set to 3')
-#             q_grade_showme_ded = 3
-#         if q_grade_hints_count == -1:
-#             logger.info('save_grade() - hints_count default set to 2')
-#             q_grade_hints_count = 2
-#         if q_grade_hints_ded == -1:
-#             logger.info('save_grade() - hints_ded default set to 1')
-#             q_grade_hints_ded = 1
-#         if q_grade_errors_count == -1:
-#             logger.info('save_grade() - errors_count default set to 3')
-#             q_grade_errors_count = 3
-#         if q_grade_errors_ded == -1:
-#             logger.info('save_grade() - errors_ded default set to 1')
-#             q_grade_errors_ded = 1
-# 
-        grade=3
+        if q_grade_showme_ded == -1:
+            logger.info('save_grade() - showme default set to 3')
+            q_grade_showme_ded = 3
+        if q_grade_hints_count == -1:
+            logger.info('save_grade() - hints_count default set to 2')
+            q_grade_hints_count = 2
+        if q_grade_hints_ded == -1:
+            logger.info('save_grade() - hints_ded default set to 1')
+            q_grade_hints_ded = 1
+        if q_grade_errors_count == -1:
+            logger.info('save_grade() - errors_count default set to 3')
+            q_grade_errors_count = 3
+        if q_grade_errors_ded == -1:
+            logger.info('save_grade() - errors_ded default set to 1')
+            q_grade_errors_ded = 1
+
+          grade=3
 #         logger.info('save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe']))
 #         if data['errors']>q_grade_errors_count:
 #             grade=grade-q_grade_errors_ded
