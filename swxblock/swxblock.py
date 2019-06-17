@@ -623,21 +623,19 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
         logger.info('save_question() - entered')
-        self.q_option_showme = data['q_option_showme'].lower == u'true'
-#         if data['q_option_showme'] == u'True':
-#             self.q_option_showme = True
-#         else:
-#             self.q_option_showme = False
-        self.q_option_hint = data['q_option_hint'].lower == u'true'
-#         if data['q_option_hint'] == u'True':
-#             self.q_option_hint = True
-#         else:
-#             self.q_option_hint = False
+        if data['q_option_showme'] == u'True':
+            self.q_option_showme = True
+        else:
+            self.q_option_showme = False
+        if data['q_option_hint'] == u'True':
+            self.q_option_hint = True
+        else:
+            self.q_option_hint = False
         self.q_grade_showme_ded = int(data['q_grade_showme_ded'])
         self.q_grade_hints_count = int(data['q_grade_hints_count'])
         self.q_grade_hints_ded = int(data['q_grade_hints_ded'])
         self.q_grade_errors_count = int(data['q_grade_errors_count'])
-        self.q_grade_error_ded = int(data['q_grade_errors_ded'])
+        self.q_grade_errors_ded = int(data['q_grade_errors_ded'])
 
         self.q_id = data['id']
         self.q_label = data['label']
