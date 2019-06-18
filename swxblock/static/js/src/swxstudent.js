@@ -90,7 +90,7 @@ function SWXStudent(runtime, element, data) {
     var error_count = $('.error-count', swxblock_block)[0];
     var hint_count = $('.hint-count', swxblock_block)[0];
     var used_showme = $('.used-showme', swxblock_block)[0];
-    var make_attempts = $('.made_attempts', swxblock_block)[0];
+    var made_attempts = $('.made_attempts', swxblock_block)[0];
 
     // Get Solution Element Handles
     var solution_element = $('.solution', element)[0];
