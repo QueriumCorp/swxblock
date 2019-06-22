@@ -80,7 +80,7 @@ function SWXStudent(runtime, element, data) {
     preview_element.classList.remove("preview_hidden");
 
     // Don't let student launch question if they've exceeded the limit on question attempts
-    if (max_attempts == -1 || made_attempts < max_attempts) {
+    if (max_attempts == -1 || count_attempts < max_attempts) {
         console.info("SWXstudent enabling onlick");
         preview_element.onclick = previewClicked;
     } else {
