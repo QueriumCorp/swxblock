@@ -167,7 +167,9 @@ function SWXStudent(runtime, element, data) {
         setTimeout( function(){
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
-        console.info("calling querium.startQuestion with options ",options);
+        console.info("SWXblock previewClicked() count_attempts ",count_attempts);
+        console.info("SWXblock previewClicked() max_attempts ",max_attempts);
+        console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
 
