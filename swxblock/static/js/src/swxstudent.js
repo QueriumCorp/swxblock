@@ -78,9 +78,16 @@ function SWXStudent(runtime, element, data) {
 
     // Show the active question preview
     preview_element.classList.remove("preview_hidden");
-    preview_element.onclick = previewClicked;
 
-    // Get Stat ELement Handles
+    // Don't let student launch question if they've exceeded the limit on question attempts
+    if (made_attempts < max_attempts) {
+        console.info("SWXstudent enabling onlick");
+        preview_element.onclick = previewClicked;
+    } else {
+        console.info("SWXstudent disabling onclick");
+    };
+
+    // Get Statistics Element Handles
     var question_stats = $('.question-stats', swxblock_block)[0];
     var star_box = $('.star-box', swxblock_block)[0];
     var star1 = $('.star1', swxblock_block)[0];
