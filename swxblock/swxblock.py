@@ -1,4 +1,4 @@
-"""TO-DO: Write a stimulus of what this XBlock is."""
+"""This Xblock manages problems for Step-Wise Virtual Tutor(tm) from Querium Corp."""
 
 import pkg_resources
 import random
@@ -17,7 +17,7 @@ logger = getLogger(__name__)
 @XBlock.wants('user')
 class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
-    TO-DO: document what your XBlock does.
+    This xblock provides up to 10 variants of a question for delivery using the StepWise UI.
     """
     logger.debug('SWXBlock() - instantiated')
     has_author_view = True # tells the xblock to not ignore the AuthorView
@@ -44,7 +44,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # MAX ATTEMPTS PER-QUESTION OVERRIDE OF COURSE DEFAULT
     q_max_attempts = Integer(help="Max question attempts (-1 = Use Course Default)", default=-1, scope=Scope.content)
 
-    # QUESTION DEFINITION FIELDS
+    # STEP-WISE QUESTION DEFINITION FIELDS FOR TEN VARIANTS
     display_name = String(display_name="Display name", default='StepWise', scope=Scope.content)
 
     q_id = String(help="Question ID", default="", scope=Scope.content)
