@@ -110,6 +110,7 @@ function SWXStudent(runtime, element, data) {
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts > max_attempts) {
             console.info("SWXstudent previewClicked() too many attempts");
+            return;
         };
 
         function celebrate(stats) {
