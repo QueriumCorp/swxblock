@@ -107,11 +107,15 @@ function SWXStudent(runtime, element, data) {
             scribbles: false
         };
     
+        console.info("SWXstudent previewClicked() started");
+        console.info("SWXstudent previewClicked() count_attempts",count_attempts);
+        console.info("SWXstudent previewClicked() max_attempts",max_attempts);
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts > max_attempts) {
             console.info("SWXstudent previewClicked() too many attempts");
             return;
         };
+        console.info("SWXstudent previewClicked() continues");
 
         function celebrate(stats) {
             swxblock_block.classList.remove("block_working");
