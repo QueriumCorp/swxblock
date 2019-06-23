@@ -178,8 +178,8 @@ function SWXStudent(runtime, element, data) {
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
         console.info("SWXblock previewClicked() count_attempts ",count_attempts);
-        question.q_count_attempts += 1;
-        count_attempts = question.q_count_attempts;
+        data.count_attempts += 1;
+        count_attempts = data.count_attempts;
         console.info("SWXStudent incremented count_attempts",count_attempts);
         console.info("SWXblock previewClicked() max_attempts ",max_attempts);
         console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
