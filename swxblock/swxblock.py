@@ -452,7 +452,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             "question" : question,
             "grade" :self.grade,
             "solution" : self.solution,
-            "count_attempts" : self.count_attempts
+            #"count_attempts" : self.count_attempts
+            "count_attempts" : 2
         }
 
         html = self.resource_string("static/html/swxstudent.html")
