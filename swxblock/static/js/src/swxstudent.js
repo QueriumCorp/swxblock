@@ -4,9 +4,9 @@ function SWXStudent(runtime, element, data) {
     var question = data.question;
     var grade = data.grade;
     var solution = data.solution;
+    var count_attempts = data.count_attempts;
     var enable_showme = question.q_option_showme;
     var enable_hint = question.q_option_hint;
-    var count_attempts = question.q_count_attempts;
     var max_attempts = question.q_max_attempts;
 
     console.info("SWXStudent question",question);
@@ -111,7 +111,7 @@ function SWXStudent(runtime, element, data) {
         console.info("SWXstudent previewClicked() count_attempts",count_attempts);
         console.info("SWXstudent previewClicked() max_attempts",max_attempts);
         // Don't let student launch question if they've exceeded the limit on question attempts
-        if (max_attempts != -1 && count_attempts > max_attempts) {
+        if (max_attempts != -1 && count_attempts >= max_attempts) {
             console.info("SWXstudent previewClicked() too many attempts");
             return;
         };
