@@ -561,7 +561,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         self.solution = data
         self.grade = grade
-        self.count_attempts = 123
+        self.count_attempts = count_attempts
 
         logger.info("SWXblock save_grade() final self={a}".format(a=self))
         logger.info("SWXblock save_grade() final self.solution={a}".format(a=self.solution))
