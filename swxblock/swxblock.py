@@ -147,7 +147,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # STUDENT'S QUESTION PERFORMANCE FIELDS
     grade = Integer(help="The student's grade", default=-1, scope=Scope.user_state)
     solution = Dict(help="The student's last solution", default={}, scope=Scope.user_state)
-    count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.content)
+    count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.user_state)
     # count_attempts keeps track of the number of attempts of this question by this student so we can
     # compare to self.max_attempts which is inherited as course Advanced Setting or to q_max_attempts var.
 
