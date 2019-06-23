@@ -1,4 +1,4 @@
-"""This Xblock manages problems for Step-Wise Virtual Tutor(tm) from Querium Corp."""
+a""This Xblock manages problems for Step-Wise Virtual Tutor(tm) from Querium Corp."""
 
 import pkg_resources
 import random
@@ -479,7 +479,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     def save_grade(self, data, suffix=''):
         logger.info('SWXblock save_grade() - entered')
         logger.info("SWXBlock save_grade() - self.max_attempts={a}".format(a=self.max_attempts))
-        logger.info("SWXBlock save_grade() - self.matlab_api_key={a}".format(a=self.matlab_api_key))
 #        if data['usedShowMe']:
 #            grade=0
 #        elif data['errors']==0 and data['hints']==0:
@@ -561,9 +560,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         self.solution = data
         self.grade = grade
-        logger.info("SWXblock save_grade() final data={a}".format(a=data))
-        self.count_attempts = data.count_attempts
-        logger.info("SWXblock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
+        # Don't increment attempts on save grade.  We want to increment them on load for when someone
+        # starts a question, not when they finish.  Otherwise people can load the question as many times
+        # as they want as long as they don't finish it, then reload the page.
+        # self.count_attempts += 1
+        # logger.info("SWXblock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
 
         logger.info("SWXblock save_grade() final self={a}".format(a=self))
         logger.info("SWXblock save_grade() final self.solution={a}".format(a=self.solution))
