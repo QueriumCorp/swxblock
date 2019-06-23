@@ -78,14 +78,7 @@ function SWXStudent(runtime, element, data) {
 
     // Show the active question preview
     preview_element.classList.remove("preview_hidden");
-
-    // Don't let student launch question if they've exceeded the limit on question attempts
-    if (max_attempts == -1 || count_attempts < max_attempts) {
-        console.info("SWXstudent enabling onlick");
-        preview_element.onclick = previewClicked;
-    } else {
-        console.info("SWXstudent disabling onclick");
-    };
+    preview_element.onclick = previewClicked;
 
     // Get Statistics Element Handles
     var question_stats = $('.question-stats', swxblock_block)[0];
@@ -114,6 +107,11 @@ function SWXStudent(runtime, element, data) {
             scribbles: false
         };
     
+        // Don't let student launch question if they've exceeded the limit on question attempts
+        if (max_attempts != -1 && count_attempts > max_attempts) {
+            console.info("SWXstudent previewClicked() too many attempts");
+        };
+
         function celebrate(stats) {
             swxblock_block.classList.remove("block_working");
             swxblock_block.classList.add("block_worked");
