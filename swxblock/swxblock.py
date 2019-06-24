@@ -151,7 +151,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # count_attempts keeps track of the number of attempts of this question by this student so we can
     # compare to self.max_attempts which is inherited as course Advanced Setting or to q_max_attempts var.
 
-
     raw_possible = Integer(help="Number of possible points", default=3,scope=Scope.user_state)
 
     # FIELDS FOR THE ScorableXBlockMixin
@@ -200,8 +199,14 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         logger.info('SWXblock student_view() - entered')
         logger.info("SWXblock student_view() self={a}".format(a=self))
-        logger.info("SWXblock student_view() self.max_attempts={a}".format(a=self.max_attempts))
-        logger.info("SWXblock student_view() self.matlab_api_key={a}".format(a=self.matlab_api_key))
+        logger.info("SWXblock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
+
+	# use course-wide max_attempts value if q_max_attempts is not set
+	if (self.q_max_attempts == -1):
+            self.q_max_attempts = self.max_attempts
+        else:
+            self.q_max_attempts = self.max_attempts
+        # NOTE: could enforce other course-wide grading options here
 
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
