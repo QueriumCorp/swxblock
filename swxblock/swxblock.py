@@ -1,4 +1,4 @@
-a""This Xblock manages problems for Step-Wise Virtual Tutor(tm) from Querium Corp."""
+"""This Xblock manages problems for Step-Wise Virtual Tutor(tm) from Querium Corp."""
 
 import pkg_resources
 import random
@@ -473,6 +473,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-sanitize.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js")
+        frag.add_javascript_url("//www.gstatic.com/firebasejs/4.4.0/firebase.js")	# For qEval client-side logging
         frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.6.js")
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
