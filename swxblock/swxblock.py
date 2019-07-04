@@ -116,6 +116,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("swxblock student_view xb_user={u}".format(u=xb_user))
         logger.info("swxblock student_view self.runtime={r}".format(r=self.runtime))
         logger.info("swxblock student_view user_is_staff={u}".format(u=self.runtime.user_is_staff))
+        xb_user_role = self.runtime.get_user_role()
+        logger.info("swxblock student_view xb_user_role={r}".format(r=xb_user_role))
 
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
             q_index = random.randint(0, 300)
