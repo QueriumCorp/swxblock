@@ -1,4 +1,4 @@
-"""TO-DO: Write a stimulus of what this XBlock is."""
+"""TO-DO: Still Need to Write a stimulus of what this XBlock is."""
 
 import pkg_resources
 import random
@@ -113,6 +113,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.debug('student_view() - entered.')
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
+        logger.info("swxblock student_view xb_user={u}".format(u=xb_user))
+        logger.info("swxblock student_view self.runtime={r}".format(r=self.runtime))
+        logger.info("swxblock student_view user_is_staff={u}".format(u=self.runtime.user_is_staff))
 
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
             q_index = random.randint(0, 300)
@@ -170,6 +173,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             "solution" : self.solution
         }
 
+        # logger.info("swxblock student_view self={s}".format(s=self))
         is_student = False
 
         if is_student:
