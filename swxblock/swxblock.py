@@ -170,7 +170,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             "solution" : self.solution
         }
 
-        is_student = True
+        is_student = False
 
         if is_student:
             html = self.resource_string("static/html/swxstudent.html")
