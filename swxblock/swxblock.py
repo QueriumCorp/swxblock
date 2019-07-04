@@ -170,7 +170,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             "solution" : self.solution
         }
 
-        html = self.resource_string("static/html/swxstudent.html")
+        is_student = True
+
+        if is_student:
+            html = self.resource_string("static/html/swxstudent.html")
+        else:
+            html = self.resource_string("static/html/readonly-swxstudent.html")
+
         frag = Fragment(html.format(self=self))
         frag.add_css(self.resource_string("static/css/swxstudent.css"))
 
