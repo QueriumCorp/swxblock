@@ -16,6 +16,10 @@
     font-weight: bold;
 }
 
+.pointer-events-none {
+    pointer-events: none;
+}
+
 .swxblock_block p {
     cursor: pointer;
 }
