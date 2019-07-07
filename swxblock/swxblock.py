@@ -121,7 +121,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("swxblock student_view user_is_staff={u}".format(u=self.runtime.user_is_staff))
         xb_user_role = self.runtime.get_user_role()
         logger.info("swxblock student_view xb_user_role={r}".format(r=xb_user_role))
-        logger.info("swxblock student_view xb_user.is_authenticated={i}".format(i=xb_user.is_authenticated))
         # logger.info("swxblock student_view _get_course_creator_status(xb_user)={g}".format(g=_get_course_creator_status(xb_user)))
 
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
