@@ -24,6 +24,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     logger.debug('SWXBlock() - instantiated')
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
+    show_in_read_only_mode = True # tells the xblock that it is OK to display results for students to their instructors
 
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
@@ -181,7 +182,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         }
 
         # logger.info("swxblock student_view self={s}".format(s=self))
-        is_student = False
+        is_student = True
 
         if is_student:
             html = self.resource_string("static/html/swxstudent.html")
