@@ -22,6 +22,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     logger.debug('SWXBlock() - instantiated')
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
+    show_in_read_only_mode = True # tells the xblock to let the instructor view the student's work (lms/djangoapps/courseware/masquerade.py)
 
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
