@@ -113,7 +113,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             xb_user.emails[0]
         """
         logger.debug('student_view() - entered.')
-        logger.info("swxblock student_view self.runtime.user={u}".format(u=self.runtime.user))
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
         logger.info("swxblock student_view xb_user={u}".format(u=xb_user))
