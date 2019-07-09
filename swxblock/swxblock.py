@@ -177,7 +177,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         frag.add_css_url("//stepwise.querium.com/libs/mathquill/mathquill.css")
         frag.add_css_url("//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css")
-        frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.6.css")
+        frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.8.css")
 
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript_url("//stepwise.querium.com/libs/mathquill/mathquill.js")
@@ -185,7 +185,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-sanitize.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js")
         frag.add_javascript_url("//www.gstatic.com/firebasejs/4.4.0/firebase.js")     # For qEval client-side logging
-        frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.6.js")
+        frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.8.js")
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
         frag.initialize_js('SWXStudent', data)
