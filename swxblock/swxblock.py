@@ -1,4 +1,5 @@
 """TO-DO: Write a stimulus of what this XBlock is."""
+# This is the kaf-lpm branch
 
 import pkg_resources
 import random
