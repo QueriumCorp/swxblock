@@ -30,6 +30,8 @@ function SWxAuthor(runtime, element, questions) {
     var qu10 = $( "#variant10", element );
     var dm10 = $( ".display_math", qu10 );
 
+    console.info('SWxAuthor questions',questions);
+
     switch (questions) {
         case 1:
             qu1.removeClass("problem-empty");

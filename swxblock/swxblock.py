@@ -646,6 +646,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             variants = 1
 
+	logger.info('swxblock SwXAuthor author_view variants={a}',format(a=variants))
+
         frag.initialize_js('SWxAuthor', variants)
         return frag
 
