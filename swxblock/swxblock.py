@@ -202,11 +202,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock student_view() self={a}".format(a=self))
         logger.info("SWXblock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
+	# Can't set q_max_attempts if the imported xblock doesn't define this field, since it defaults to None (read only)?
 	# use course-wide max_attempts value if q_max_attempts is not set
-	if (self.q_max_attempts == -1):
-            self.q_max_attempts = self.max_attempts
-        else:
-            self.q_max_attempts = self.max_attempts
+	# if (self.q_max_attempts == -1):
+        #     self.q_max_attempts = self.max_attempts
+        # else:
+        #     self.q_max_attempts = self.max_attempts
         # NOTE: could enforce other course-wide grading options here
 
         user_service = self.runtime.service( self, 'user')
