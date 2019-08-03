@@ -238,16 +238,16 @@ function SWXStudent(runtime, element, data) {
             elapsed_time_count.innerText = solution.time.toFixed();
             error_count.innerText = solution.errors;
             hint_count.innerText = solution.hints;
-            var attempts_string;
-            attempts_string = count_attempts;
-            attempts_string += ' of ';
-            if( max_attempts == -1) {
-                attempts_string += 'unlimited';
-            }else{
-                attempts_string += max_attempts;
-            }
-            attempts_string += ' attempts';
-            made_attempts.innerText = attempts_string;
+            // var attempts_string;
+            // attempts_string = count_attempts;
+            // attempts_string += ' of ';
+            // if( max_attempts == -1) {
+            //    attempts_string += 'unlimited';
+            // }else{
+            //    attempts_string += max_attempts;
+            // }
+            // attempts_string += ' attempts';
+            // made_attempts.innerText = attempts_string;
     
             if( solution.usedShowMe ){
                 used_showme.classList.remove("preview_hidden");
