@@ -22,6 +22,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     logger.debug('SWXBlock() - instantiated')
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
+    show_in_read_only_mode = True # tells the xblock to let the instructor view the student's work (lms/djangoapps/courseware/masquerade.py)
 
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
@@ -473,7 +474,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-sanitize.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js")
-        # frag.add_javascript_url("//www.gstatic.com/firebasejs/4.4.0/firebase.js")	# For qEval client-side logging
+        frag.add_javascript_url("//www.gstatic.com/firebasejs/4.4.0/firebase.js")	# For qEval client-side logging
         frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.8.1.js")	# With FireBase and Log keys fix
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))

@@ -304,7 +304,7 @@ function SWXStudent(runtime, element, data) {
                         break;
                     case 4: // hint request
                         step_type_el.classList.add("hint-request");
-                        step_text_el.innerHTML=solution.stepDetails[c].info[i].text
+                        step_text_el.innerHTML=badMathmlFix(solution.stepDetails[c].info[i].text);
                         break;
                     default:
                         console.error(solution.stepDetails[c].info[i]);
@@ -325,6 +325,14 @@ function SWXStudent(runtime, element, data) {
             solution_element.classList.remove("preview_hidden");
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
+    }
+
+    // StepWise hints can contain bath <mspace> tags and badly escaped > at the end of mathml tags
+    function badMathmlFix( s ) {
+        console.debug( 'badmathmlfix in s=',s);
+        var goods = s.replace(new RegExp('mspace width=\'\\.\\d+em\'', 'g'), 'MSPACE').replace(new RegExp('MSPACE\\\\', 'g'), 'MSPACE').replace(new RegExp('MSPACE','g'),'mspace width=\'.04em\'').replace(new RegExp('\\\>', 'g'), '>');
+        console.debug( 'badmathmlfix out s=',goods);
+        return goods;
     }
 
     // set student id
