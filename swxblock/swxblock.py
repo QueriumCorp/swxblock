@@ -27,6 +27,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
 
+    # Place to store the UUID for this xblock instance.  Not currently displayed in any view.
+    url_name = String(display_name="URL name", default='NONE', scope=Scope.content)
+
     # PER-QUESTION GRADING OPTIONS (STILL NEED TO ALLOW FOR COURSE DEFAULTS)
     q_grade_showme_ded = Integer(help="Point deduction for using Show Solution", default=-1, scope=Scope.content)
     q_grade_hints_count = Integer(help="Number of Hints before deduction", default=-1, scope=Scope.content)
