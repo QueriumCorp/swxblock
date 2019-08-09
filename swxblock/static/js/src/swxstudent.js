@@ -4,8 +4,26 @@ function SWXStudent(runtime, element, data) {
     var question = data.question;
     var grade = data.grade;
     var solution = data.solution;
+    var count_attempts = data.count_attempts;
+    var enable_showme = question.q_option_showme;
+    var enable_hint = question.q_option_hint;
+    var max_attempts = question.q_max_attempts;
 
-    console.info( solution );
+    console.info("SWXStudent question",question);
+    console.info("SWXStudent enable_showme",enable_showme);
+    console.info("SWXStudent enable_hint",enable_hint);
+    console.info("SWXStudent solution",solution);
+    console.info("SWXStudent count_attempts",count_attempts);
+    console.info("SWXStudent max_attempts",max_attempts);
+
+    if (typeof enable_showme === 'undefined') {
+        console.info("enable_showme is undefined");
+        enable_showme = true;
+    };
+    if (typeof enable_hint === 'undefined') {
+        console.info("enable_hint is undefined");
+        enable_hint = true;
+    };
 
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
 
@@ -25,6 +43,27 @@ function SWXStudent(runtime, element, data) {
         case 2:
             preview_element = $('.qq_preview2', element)[0];
             break;
+        case 3:
+            preview_element = $('.qq_preview3', element)[0];
+            break;
+        case 4:
+            preview_element = $('.qq_preview4', element)[0];
+            break;
+        case 5:
+            preview_element = $('.qq_preview5', element)[0];
+            break;
+        case 6:
+            preview_element = $('.qq_preview6', element)[0];
+            break;
+        case 7:
+            preview_element = $('.qq_preview7', element)[0];
+            break;
+        case 8:
+            preview_element = $('.qq_preview8', element)[0];
+            break;
+        case 9:
+            preview_element = $('.qq_preview9', element)[0];
+            break;
         default:
             preview_element = $('.qq_preview0', element)[0];
     }
@@ -41,7 +80,7 @@ function SWXStudent(runtime, element, data) {
     preview_element.classList.remove("preview_hidden");
     preview_element.onclick = previewClicked;
 
-    // Get Stat ELement Handles
+    // Get Statistics Element Handles
     var question_stats = $('.question-stats', swxblock_block)[0];
     var star_box = $('.star-box', swxblock_block)[0];
     var star1 = $('.star1', swxblock_block)[0];
@@ -51,6 +90,7 @@ function SWXStudent(runtime, element, data) {
     var error_count = $('.error-count', swxblock_block)[0];
     var hint_count = $('.hint-count', swxblock_block)[0];
     var used_showme = $('.used-showme', swxblock_block)[0];
+    var made_attempts = $('.made-attempts', swxblock_block)[0];
 
     // Get Solution Element Handles
     var solution_element = $('.solution', element)[0];
@@ -62,11 +102,21 @@ function SWXStudent(runtime, element, data) {
     function previewClicked(){ 
         var options = {
             hideMenu: true,
-            showMe: true,
+            showMe: enable_showme,
             assessing: false,
             scribbles: false
         };
     
+        console.info("SWXstudent previewClicked() started");
+        console.info("SWXstudent previewClicked() count_attempts",count_attempts);
+        console.info("SWXstudent previewClicked() max_attempts",max_attempts);
+        // Don't let student launch question if they've exceeded the limit on question attempts
+        if (max_attempts != -1 && count_attempts >= max_attempts) {
+            console.info("SWXstudent previewClicked() too many attempts");
+            return;
+        };
+        console.info("SWXstudent previewClicked() continues");
+
         function celebrate(stats) {
             swxblock_block.classList.remove("block_working");
             swxblock_block.classList.add("block_worked");
@@ -127,6 +177,12 @@ function SWXStudent(runtime, element, data) {
         setTimeout( function(){
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
+        console.info("SWXblock previewClicked() count_attempts ",count_attempts);
+        data.count_attempts += 1;
+        count_attempts = data.count_attempts;
+        console.info("SWXStudent incremented count_attempts",count_attempts);
+        console.info("SWXblock previewClicked() max_attempts ",max_attempts);
+        console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
 
@@ -182,6 +238,16 @@ function SWXStudent(runtime, element, data) {
             elapsed_time_count.innerText = solution.time.toFixed();
             error_count.innerText = solution.errors;
             hint_count.innerText = solution.hints;
+            // var attempts_string;
+            // attempts_string = count_attempts;
+            // attempts_string += ' of ';
+            // if( max_attempts == -1) {
+            //    attempts_string += 'unlimited';
+            // }else{
+            //    attempts_string += max_attempts;
+            // }
+            // attempts_string += ' attempts';
+            // made_attempts.innerText = attempts_string;
     
             if( solution.usedShowMe ){
                 used_showme.classList.remove("preview_hidden");
