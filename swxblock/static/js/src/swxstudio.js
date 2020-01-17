@@ -10,6 +10,7 @@ function SWxStudio(runtime, element, question) {
     $('.save-button', element).click(function(eventObject) {
         var data = {
 
+            weight : $('#weight', element).val(),
             q_max_attempts : $('#q_max_attempts', element).val(),
             q_option_showme : $('#q_option_showme', element).val(),
             q_option_hint : $('#q_option_hint', element).val(),
