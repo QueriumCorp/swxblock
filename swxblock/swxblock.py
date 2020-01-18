@@ -666,6 +666,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     def save_question(self, data, suffix=''):
         logger.info('SWXblock save_question() - entered')
         self.q_max_attempts = int(data['q_max_attempts'])
+        self.weight = int(data['weight'])
         if data['q_option_showme'] == u'True':
             self.q_option_showme = True
         else:
