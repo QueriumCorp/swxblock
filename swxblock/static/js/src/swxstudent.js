@@ -10,20 +10,20 @@ function SWXStudent(runtime, element, data) {
     var max_attempts = question.q_max_attempts;
     var weight = question.weight;
 
-    console.info("SWXStudent question",question);
-    console.info("SWXStudent enable_showme",enable_showme);
-    console.info("SWXStudent enable_hint",enable_hint);
-    console.info("SWXStudent solution",solution);
-    console.info("SWXStudent count_attempts",count_attempts);
-    console.info("SWXStudent max_attempts",max_attempts);
-    console.info("SWXStudent weight",weight);
+    // console.info("SWXStudent question",question);
+    // console.info("SWXStudent enable_showme",enable_showme);
+    // console.info("SWXStudent enable_hint",enable_hint);
+    // console.info("SWXStudent solution",solution);
+    // console.info("SWXStudent count_attempts",count_attempts);
+    // console.info("SWXStudent max_attempts",max_attempts);
+    // console.info("SWXStudent weight",weight);
 
     if (typeof enable_showme === 'undefined') {
-        console.info("enable_showme is undefined");
+        // console.info("enable_showme is undefined");
         enable_showme = true;
     };
     if (typeof enable_hint === 'undefined') {
-        console.info("enable_hint is undefined");
+        // console.info("enable_hint is undefined");
         enable_hint = true;
     };
 
@@ -109,25 +109,25 @@ function SWXStudent(runtime, element, data) {
             scribbles: false
         };
     
-        console.info("SWXstudent previewClicked() started");
-        console.info("SWXstudent previewClicked() count_attempts",count_attempts);
-        console.info("SWXstudent previewClicked() max_attempts",max_attempts);
-        console.info("SWXstudent previewClicked() weight",weight);
+        // console.info("SWXstudent previewClicked() started");
+        // console.info("SWXstudent previewClicked() count_attempts",count_attempts);
+        // console.info("SWXstudent previewClicked() max_attempts",max_attempts);
+        // console.info("SWXstudent previewClicked() weight",weight);
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts >= max_attempts) {
-            console.info("SWXstudent previewClicked() too many attempts");
+            // console.info("SWXstudent previewClicked() too many attempts");
             return;
         };
-        console.info("SWXstudent previewClicked() continues");
+        // console.info("SWXstudent previewClicked() continues");
 
         function celebrate(stats) {
             swxblock_block.classList.remove("block_working");
             swxblock_block.classList.add("block_worked");
 
-            console.info("Celebrate", stats);
+            // console.info("Celebrate", stats);
             solution = stats;
             solution.answered_question = question; // remember the question we answered for the stats display
-            console.info("celebrate solution", solution);
+            // console.info("celebrate solution", solution);
 
             if( stats.usedShowMe ){
                 grade=0;
@@ -182,13 +182,13 @@ function SWXStudent(runtime, element, data) {
         setTimeout( function(){
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
-        console.info("SWXblock previewClicked() count_attempts ",count_attempts);
+        // console.info("SWXblock previewClicked() count_attempts ",count_attempts);
         data.count_attempts += 1;
         count_attempts = data.count_attempts;
-        console.info("SWXStudent incremented count_attempts",count_attempts);
-        console.info("SWXblock previewClicked() max_attempts ",max_attempts);
-        console.info("SWXblock previewClicked() weight ",weight);
-        console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
+        // console.info("SWXStudent incremented count_attempts",count_attempts);
+        // console.info("SWXblock previewClicked() max_attempts ",max_attempts);
+        // console.info("SWXblock previewClicked() weight ",weight);
+        // console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
 
@@ -275,7 +275,7 @@ function SWXStudent(runtime, element, data) {
         // than the one used in the attempt associated with these steps/stats.
         var stimulus_el, stimulus_el_text, stimulus_el_problem, stimulus_el_math;
         if (typeof solution.answered_question === 'undefined') {
-            console.info("solution.answered_question is undefined");
+            // console.info("solution.answered_question is undefined");
         } else {
             stimulus_el = document.createElement("div");
             stimulus_el.classList.add("stimulus");
@@ -301,7 +301,7 @@ function SWXStudent(runtime, element, data) {
 
         for( c=0; c<solution.stepDetails.length; c++){
             for( i=0; i<solution.stepDetails[c].info.length; i++){
-                console.info( solution.stepDetails[c].info[i])
+                // console.info( solution.stepDetails[c].info[i])
                 // step wrapper
                 new_step_el = document.createElement("div");
                 new_step_el.classList.add("step-container");
@@ -350,7 +350,7 @@ function SWXStudent(runtime, element, data) {
         if( grade==-1){
             solution_element.classList.add("preview_hidden");
         }else{
-            console.info('showing solution')
+            // console.info('showing solution')
             solution_element.classList.remove("preview_hidden");
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
@@ -358,16 +358,16 @@ function SWXStudent(runtime, element, data) {
 
     // StepWise hints can contain bath <mspace> tags and badly escaped > at the end of mathml tags
     function badMathmlFix( s ) {
-        console.debug( 'badmathmlfix in s=',s);
+        // console.debug( 'badmathmlfix in s=',s);
         var goods = s.replace(new RegExp('mspace width=\'\\.\\d+em\'', 'g'), 'MSPACE').replace(new RegExp('MSPACE\\\\', 'g'), 'MSPACE').replace(new RegExp('MSPACE','g'),'mspace width=\'.04em\'').replace(new RegExp('\\\>', 'g'), '>');
-        console.debug( 'badmathmlfix out s=',goods);
+        // console.debug( 'badmathmlfix out s=',goods);
         return goods;
     }
 
     // set student id
     var sId = ( question.q_user.length>1 ? question.q_user : "UnknownStudent");
 
-    console.info( sId );
+    // console.info( sId );
 
     /* PAGE LOAD EVENT */
     $(function ($) {
