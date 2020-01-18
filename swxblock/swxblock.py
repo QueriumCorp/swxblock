@@ -530,6 +530,14 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
              # logger.info('SWXblock save_grade() - self.q_grade_errors_ded was not defined')
              q_grade_errors_ded = -1
 
+        logger.info('SWXblock save_grade() - KENT self.weight={a}'.format(a=self.weight))
+        logger.info('SWXblock save_grade() - self={a}'.format(a=self))
+	try: my_weight = self.weight
+	except NameError:
+             logger.info('SWXblock save_grade() - self.weight was not defined')
+             my_weight = 1
+        logger.info('SWXblock save_grade() - my_weight={a}'.format(a=my_weight))
+
 # Grading defaults
 
         if q_grade_showme_ded == -1:
@@ -563,11 +571,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             # logger.info('SWXblock save_grade() - zero negative grade')
             grade=0
 
-        logger.info("SWXblock save_grade() final grade={a} weight={b}".format(a=grade,b=self.weight))
+        logger.info("SWXblock save_grade() final grade={a} weight={b}".format(a=grade,b=my_weight))
 
         self.runtime.publish(self, 'grade',
-            {   'value': grade*self.weight,
-                'max_value': 3*self.weight
+            {   'value': grade*my_weight,
+                'max_value': 3*my_weight
             })
 
         self.solution = data
