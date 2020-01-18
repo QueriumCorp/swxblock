@@ -151,7 +151,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     weight = Float(
         display_name="Problem Weight",
         help="Defines the number of points the problem is worth.",
-        scope=Scope.settings,
+        scope=Scope.content,
         default=1,
         enforce_type=True,
     )
