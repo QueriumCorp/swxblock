@@ -8,15 +8,15 @@ function SWXStudent(runtime, element, data) {
     var enable_showme = question.q_option_showme;
     var enable_hint = question.q_option_hint;
     var max_attempts = question.q_max_attempts;
-    var weight = question.q_weight;
+    var weight = question.weight;
 
-    // console.info("SWXStudent question",question);
+    console.info("SWXStudent question",question);
     // console.info("SWXStudent enable_showme",enable_showme);
     // console.info("SWXStudent enable_hint",enable_hint);
     // console.info("SWXStudent solution",solution);
     // console.info("SWXStudent count_attempts",count_attempts);
     // console.info("SWXStudent max_attempts",max_attempts);
-    // console.info("SWXStudent weight",weight);
+    console.info("SWXStudent weight",weight);
 
     if (typeof enable_showme === 'undefined') {
         // console.info("enable_showme is undefined");
@@ -112,7 +112,7 @@ function SWXStudent(runtime, element, data) {
         // console.info("SWXstudent previewClicked() started");
         // console.info("SWXstudent previewClicked() count_attempts",count_attempts);
         // console.info("SWXstudent previewClicked() max_attempts",max_attempts);
-        // console.info("SWXstudent previewClicked() weight",weight);
+        console.info("SWXstudent previewClicked() weight",weight);
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts >= max_attempts) {
             // console.info("SWXstudent previewClicked() too many attempts");
@@ -187,7 +187,7 @@ function SWXStudent(runtime, element, data) {
         count_attempts = data.count_attempts;
         // console.info("SWXStudent incremented count_attempts",count_attempts);
         // console.info("SWXblock previewClicked() max_attempts ",max_attempts);
-        // console.info("SWXblock previewClicked() weight ",weight);
+        console.info("SWXblock previewClicked() weight ",weight);
         // console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
