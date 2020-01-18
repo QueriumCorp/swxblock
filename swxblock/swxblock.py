@@ -583,8 +583,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock save_grade() final grade={a} q_weight={b}".format(a=grade,b=q_weight))
 
         self.runtime.publish(self, 'grade',
-            {   'value': grade*q_weight,
-                'max_value': 3*q_weight
+            {   'value': (grade/3)*q_weight,
+                'max_value': 1*q_weight
             })
 
         self.solution = data
@@ -903,7 +903,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         # logger.info("SWXblock max_score() 3")
         # print "max_score called"
-        return 3
+        # return 3
+        return 1
 
     def weighted_grade(self):
         """
