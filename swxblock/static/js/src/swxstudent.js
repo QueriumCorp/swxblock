@@ -8,7 +8,7 @@ function SWXStudent(runtime, element, data) {
     var enable_showme = question.q_option_showme;
     var enable_hint = question.q_option_hint;
     var max_attempts = question.q_max_attempts;
-    var weight = question.weight;
+    var weight = question.q_weight;
 
     // console.info("SWXStudent question",question);
     // console.info("SWXStudent enable_showme",enable_showme);
