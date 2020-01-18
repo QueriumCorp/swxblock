@@ -148,7 +148,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q9_hint2 = String(help="Second Hint", default='', scope=Scope.content)
     q9_hint3 = String(help="Third Hint", default='', scope=Scope.content)
 
-    weight = Float(
+    q_weight = Float(
         display_name="Problem Weight",
         help="Defines the number of points the problem is worth.",
         scope=Scope.content,
@@ -250,7 +250,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q_hint1,
                 "q_hint2" :  self.q_hint2,
                 "q_hint3" :  self.q_hint3,
-                "weight" :  self.weight,
+                "q_weight" :  self.q_weight,
                 "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
@@ -273,7 +273,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q1_hint1,
                 "q_hint2" :  self.q1_hint2,
                 "q_hint3" :  self.q1_hint3,
-                "weight" :  self.weight,
+                "q_weight" :  self.q_weight,
                 "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
@@ -296,7 +296,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q2_hint1,
                 "q_hint2" :  self.q2_hint2,
                 "q_hint3" :  self.q2_hint3,
-                "weight" :  self.weight,
+                "q_weight" :  self.q_weight,
                 "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
@@ -319,7 +319,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q3_hint1,
                 "q_hint2" :  self.q3_hint2,
                 "q_hint3" :  self.q3_hint3,
-                "weight" :  self.weight,
+                "q_weight" :  self.q_weight,
                 "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
@@ -342,7 +342,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q4_hint1,
                 "q_hint2" :  self.q4_hint2,
                 "q_hint3" :  self.q4_hint3,
-                "weight" :  self.weight,
+                "q_weight" :  self.q_weight,
                 "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
@@ -365,7 +365,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q5_hint1,
                 "q_hint2" :  self.q5_hint2,
                 "q_hint3" :  self.q5_hint3,
-                "weight" :  self.weight,
+                "q_weight" :  self.q_weight,
                 "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
@@ -388,7 +388,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q6_hint1,
                 "q_hint2" :  self.q6_hint2,
                 "q_hint3" :  self.q6_hint3,
-                "weight" :  self.weight,
+                "q_weight" :  self.q_weight,
                 "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
@@ -411,7 +411,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q7_hint1,
                 "q_hint2" :  self.q7_hint2,
                 "q_hint3" :  self.q7_hint3,
-                "weight" :  self.weight,
+                "q_weight" :  self.q_weight,
                 "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
@@ -434,7 +434,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q8_hint1,
                 "q_hint2" :  self.q8_hint2,
                 "q_hint3" :  self.q8_hint3,
-                "weight" :  self.weight,
+                "q_weight" :  self.q_weight,
                 "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
@@ -457,7 +457,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q9_hint1,
                 "q_hint2" :  self.q9_hint2,
                 "q_hint3" :  self.q9_hint3,
-                "weight" :  self.weight,
+                "q_weight" :  self.q_weight,
                 "q_max_attempts" : self.q_max_attempts,
                 "q_option_hint" : self.q_option_hint,
                 "q_option_showme" : self.q_option_showme,
@@ -541,11 +541,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
              q_grade_errors_ded = -1
 
         logger.info('SWXblock save_grade() - self={a}'.format(a=self))
-	try: weight = self.weight
+	try: q_weight = self.q_weight
 	except AttributeError:
-             logger.info('SWXblock save_grade() - self.weight was not defined')
-             weight = 1.0
-        logger.info('SWXblock save_grade() - q_weight={a}'.format(a=weight))
+             logger.info('SWXblock save_grade() - self.q_weight was not defined')
+             q_weight = 1.0
+        logger.info('SWXblock save_grade() - q_weight={a}'.format(a=q_weight))
 
 # Grading defaults
 
@@ -580,11 +580,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             # logger.info('SWXblock save_grade() - zero negative grade')
             grade=0
 
-        logger.info("SWXblock save_grade() final grade={a} weight={b}".format(a=grade,b=weight))
+        logger.info("SWXblock save_grade() final grade={a} q_weight={b}".format(a=grade,b=q_weight))
 
         self.runtime.publish(self, 'grade',
-            {   'value': grade*weight,
-                'max_value': 3*weight
+            {   'value': grade*q_weight,
+                'max_value': 3*q_weight
             })
 
         self.solution = data
@@ -683,7 +683,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     def save_question(self, data, suffix=''):
         # logger.info('SWXblock save_question() - entered')
         self.q_max_attempts = int(data['q_max_attempts'])
-        self.weight = data['weight']
+        self.q_weight = data['q_weight']
         if data['q_option_showme'] == u'True':
             self.q_option_showme = True
         else:
@@ -911,5 +911,5 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         weight- the number of points earned by the learner.
         """
         # logger.info("SWXblock weighted_grade() earned {e}".format(e=self.raw_earned))
-        # logger.info("SWXblock weighted_grade() weight {w}".format(w=self.weight))
-        return self.raw_earned * self.weight
+        # logger.info("SWXblock weighted_grade() weight {w}".format(w=self.q_weight))
+        return self.raw_earned * self.q_weight
