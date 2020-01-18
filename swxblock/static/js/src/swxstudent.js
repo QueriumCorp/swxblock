@@ -126,6 +126,8 @@ function SWXStudent(runtime, element, data) {
 
             console.info("Celebrate", stats);
             solution = stats;
+            solution.answered_question = question; // remember the question we answered for the stats display
+            console.info("celebrate solution", solution);
 
             if( stats.usedShowMe ){
                 grade=0;
@@ -268,6 +270,29 @@ function SWXStudent(runtime, element, data) {
         while (solution_element.firstChild) {
             solution_element.removeChild(solution_element.firstChild);
         }
+
+        // Display the stimulus of the problem corresponding to these steps, since the question variant shown may be different
+        // than the one used in the attempt associated with these steps/stats.
+        var stimulus_el, stimulus_el_text, stimulus_el_problem, stimulus_el_math;
+        if (typeof solution.answered_question === 'undefined') {
+            console.info("solution.answered_question is undefined");
+        } else {
+            stimulus_el = document.createElement("div");
+            stimulus_el.classList.add("stimulus");
+            stimulus_el_text = document.createElement("div");
+            stimulus_el_text.classList.add("stimulus-text");
+            stimulus_el_text.innerText= "Last problem attempt was:";
+            stimulus_el_problem = document.createElement("div");
+            stimulus_el_problem.classList.add("stimulus-problem");
+            stimulus_el_problem.innerHTML= solution.answered_question.q_stimulus;
+            stimulus_el_math = document.createElement("div");
+            stimulus_el_math.classList.add("stimulus-math");
+            stimulus_el_math.innerText= solution.answered_question.q_display_math;
+            stimulus_el.appendChild(stimulus_el_text);
+            stimulus_el.appendChild(stimulus_el_problem);
+            stimulus_el.appendChild(stimulus_el_math);
+            solution_element.appendChild(stimulus_el);
+        };
 
         // build array of steps
         let step_list = [];
