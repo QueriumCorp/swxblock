@@ -5,9 +5,7 @@ The StepWise xBlock for the edX LMS platform
 
 Documentation
 -------------
-Documentation for all Rover source code is now located 
-in `Read The Docs <https://querium-adminroverbyopenstaxorg.readthedocs-hosted.com>`__
-
+Documentation for all Rover source code is now located in `Read The Docs <http://readthedocs.roverbyopenstax.org/>`__
 
 HOW TO WORK DEV CYCLE
 ---------------------
