@@ -838,7 +838,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             self.display_name = "Step-by-Step"
 
-        print self.display_name
+        # mcdaniel jul-2020: fix syntax error in print statement
+        print(self.display_name)
         return {'result': 'success'}
 
     # Do necessary overrides from ScorableXBlockMixin
