@@ -541,10 +541,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
              q_grade_errors_ded = -1
 
         logger.info('SWXblock save_grade() - self={a}'.format(a=self))
-	try: q_weight = self.q_weight
-	except AttributeError:
-             logger.info('SWXblock save_grade() - self.q_weight was not defined')
-             q_weight = 1.0
+        # mcdaniel jul-2020: fix indentation error
+        try: q_weight = self.q_weight
+        except AttributeError:
+                logger.info('SWXblock save_grade() - self.q_weight was not defined')
+                q_weight = 1.0
         logger.info('SWXblock save_grade() - q_weight={a}'.format(a=q_weight))
 
 # Grading defaults
