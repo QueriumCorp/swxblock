@@ -611,18 +611,19 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         solution=self.solution
         logger.info("SWXblock save_grade() count valid_steps solution={s}".format(s=solution))
         logger.info("SWXblock save_grade() count valid_steps solution.stepDetails={d}".format(d=solution.stepDetails))
-        for c in range(data['solution'].stepDetails.length-1):
-            for i in range (data['solution'].stepDetails[c].info.length-1):
-                status = data['solution'].stepDetails[c].info[i].status
-                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} status={s}".format(c=c,i=i,s=status))
-                if (status == 0):   # victory
-                    valid_steps += 1
-                elif (status == 1):   # valid step
-                    valid_steps += 1
-                # elif (status == 3):   # invalid step
-                #   valid_steps += 1
-                else:
-                   logger.info("SWXblock save_grade() count valid_steps ignoring status={s}".format(s=status))
+        logger.info("SWXblock save_grade() count valid_steps stepDetails.length={l}".format(l=solution.stepDetails.length))
+        for c in range(solution.stepDetails.length-1):
+            # for i in range (solution.stepDetails[c].info.length-1):
+            step_status = solution.stepDetails[c].status
+            logger.info("SWXblock save_grade() count valid_steps examine step c={c} step_status={s}".format(c=c,s=step_status))
+            if (step_status == 0):       # victory
+                valid_steps += 1
+            elif (step_status == 1):     # valid step
+                valid_steps += 1
+            # elif (step_status == 3):   # invalid step
+            #   valid_steps += 1
+            else:
+                logger.info("SWXblock save_grade() count valid_steps ignoring step_status={s}".format(s=step_status))
         logger.info("SWXblock save_grade() count valid_steps final valid_steps={v}".format(v=valid_steps))
 
         grade=3
