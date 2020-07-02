@@ -36,6 +36,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q_grade_hints_ded = Integer(help="Point deduction for using excessive Hints", default=-1, scope=Scope.content)
     q_grade_errors_count = Integer(help="Number of Errors before deduction", default=-1, scope=Scope.content)
     q_grade_errors_ded = Integer(help="Point deduction for excessive Errors", default=-1, scope=Scope.content)
+    q_grade_min_steps_count = Integer(help="Minimum valid steps in solution for full credit", default=-1, scope=Scope.content)
+    q_grade_min_steps_ded = Integer(help="Point deduction for fewer than minimum valid steps", default=-1, scope=Scope.content)
 
     # PER-QUESTION HINTS/SHOW SOLUTION OPTIONS
     q_option_hint = Boolean(help='Display Hint button if "True"', default=True, scope=Scope.content)
@@ -258,7 +260,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_count" : self.q_grade_hints_count,
                 "q_grade_hints_ded" : self.q_grade_hints_ded,
                 "q_grade_errors_count" : self.q_grade_errors_count,
-                "q_grade_errors_ded" : self.q_grade_errors_ded
+                "q_grade_errors_ded" : self.q_grade_errors_ded,
+		"q_grade_min_steps_cont" : self.q_grade_min_steps_count,
+		"q_grade_min_steps_ded" : self.q_grade_min_steps_ded
             }
         elif q_index>=100 and q_index<200:
             question = {
@@ -281,7 +285,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_count" : self.q_grade_hints_count,
                 "q_grade_hints_ded" : self.q_grade_hints_ded,
                 "q_grade_errors_count" : self.q_grade_errors_count,
-                "q_grade_errors_ded" : self.q_grade_errors_ded
+                "q_grade_errors_ded" : self.q_grade_errors_ded,
+		"q_grade_min_steps_count" : self.q_grade_min_steps_count,
+		"q_grade_min_steps_ded" : self.q_grade_min_steps_ded
             }
         elif q_index>=200 and q_index<300:
             question = {
@@ -304,7 +310,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_count" : self.q_grade_hints_count,
                 "q_grade_hints_ded" : self.q_grade_hints_ded,
                 "q_grade_errors_count" : self.q_grade_errors_count,
-                "q_grade_errors_ded" : self.q_grade_errors_ded
+                "q_grade_errors_ded" : self.q_grade_errors_ded,
+		"q_grade_min_steps_count" : self.q_grade_min_steps_count,
+		"q_grade_min_steps_ded" : self.q_grade_min_steps_ded
             }
         elif q_index>=300 and q_index<400:
             question = {
@@ -327,7 +335,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_count" : self.q_grade_hints_count,
                 "q_grade_hints_ded" : self.q_grade_hints_ded,
                 "q_grade_errors_count" : self.q_grade_errors_count,
-                "q_grade_errors_ded" : self.q_grade_errors_ded
+                "q_grade_errors_ded" : self.q_grade_errors_ded,
+		"q_grade_min_steps_count" : self.q_grade_min_steps_count,
+		"q_grade_min_steps_ded" : self.q_grade_min_steps_ded
             }
         elif q_index>=400 and q_index<500:
             question = {
@@ -350,7 +360,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_count" : self.q_grade_hints_count,
                 "q_grade_hints_ded" : self.q_grade_hints_ded,
                 "q_grade_errors_count" : self.q_grade_errors_count,
-                "q_grade_errors_ded" : self.q_grade_errors_ded
+                "q_grade_errors_ded" : self.q_grade_errors_ded,
+		"q_grade_min_steps_count" : self.q_grade_min_steps_count,
+		"q_grade_min_steps_ded" : self.q_grade_min_steps_ded
             }
         elif q_index>=500 and q_index<600:
             question = {
@@ -373,7 +385,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_count" : self.q_grade_hints_count,
                 "q_grade_hints_ded" : self.q_grade_hints_ded,
                 "q_grade_errors_count" : self.q_grade_errors_count,
-                "q_grade_errors_ded" : self.q_grade_errors_ded
+                "q_grade_errors_ded" : self.q_grade_errors_ded,
+		"q_grade_min_steps_count" : self.q_grade_min_steps_count,
+		"q_grade_min_steps_ded" : self.q_grade_min_steps_ded
             }
         elif q_index>=600 and q_index<700:
             question = {
@@ -396,7 +410,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_count" : self.q_grade_hints_count,
                 "q_grade_hints_ded" : self.q_grade_hints_ded,
                 "q_grade_errors_count" : self.q_grade_errors_count,
-                "q_grade_errors_ded" : self.q_grade_errors_ded
+                "q_grade_errors_ded" : self.q_grade_errors_ded,
+		"q_grade_min_steps_count" : self.q_grade_min_steps_count,
+		"q_grade_min_steps_ded" : self.q_grade_min_steps_ded
             }
         elif q_index>=700 and q_index<800:
             question = {
@@ -419,7 +435,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_count" : self.q_grade_hints_count,
                 "q_grade_hints_ded" : self.q_grade_hints_ded,
                 "q_grade_errors_count" : self.q_grade_errors_count,
-                "q_grade_errors_ded" : self.q_grade_errors_ded
+                "q_grade_errors_ded" : self.q_grade_errors_ded,
+		"q_grade_min_steps_count" : self.q_grade_min_steps_count,
+		"q_grade_min_steps_ded" : self.q_grade_min_steps_ded
             }
         elif q_index>=800 and q_index<900:
             question = {
@@ -442,7 +460,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_count" : self.q_grade_hints_count,
                 "q_grade_hints_ded" : self.q_grade_hints_ded,
                 "q_grade_errors_count" : self.q_grade_errors_count,
-                "q_grade_errors_ded" : self.q_grade_errors_ded
+                "q_grade_errors_ded" : self.q_grade_errors_ded,
+		"q_grade_min_steps_count" : self.q_grade_min_steps_count,
+		"q_grade_min_steps_ded" : self.q_grade_min_steps_ded
             }
         else:
             question = {
@@ -465,7 +485,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_count" : self.q_grade_hints_count,
                 "q_grade_hints_ded" : self.q_grade_hints_ded,
                 "q_grade_errors_count" : self.q_grade_errors_count,
-                "q_grade_errors_ded" : self.q_grade_errors_ded
+                "q_grade_errors_ded" : self.q_grade_errors_ded,
+		"q_grade_min_steps_count" : self.q_grade_min_steps_count,
+		"q_grade_min_steps_ded" : self.q_grade_min_steps_ded
             }
 
         data = {
@@ -516,36 +538,46 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # logger.info("SWXblock save_grade() initial data={a}".format(a=data))
 
         try: q_grade_showme_ded = self.q_grade_showme_ded
-        except NameError:
-             # logger.info('SWXblock save_grade() - self.q_grade_showme_dev was not defined')
+        except (NameError,AtrributeError) as e:
+             # logger.info('SWXblock save_grade() - self.q_grade_showme_dev was not defined: {e}'.format(e=e))
              q_grade_showme_ded = -1
 
         try: q_grade_hints_count = self.q_grade_hints_count
-        except NameError:
-             # logger.info('SWXblock save_grade() - self.q_grade_hints_count was not defined')
+        except (NameError,AtrributeError) as e:
+             # logger.info('SWXblock save_grade() - self.q_grade_hints_count was not defined: {e}',format(e=e))
              q_grade_hints_count = -1
 
         try: q_grade_hints_ded = self.q_grade_hints_ded
-        except NameError:
-             # logger.info('SWXblock save_grade() - self.q_grade_hints_ded was not defined')
+        except (NameError,AtrributeError) as e:
+             # logger.info('SWXblock save_grade() - self.q_grade_hints_ded was not defined: {e}'.format(e=e))
              q_grade_hints_ded = -1
 
         try: q_grade_errors_count = self.q_grade_errors_count
-        except NameError:
-             # logger.info('SWXblock save_grade() - self.q_grade_errors_count was not defined')
+        except (NameError,AtrributeError) as e:
+             # logger.info('SWXblock save_grade() - self.q_grade_errors_count was not defined: {e}'.format(e=e))
              q_grade_errors_count = -1
 
         try: q_grade_errors_ded = self.q_grade_errors_ded
-        except NameError:
-             # logger.info('SWXblock save_grade() - self.q_grade_errors_ded was not defined')
+        except (NameError,AtrributeError) as e:
+             # logger.info('SWXblock save_grade() - self.q_grade_errors_ded was not defined: {e}'.format(e=e))
              q_grade_errors_ded = -1
 
-        logger.info('SWXblock save_grade() - self={a}'.format(a=self))
+        try: q_grade_min_steps_count = self.q_grade_min_steps_count
+        except (NameError,AtrributeError) as e:
+             logger.info('SWXblock save_grade() - self.q_grade_min_steps_count was not defined: {e}'.format(e=e))
+             q_grade_min_steps_count = -1
+
+        try: q_grade_min_steps_ded = self.q_grade_min_steps_ded
+        except (NameError,AtrributeError) as e:
+             logger.info('SWXblock save_grade() - self.q_grade_min_steps_ded was not defined: {e}'.format(e=e))
+             q_grade_min_steps_ded = -1
+
         # mcdaniel jul-2020: fix indentation error
         try: q_weight = self.q_weight
-        except AttributeError:
-                logger.info('SWXblock save_grade() - self.q_weight was not defined')
+        except (NameError,AttributeError) as e:
+                logger.info('SWXblock save_grade() - self.q_weight was not defined: {e}'.format(e=e))
                 q_weight = 1.0
+        logger.info('SWXblock save_grade() - self={a}'.format(a=self))
         logger.info('SWXblock save_grade() - q_weight={a}'.format(a=q_weight))
 
 # Grading defaults
@@ -565,8 +597,15 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         if q_grade_errors_ded == -1:
             # logger.info('SWXblock save_grade() - errors_ded default set to 1')
             q_grade_errors_ded = 1
+        if q_grade_min_steps_ded == -1:
+            logger.info('SWXblock save_grade() - min_steps_ded default set to 0.25')
+            q_grade_min_steps_ded = 0.25
+
+        valid_steps = count_valid_steps(self)	 # Count the number of good steps
 
         grade=3
+	max_grade=grade
+
         logger.info('SWXblock save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe']))
         if data['errors']>q_grade_errors_count:
             grade=grade-q_grade_errors_ded
@@ -577,6 +616,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         if data['usedShowMe']:
             grade=grade-q_grade_showme_ded
             # logger.info('SWXblock save_grade() - showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
+	# fuka july-2020 partial deduction for entering too few intermediate steps
+	# TODO: Don't subtract on MatchSpec problems
+        if (grade >= max_grade and valid_steps < q_grade_min_steps_count):
+            grade=grade-q_grade_min_steps_ded
         if grade<0:
             # logger.info('SWXblock save_grade() - zero negative grade')
             grade=0
@@ -698,6 +741,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         self.q_grade_hints_ded = int(data['q_grade_hints_ded'])
         self.q_grade_errors_count = int(data['q_grade_errors_count'])
         self.q_grade_errors_ded = int(data['q_grade_errors_ded'])
+        self.q_grade_min_steps_count = int(data['q_grade_min_steps_count'])
+        self.q_grade_min_steps_ded = int(data['q_grade_min_steps_ded'])
 
         self.q_id = data['id']
         self.q_label = data['label']
@@ -818,23 +863,23 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         self.q9_hint3 = data['q9_hint3']
 
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0 and len(self.q9_definition)>0:
-            self.display_name = "Step-by-Step Dynamic"
+            self.display_name = "Step-by-Step Dynamic [10]"
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0:
-            self.display_name = "Step-by-Step Dynamic"
+            self.display_name = "Step-by-Step Dynamic [9]"
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0:
-            self.display_name = "Step-by-Step Dynamic"
+            self.display_name = "Step-by-Step Dynamic [8]"
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0:
-            self.display_name = "Step-by-Step Dynamic"
+            self.display_name = "Step-by-Step Dynamic [7]"
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0:
-            self.display_name = "Step-by-Step Dynamic"
+            self.display_name = "Step-by-Step Dynamic [6]"
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0:
-            self.display_name = "Step-by-Step Dynamic"
+            self.display_name = "Step-by-Step Dynamic [5]"
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0:
-            self.display_name = "Step-by-Step Dynamic"
+            self.display_name = "Step-by-Step Dynamic [4]"
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
-            self.display_name = "Step-by-Step Dynamic"
+            self.display_name = "Step-by-Step Dynamic [3]"
         elif len(self.q_definition)>0 and len(self.q1_definition)>0:
-            self.display_name = "Step-by-Step Dynamic"
+            self.display_name = "Step-by-Step Dynamic [2]"
         else:
             self.display_name = "Step-by-Step"
 
@@ -903,9 +948,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         https://openedx.atlassian.net/wiki/spaces/AC/pages/161400730/Open+edX+Runtime+XBlock+API#OpenedXRuntimeXBlockAPI-max_score(self):
         :return: Max Score for this problem
         """
-        # logger.info("SWXblock max_score() 3")
-        # print "max_score called"
-        # return 3
+        # Want the normalized, unweighted score here (1), not the points possible (3)
         return 1
 
     def weighted_grade(self):
@@ -916,3 +959,22 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # logger.info("SWXblock weighted_grade() earned {e}".format(e=self.raw_earned))
         # logger.info("SWXblock weighted_grade() weight {w}".format(w=self.q_weight))
         return self.raw_earned * self.q_weight
+
+    def count_valid_steps(self):
+        """
+        Returns a count of the total number of VALID steps the student input.
+        Used to determine if they get full credit for entering at least a min number of good steps.
+        """
+        count = 0;
+
+        logger.info("SWXblock count_valid_steps solution={s}".format(s=self.solution))
+        logger.info("SWXblock count_valid_steps solution.stepDetails={d}".format(d=self.solution.stepDetails))
+        for c in range(self.solution.stepDetails.length-1):
+            for i in range (self.solution.stepDetails[c].info.length-1):
+                status = self.solution.stepDetails[c].info[i].status 
+                if (status == 1):   # valid step
+		    count += 1
+                # elsif (status == 3):   # invalid step
+		#   count += 1
+        logger.info("SWXblock count_valid_steps final count={c}".format(c=count))
+        return count
