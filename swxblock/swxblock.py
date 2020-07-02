@@ -608,11 +608,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         valid_steps = 0;
 
 	# fuka july-2020 count the number of valid steps in the solution
-        logger.info("SWXblock save_grade() count valid_steps solution={s}".format(s=self.solution))
-        logger.info("SWXblock save_grade() count valid_steps solution.stepDetails={d}".format(d=self.solution.stepDetails))
-        for c in range(self.solution.stepDetails.length-1):
-            for i in range (self.solution.stepDetails[c].info.length-1):
-                status = self.solution.stepDetails[c].info[i].status
+        logger.info("SWXblock save_grade() count valid_steps data={d}".format(d=data))
+        logger.info("SWXblock save_grade() count valid_steps data['solution']={s}".format(s=data['solution']))
+        logger.info("SWXblock save_grade() count valid_steps solution.stepDetails={d}".format(d=data['solution'].stepDetails))
+        for c in range(data['solution'].stepDetails.length-1):
+            for i in range (data['solution'].stepDetails[c].info.length-1):
+                status = data['solution'].stepDetails[c].info[i].status
                 logger.info("SWXblock save_grade() examine step c={c} i={i} status={s}".format(c=c,i=i,s=status))
                 if (status == 1):   # valid step
                     valid_steps += 1
