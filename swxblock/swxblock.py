@@ -535,7 +535,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 # Check for missing grading attributes
 
         # logger.info("SWXblock save_grade() initial self={a}".format(a=self))
-        # logger.info("SWXblock save_grade() initial data={a}".format(a=data))
+        logger.info("SWXblock save_grade() initial data={a}".format(a=data))
 
         try: q_grade_showme_ded = self.q_grade_showme_ded
         except (NameError,AtrributeError) as e:
@@ -607,15 +607,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         valid_steps = 0;
 
-	"""
-	Jul  2 21:47:21 ip-172-31-0-23 [service_variant=lms][swxblock.swxblock][env:sandbox] INFO [ip-172-31-0-23  27368] [swxblock.py:612] - SWXblock save_grade() count valid_steps solution={u'answered_question': {u'q_hint2': u'', u'q_grade_errors_ded': -1, u'q_type': u'gradeBasicAlgebra', u'q_definition': u'SolveFor[5a+4=2a-5,a]', u'q_grade_showme_ded': -1, u'q_id': u'', u'q_option_showme': True, u'q_max_attempts': -1, u'q_option_hint': True, u'q_grade_hints_count': -1, u'q_stimulus': u'Solve for \\(a\\).', u'q_hint1': u'', u'q_grade_hints_ded': -1, u'q_weight': 1, u'q_display_math': u'\\(\\)', u'q_index': 0, u'q_label': u'', u'q_hint3': u'', u'q_user': u'kent@querium.com', u'q_grade_errors_count': -1}, u'errors': 0, u'grade': 0, u'stepCount': 2, u'stepDetails': [{u'status': 1, u'index': 0, u'mathML': u'\\(3a=-9\\)', u'$$hashKey': u'object:150', u'text': u'Beautiful. Next step?', u'info': [{u'status': 1, u'index': 1, u'mathML': u'\\(3a=-9\\)', u'$$hashKey': u'object:160', u'text': u'Beautiful. Next step?', u'time': 29383}]}, {u'status': 0, u'index': 1, u'mathML': u'\\(a=-3\\)', u'$$hashKey': u'object:183', u'text': u'Congratulations, you have found the correct solution!!', u'info': [{u'status': 0, u'index': 1, u'mathML': u'\\(a=-3\\)', u'$$hashKey': u'object:191', u'text': u'Congratulations, you have found the correct solution!!', u'time': 49235}]}], u'sessionId': u'SolveFor5a42a5a$kentqueriumcom$02072020134333', u'score': u'', u'time': 49.235, u'usedShowMe': True, u'hints': 0}
-
-	"""
-
-	# fuka july-2020 count the number of valid steps in the solution
-        solution=self.solution
-        logger.info("SWXblock save_grade() count valid_steps solution={s}".format(s=solution))
-	step_details = solution['stepDetails']
+        count_solution=data['solution']
+        logger.info("SWXblock save_grade() count valid_steps count_solution={s}".format(s=count_solution))
+	step_details = count_solution['stepDetails']
         logger.info("SWXblock save_grade() count valid_steps step_details={d}".format(d=step_details))
         logger.info("SWXblock save_grade() count valid_steps len(step_details)={l}".format(l=len(step_details)))
         for c in range(len(step_details)):
