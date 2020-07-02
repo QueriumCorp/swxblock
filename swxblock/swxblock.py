@@ -627,7 +627,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 #   valid_steps += 1
                 else:
                     logger.info("SWXblock save_grade() count valid_steps c={c} i={i} ignoring step_status={s}".format(c=c,i=i,s=step_status))
-                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_status={s} valid_steps={v}".format(c=c,s=step_status,v=valid_steps))
+                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_status={s} valid_steps={v}".format(c=c,i=i,s=step_status,v=valid_steps))
         logger.info("SWXblock save_grade() final valid_steps={v}".format(v=valid_steps))
 
         grade=3
