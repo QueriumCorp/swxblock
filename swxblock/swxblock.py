@@ -601,7 +601,24 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             logger.info('SWXblock save_grade() - min_steps_ded default set to 0.25')
             q_grade_min_steps_ded = 0.25
 
-        valid_steps = count_valid_steps(self)	 # Count the number of good steps
+        """
+        Count the total number of VALID steps the student input.
+        Used to determine if they get full credit for entering at least a min number of good steps.
+        """
+        valid_steps = 0;
+
+	# fuka july-2020 count the number of valid steps in the solution
+        logger.info("SWXblock save_grade() count valid_steps solution={s}".format(s=self.solution))
+        logger.info("SWXblock save_grade() count valid_steps solution.stepDetails={d}".format(d=self.solution.stepDetails))
+        for c in range(self.solution.stepDetails.length-1):
+            for i in range (self.solution.stepDetails[c].info.length-1):
+                status = self.solution.stepDetails[c].info[i].status
+                logger.info("SWXblock save_grade() examine step c={c} i={i} status={s}".format(c=c,i=i,s=status))
+                if (status == 1):   # valid step
+                    valid_steps += 1
+                # elsif (status == 3):   # invalid step
+                #   valid_steps += 1
+        logger.info("SWXblock save_grade() count valid_steps final valid_steps={v}".format(v=valid_steps))
 
         grade=3
 	max_grade=grade
@@ -642,6 +659,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # logger.info("SWXblock save_grade() final self={a}".format(a=self))
         # logger.info("SWXblock save_grade() final self.solution={a}".format(a=self.solution))
         # logger.info("SWXblock save_grade() final self.grade={a}".format(a=self.grade))
+
 
 
     # TO-DO: change this to create the scenarios you'd like to see in the
@@ -959,22 +977,3 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # logger.info("SWXblock weighted_grade() earned {e}".format(e=self.raw_earned))
         # logger.info("SWXblock weighted_grade() weight {w}".format(w=self.q_weight))
         return self.raw_earned * self.q_weight
-
-    def count_valid_steps(self):
-        """
-        Returns a count of the total number of VALID steps the student input.
-        Used to determine if they get full credit for entering at least a min number of good steps.
-        """
-        count = 0;
-
-        logger.info("SWXblock count_valid_steps solution={s}".format(s=self.solution))
-        logger.info("SWXblock count_valid_steps solution.stepDetails={d}".format(d=self.solution.stepDetails))
-        for c in range(self.solution.stepDetails.length-1):
-            for i in range (self.solution.stepDetails[c].info.length-1):
-                status = self.solution.stepDetails[c].info[i].status 
-                if (status == 1):   # valid step
-		    count += 1
-                # elsif (status == 3):   # invalid step
-		#   count += 1
-        logger.info("SWXblock count_valid_steps final count={c}".format(c=count))
-        return count
