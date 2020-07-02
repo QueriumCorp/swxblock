@@ -37,7 +37,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q_grade_errors_count = Integer(help="Number of Errors before deduction", default=-1, scope=Scope.content)
     q_grade_errors_ded = Integer(help="Point deduction for excessive Errors", default=-1, scope=Scope.content)
     q_grade_min_steps_count = Integer(help="Minimum valid steps in solution for full credit", default=-1, scope=Scope.content)
-    q_grade_min_steps_ded = Integer(help="Point deduction for fewer than minimum valid steps", default=-1, scope=Scope.content)
+    q_grade_min_steps_ded = Float(help="Point deduction for fewer than minimum valid steps", default=0.25, scope=Scope.content)
 
     # PER-QUESTION HINTS/SHOW SOLUTION OPTIONS
     q_option_hint = Boolean(help='Display Hint button if "True"', default=True, scope=Scope.content)
