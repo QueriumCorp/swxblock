@@ -9,6 +9,7 @@ function SWXStudent(runtime, element, data) {
     var enable_hint = question.q_option_hint;
     var max_attempts = question.q_max_attempts;
     var weight = question.q_weight;
+    var min_steps = question.q_min_steps_count;
 
     console.info("SWXStudent question",question);
     // console.info("SWXStudent enable_showme",enable_showme);
@@ -16,7 +17,8 @@ function SWXStudent(runtime, element, data) {
     // console.info("SWXStudent solution",solution);
     // console.info("SWXStudent count_attempts",count_attempts);
     // console.info("SWXStudent max_attempts",max_attempts);
-    console.info("SWXStudent weight",weight);
+    console.info("SWXStudent weight ",weight);
+    console.info("SWXStudent min steps",min_steps);
 
     if (typeof enable_showme === 'undefined') {
         // console.info("enable_showme is undefined");
@@ -110,9 +112,10 @@ function SWXStudent(runtime, element, data) {
         };
     
         // console.info("SWXstudent previewClicked() started");
-        // console.info("SWXstudent previewClicked() count_attempts",count_attempts);
-        // console.info("SWXstudent previewClicked() max_attempts",max_attempts);
-        console.info("SWXstudent previewClicked() weight",weight);
+        // console.info("SWXstudent previewClicked() count_attempts ",count_attempts);
+        // console.info("SWXstudent previewClicked() max_attempts ",max_attempts);
+        console.info("SWXstudent previewClicked() weight ",weight);
+        console.info("SWXstudent previewClicked() min_steps ",min_steps);
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts >= max_attempts) {
             // console.info("SWXstudent previewClicked() too many attempts");
@@ -127,7 +130,7 @@ function SWXStudent(runtime, element, data) {
             // console.info("Celebrate", stats);
             solution = stats;
             solution.answered_question = question; // remember the question we answered for the stats display
-            // console.info("celebrate solution", solution);
+            // console.info("celebrate solution ", solution);
 
             if( stats.usedShowMe ){
                 grade=0;
@@ -185,7 +188,7 @@ function SWXStudent(runtime, element, data) {
         // console.info("SWXblock previewClicked() count_attempts ",count_attempts);
         data.count_attempts += 1;
         count_attempts = data.count_attempts;
-        // console.info("SWXStudent incremented count_attempts",count_attempts);
+        // console.info("SWXStudent incremented count_attempts ",count_attempts);
         // console.info("SWXblock previewClicked() max_attempts ",max_attempts);
         console.info("SWXblock previewClicked() weight ",weight);
         // console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);

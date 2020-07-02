@@ -19,6 +19,8 @@ function SWxStudio(runtime, element, question) {
             q_grade_hints_ded : $('#q_grade_hints_ded', element).val(),
             q_grade_errors_count : $('#q_grade_errors_count', element).val(),
             q_grade_errors_ded : $('#q_grade_errors_ded', element).val(),
+            q_grade_min_steps_count : $('#q_grade_min_steps_count', element).val(),
+            q_grade_min_steps_ded : $('#q_grade_min_steps_ded', element).val(),
 
             id : $('#id', element).val(),
             label : $('#label', element).val(),
