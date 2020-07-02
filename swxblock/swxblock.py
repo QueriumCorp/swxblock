@@ -607,31 +607,33 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         valid_steps = 0;
 
-        logger.info("SWXblock save_grade() count valid_steps data={d}".format(d=data))
+        # logger.info("SWXblock save_grade() count valid_steps data={d}".format(d=data))
 	step_details = data['stepDetails']
-        logger.info("SWXblock save_grade() count valid_steps data['stepCount']={c} step_details={d}".format(c=data['stepCount'],d=step_details))
-        logger.info("SWXblock save_grade() count valid_steps len(step_details)={l}".format(l=len(step_details)))
+        logger.info("SWXblock save_grade() count valid_steps step_details={d}".format(d=step_details))
+        # logger.info("SWXblock save_grade() count valid_steps len(step_details)={l}".format(l=len(step_details)))
         for c in range(len(step_details)):
-            logger.info("SWXblock save_grade() count valid_steps examine step c={c} step_details[c]={d}".format(c=c,d=step_details[c]))
+            logger.info("SWXblock save_grade() count valid_steps begin examine step c={c} step_details[c]={d}".format(c=c,d=step_details[c]))
             for i in range (len(step_details[c]['info'])):
-                logger.info("SWXblock save_grade() count valid_steps examine step c={c} step_details[c]['info']={s}".format(c=c,s=step_details[c]['info']))
-                logger.info("SWXblock save_grade() count valid_steps examine step c={c} step_details[c]['info'][i]={s}".format(c=c,s=step_details[c]['info'][i]))
+                # logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info']={s}".format(c=c,i=i,s=step_details[c]['info']))
+                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info'][i]={s}".format(c=c,i=i,s=step_details[c]['info'][i]))
                 step_status = step_details[c]['info'][i]['status']
                 if (step_status == 0):       # victory
                     valid_steps += 1
+                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} victory step found".format(c=c,i=i))
                 elif (step_status == 1):     # valid step
                     valid_steps += 1
+                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} valid step found".format(c=c,i=i))
                 # elif (step_status == 3):   # invalid step
                 #   valid_steps += 1
                 else:
-                    logger.info("SWXblock save_grade() count valid_steps c={c} ignoring step_status={s}".format(c=c,s=step_status))
-                logger.info("SWXblock save_grade() count valid_steps examine step c={c} step_status={s} valid_steps={v}".format(c=c,s=step_status,v=valid_steps))
+                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} ignoring step_status={s}".format(c=c,i=i,s=step_status))
+                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_status={s} valid_steps={v}".format(c=c,s=step_status,v=valid_steps))
         logger.info("SWXblock save_grade() final valid_steps={v}".format(v=valid_steps))
 
         grade=3
 	max_grade=grade
 
-        logger.info('SWXblock save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe']))
+        logger.info('SWXblock save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f} min_steps={g}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe'],g=g_grade_min_steps_count))
         if data['errors']>q_grade_errors_count:
             grade=grade-q_grade_errors_ded
             # logger.info('SWXblock save_grade() - errors test errors_ded={a} grade={b}'.format(a=q_grade_errors_ded,b=grade))
