@@ -617,10 +617,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock save_grade() count valid_steps solution={s}".format(s=solution))
 	step_details = solution['stepDetails']
         logger.info("SWXblock save_grade() count valid_steps step_details={d}".format(d=step_details))
-        logger.info("SWXblock save_grade() count valid_steps step_details.length={l}".format(l=step_details.length))
-        for c in range(step_details.length-1):
+        logger.info("SWXblock save_grade() count valid_steps len(step_details)={l}".format(l=len(step_details)))
+        for c in range(len(step_details)-1):
             # for i in range (step_details[c].length-1):
-            step_status = step_details[c].status
+            step_status = step_details[c]['status']
             logger.info("SWXblock save_grade() count valid_steps examine step c={c} step_status={s}".format(c=c,s=step_status))
             if (step_status == 0):       # victory
                 valid_steps += 1
