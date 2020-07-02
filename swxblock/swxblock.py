@@ -742,7 +742,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         self.q_grade_errors_count = int(data['q_grade_errors_count'])
         self.q_grade_errors_ded = int(data['q_grade_errors_ded'])
         self.q_grade_min_steps_count = int(data['q_grade_min_steps_count'])
-        self.q_grade_min_steps_ded = int(data['q_grade_min_steps_ded'])
+        self.q_grade_min_steps_ded = float(data['q_grade_min_steps_ded'])
 
         self.q_id = data['id']
         self.q_label = data['label']
