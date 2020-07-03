@@ -15,7 +15,7 @@ function SWXStudent(runtime, element, data) {
     console.info("SWXStudent question",question);
     // console.info("SWXStudent enable_showme",enable_showme);
     // console.info("SWXStudent enable_hint",enable_hint);
-    // console.info("SWXStudent solution",solution);
+    console.info("SWXStudent solution",solution);
     // console.info("SWXStudent count_attempts",count_attempts);
     // console.info("SWXStudent max_attempts",max_attempts);
     console.info("SWXStudent weight ",weight);
@@ -93,6 +93,7 @@ function SWXStudent(runtime, element, data) {
     var star2 = $('.star2', swxblock_block)[0];
     var star3 = $('.star3', swxblock_block)[0];
     var elapsed_time_count = $('.elapsed-time-count', swxblock_block)[0];
+    var grade = $('.grade', swxblock_block)[0];
     var error_count = $('.error-count', swxblock_block)[0];
     var hint_count = $('.hint-count', swxblock_block)[0];
     var used_showme = $('.used-showme', swxblock_block)[0];
@@ -286,6 +287,7 @@ function SWXStudent(runtime, element, data) {
         }else{
             question_stats.classList.remove("preview_hidden");
             elapsed_time_count.innerText = solution.time.toFixed();
+            grade.innerText = grade;
             error_count.innerText = solution.errors;
             hint_count.innerText = solution.hints;
             // var attempts_string;
