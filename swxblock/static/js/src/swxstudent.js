@@ -127,7 +127,7 @@ function SWXStudent(runtime, element, data) {
             swxblock_block.classList.remove("block_working");
             swxblock_block.classList.add("block_worked");
 
-            // console.info("Celebrate", stats);
+            console.info("Celebrate", stats);
             solution = stats;
             solution.answered_question = question; // remember the question we answered for the stats display
             // console.info("celebrate solution ", solution);
