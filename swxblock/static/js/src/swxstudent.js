@@ -133,14 +133,21 @@ function SWXStudent(runtime, element, data) {
             // console.info("celebrate solution ", solution);
 
             if( stats.usedShowMe ){
-                grade=0;
+                grade=0.0;
             }else if( stats.errors==0 && stats.hints==0 ){
-                grade=3;
+                grade=3.0;
             }else if( stats.errors<2 && stats.hints<3 ){
-                grade=2;
+                grade=2.0;
             }else{
-                grade=1;
+                grade=1.0;
             }
+
+	    // partial deduction for not providing min steps with full credit
+            console.info("celebrate tool check min steps ",solution.answered_question.q_grade_min_steps_count," steps ",stats.stepCount);
+	    if (grade == 3.0 && stats.stepCount < solution.answered_question.q_grade_min_steps_count) {
+                console.info("celebrate tool tool min steps deduction ",solution.answered_question.q_grade_min_steps_ded);
+                grade=grade-solution.answered_question.q_grade_min_steps_ded;
+	    }
 
             updateStats();
             updateSolution();
