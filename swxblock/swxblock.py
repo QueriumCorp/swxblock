@@ -31,11 +31,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     url_name = String(display_name="URL name", default='NONE', scope=Scope.content)
 
     # PER-QUESTION GRADING OPTIONS (STILL NEED TO ALLOW FOR COURSE DEFAULTS)
-    q_grade_showme_ded = Integer(help="Point deduction for using Show Solution", default=-1, scope=Scope.content)
+    q_grade_showme_ded = Float(help="Point deduction for using Show Solution", default=-1.0, scope=Scope.content)
     q_grade_hints_count = Integer(help="Number of Hints before deduction", default=-1, scope=Scope.content)
-    q_grade_hints_ded = Integer(help="Point deduction for using excessive Hints", default=-1, scope=Scope.content)
+    q_grade_hints_ded = Float(help="Point deduction for using excessive Hints", default=-1.0, scope=Scope.content)
     q_grade_errors_count = Integer(help="Number of Errors before deduction", default=-1, scope=Scope.content)
-    q_grade_errors_ded = Integer(help="Point deduction for excessive Errors", default=-1, scope=Scope.content)
+    q_grade_errors_ded = Float(help="Point deduction for excessive Errors", default=-1.0, scope=Scope.content)
     q_grade_min_steps_count = Integer(help="Minimum valid steps in solution for full credit", default=-1, scope=Scope.content)
     q_grade_min_steps_ded = Float(help="Point deduction for fewer than minimum valid steps", default=0.25, scope=Scope.content)
 
@@ -159,13 +159,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     )
 
     # STUDENT'S QUESTION PERFORMANCE FIELDS
-    grade = Integer(help="The student's grade", default=-1, scope=Scope.user_state)
+    grade = Float(help="The student's grade", default=-1, scope=Scope.user_state)
     solution = Dict(help="The student's last solution", default={}, scope=Scope.user_state)
     count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.user_state)
     # count_attempts keeps track of the number of attempts of this question by this student so we can
     # compare to self.max_attempts which is inherited as course Advanced Setting or to q_max_attempts var.
 
-    raw_possible = Integer(help="Number of possible points", default=3,scope=Scope.user_state)
+    raw_possible = Float(help="Number of possible points", default=3,scope=Scope.user_state)
 
     # FIELDS FOR THE ScorableXBlockMixin
 
@@ -609,31 +609,31 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         # logger.info("SWXblock save_grade() count valid_steps data={d}".format(d=data))
 	step_details = data['stepDetails']
-        logger.info("SWXblock save_grade() count valid_steps step_details={d}".format(d=step_details))
+        # logger.info("SWXblock save_grade() count valid_steps step_details={d}".format(d=step_details))
         # logger.info("SWXblock save_grade() count valid_steps len(step_details)={l}".format(l=len(step_details)))
         for c in range(len(step_details)):
-            logger.info("SWXblock save_grade() count valid_steps begin examine step c={c} step_details[c]={d}".format(c=c,d=step_details[c]))
+            # logger.info("SWXblock save_grade() count valid_steps begin examine step c={c} step_details[c]={d}".format(c=c,d=step_details[c]))
             for i in range (len(step_details[c]['info'])):
                 # logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info']={s}".format(c=c,i=i,s=step_details[c]['info']))
-                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info'][i]={s}".format(c=c,i=i,s=step_details[c]['info'][i]))
+                # logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info'][i]={s}".format(c=c,i=i,s=step_details[c]['info'][i]))
                 step_status = step_details[c]['info'][i]['status']
                 if (step_status == 0):       # victory
                     valid_steps += 1
-                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} victory step found".format(c=c,i=i))
+                    # logger.info("SWXblock save_grade() count valid_steps c={c} i={i} victory step found".format(c=c,i=i))
                 elif (step_status == 1):     # valid step
                     valid_steps += 1
-                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} valid step found".format(c=c,i=i))
+                    # logger.info("SWXblock save_grade() count valid_steps c={c} i={i} valid step found".format(c=c,i=i))
                 # elif (step_status == 3):   # invalid step
                 #   valid_steps += 1
-                else:
-                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} ignoring step_status={s}".format(c=c,i=i,s=step_status))
-                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_status={s} valid_steps={v}".format(c=c,i=i,s=step_status,v=valid_steps))
-        logger.info("SWXblock save_grade() final valid_steps={v}".format(v=valid_steps))
+                # else:
+                    # logger.info("SWXblock save_grade() count valid_steps c={c} i={i} ignoring step_status={s}".format(c=c,i=i,s=step_status))
+                # logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_status={s} valid_steps={v}".format(c=c,i=i,s=step_status,v=valid_steps))
+        # logger.info("SWXblock save_grade() final valid_steps={v}".format(v=valid_steps))
 
         grade=3
 	max_grade=grade
 
-        logger.info('SWXblock save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f} min_steps={g}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe'],g=q_grade_min_steps_count))
+        logger.info('SWXblock save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f} min_steps={g} valid_steps={h}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe'],g=q_grade_min_steps_count,h=valid_steps))
         if data['errors']>q_grade_errors_count:
             grade=grade-q_grade_errors_ded
             # logger.info('SWXblock save_grade() - errors test errors_ded={a} grade={b}'.format(a=q_grade_errors_ded,b=grade))
@@ -755,7 +755,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     def save_question(self, data, suffix=''):
         # logger.info('SWXblock save_question() - entered')
         self.q_max_attempts = int(data['q_max_attempts'])
-        self.q_weight = data['q_weight']
+        self.q_weight = float(data['q_weight'])
         if data['q_option_showme'] == u'True':
             self.q_option_showme = True
         else:
@@ -764,11 +764,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.q_option_hint = True
         else:
             self.q_option_hint = False
-        self.q_grade_showme_ded = int(data['q_grade_showme_ded'])
+        self.q_grade_showme_ded = float(data['q_grade_showme_ded'])
         self.q_grade_hints_count = int(data['q_grade_hints_count'])
-        self.q_grade_hints_ded = int(data['q_grade_hints_ded'])
+        self.q_grade_hints_ded = float(data['q_grade_hints_ded'])
         self.q_grade_errors_count = int(data['q_grade_errors_count'])
-        self.q_grade_errors_ded = int(data['q_grade_errors_ded'])
+        self.q_grade_errors_ded = float(data['q_grade_errors_ded'])
         self.q_grade_min_steps_count = int(data['q_grade_min_steps_count'])
         self.q_grade_min_steps_ded = float(data['q_grade_min_steps_ded'])
 
