@@ -21,6 +21,7 @@ function SWXStudent(runtime, element, data) {
     console.info("SWXStudent weight ",weight);
     console.info("SWXStudent min steps",min_steps);
     console.info("SWXStudent min steps dec",min_steps_ded);
+    console.info("SWXStudent grade",grade);
 
     if (typeof enable_showme === 'undefined') {
         // console.info("enable_showme is undefined");
@@ -93,7 +94,7 @@ function SWXStudent(runtime, element, data) {
     var star2 = $('.star2', swxblock_block)[0];
     var star3 = $('.star3', swxblock_block)[0];
     var elapsed_time_count = $('.elapsed-time-count', swxblock_block)[0];
-    var grade = $('.grade', swxblock_block)[0];
+    var grade_val = $('.grade-val', swxblock_block)[0];
     var error_count = $('.error-count', swxblock_block)[0];
     var hint_count = $('.hint-count', swxblock_block)[0];
     var used_showme = $('.used-showme', swxblock_block)[0];
@@ -287,7 +288,7 @@ function SWXStudent(runtime, element, data) {
         }else{
             question_stats.classList.remove("preview_hidden");
             elapsed_time_count.innerText = solution.time.toFixed();
-            grade.innerText = grade.toFixed();
+            grade_val.innerText = grade.toString();
             error_count.innerText = solution.errors;
             hint_count.innerText = solution.hints;
             // var attempts_string;
