@@ -206,6 +206,7 @@ function SWXStudent(runtime, element, data) {
     }   
 
     function updateStats(){
+        console.error('updateStats:', grade)
         // switch( grade ){
         //    case -1:
         if (grade < 0) {    // Including undefined ie. -1
@@ -241,8 +242,8 @@ function SWXStudent(runtime, element, data) {
         //      break;
         } else if ( grade >= 1.5 && grade < 2.0 ) {
                 star_box.classList.remove("preview_hidden");
-                star1.classList.remove('full');
-                star1.classList.add('half');
+                star1.classList.add('full');
+                star1.classList.remove('half');
                 star2.classList.remove('full');
                 star2.classList.add('half');
                 star3.classList.remove('full');
