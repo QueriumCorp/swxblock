@@ -9,7 +9,8 @@ function SWXStudent(runtime, element, data) {
     var enable_hint = question.q_option_hint;
     var max_attempts = question.q_max_attempts;
     var weight = question.q_weight;
-    var min_steps = question.q_min_steps_count;
+    var min_steps = question.q_grade_min_steps_count;
+    var min_steps_ded = question.q_grade_min_steps_ded;
 
     console.info("SWXStudent question",question);
     // console.info("SWXStudent enable_showme",enable_showme);
@@ -19,6 +20,7 @@ function SWXStudent(runtime, element, data) {
     // console.info("SWXStudent max_attempts",max_attempts);
     console.info("SWXStudent weight ",weight);
     console.info("SWXStudent min steps",min_steps);
+    console.info("SWXStudent min steps dec",min_steps_ded);
 
     if (typeof enable_showme === 'undefined') {
         // console.info("enable_showme is undefined");
@@ -116,6 +118,7 @@ function SWXStudent(runtime, element, data) {
         // console.info("SWXstudent previewClicked() max_attempts ",max_attempts);
         console.info("SWXstudent previewClicked() weight ",weight);
         console.info("SWXstudent previewClicked() min_steps ",min_steps);
+        console.info("SWXstudent previewClicked() min_steps_ded ",min_steps_ded);
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts >= max_attempts) {
             // console.info("SWXstudent previewClicked() too many attempts");
@@ -143,10 +146,10 @@ function SWXStudent(runtime, element, data) {
             }
 
 	    // partial deduction for not providing min steps with full credit
-            console.info("celebrate tool check min steps ",solution.answered_question.q_grade_min_steps_count," steps ",stats.stepCount);
-	    if (grade == 3.0 && stats.stepCount < solution.answered_question.q_grade_min_steps_count) {
-                console.info("celebrate tool tool min steps deduction ",solution.answered_question.q_grade_min_steps_ded);
-                grade=grade-solution.answered_question.q_grade_min_steps_ded;
+            console.info("celebrate tool check min steps ",min_steps," steps ",stats.stepCount);
+	    if (grade == 3.0 && stats.stepCount < min_steps) {
+                console.info("celebrate tool tool min steps deduction ",min_steps_ded);
+                grade=grade-min_steps_ded;
 	    }
 
             updateStats();
