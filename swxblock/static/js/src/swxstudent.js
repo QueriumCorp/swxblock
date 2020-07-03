@@ -206,7 +206,7 @@ function SWXStudent(runtime, element, data) {
     }   
 
     function updateStats(){
-        console.error('updateStats:', grade)
+        console.info('updateStats:', grade)
         // switch( grade ){
         //    case -1:
         if (grade < 0) {    // Including undefined ie. -1
@@ -215,65 +215,65 @@ function SWXStudent(runtime, element, data) {
         } else if ( grade > 0.0 && grade < 0.5 ) {
         //    case 0:
                 star_box.classList.remove("preview_hidden");
-                star1.classList.remove('full');
                 star1.classList.remove('half');
-                star2.classList.remove('full');
+                star1.classList.remove('full');
                 star2.classList.remove('half');
-                star3.classList.remove('full');
+                star2.classList.remove('full');
                 star3.classList.remove('half');
+                star3.classList.remove('full');
         //      break;
         } else if ( grade >= 0.5 && grade < 1.0 ) {
                 star_box.classList.remove("preview_hidden");
-                star1.classList.remove('full');
                 star1.classList.add('half');
-                star2.classList.remove('full');
+                star1.classList.remove('full');
                 star2.classList.remove('half');
-                star3.classList.remove('full');
+                star2.classList.remove('full');
                 star3.classList.remove('half');
+                star3.classList.remove('full');
         } else if ( grade >= 1.0 && grade < 1.5 ) {
         //    case 1:
                 star_box.classList.remove("preview_hidden");
-                star1.classList.add('full');
                 star1.classList.remove('half');
-                star2.classList.remove('full');
+                star1.classList.add('full');
                 star2.classList.remove('half');
-                star3.classList.remove('full');
+                star2.classList.remove('full');
                 star3.classList.remove('half');
+                star3.classList.remove('full');
         //      break;
         } else if ( grade >= 1.5 && grade < 2.0 ) {
                 star_box.classList.remove("preview_hidden");
-                star1.classList.add('full');
                 star1.classList.remove('half');
-                star2.classList.remove('full');
+                star1.classList.add('full');
                 star2.classList.add('half');
-                star3.classList.remove('full');
+                star2.classList.remove('full');
                 star3.classList.remove('half');
+                star3.classList.remove('full');
         } else if ( grade >= 2.0 && grade < 2.5 ) {
         //    case 2:
                 star_box.classList.remove("preview_hidden");
-                star1.classList.remove('full');
                 star1.classList.remove('half');
-                star2.classList.add('full');
+                star1.classList.add('full');
                 star2.classList.remove('half');
-                star3.classList.remove('full');
+                star2.classList.add('full');
                 star3.classList.remove('half');
+                star3.classList.remove('full');
         } else if ( grade >= 2.5 && grade < 3.0 ) {
                 star_box.classList.remove("preview_hidden");
-                star1.classList.remove('full');
                 star1.classList.remove('half');
+                star1.classList.add('full');
+                star2.classList.remove('half');
                 star2.classList.add('full');
-                star2.classList.add('half');
+                star3.classList.add('half');
                 star3.classList.remove('full');
-                star3.classList.remove('half');
         } else if ( grade == 3.0 ) {
         //    case 3:
                 star_box.classList.remove("preview_hidden");
-                star1.classList.remove('full');
                 star1.classList.remove('half');
-                star2.classList.remove('full');
+                star1.classList.add('full');
                 star2.classList.remove('half');
-                star3.classList.add('full');
+                star2.classList.add('full');
                 star3.classList.remove('half');
+                star3.classList.add('full');
         //      break;
         } else if ( grade > 3.0 ) {
         //    default:
