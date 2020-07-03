@@ -273,7 +273,7 @@ function SWXStudent(runtime, element, data) {
                 star2.classList.remove('half');
                 star3.classList.add('full');
                 star3.classList.remove('half');
-                break;
+        //      break;
         } else if ( grade > 3.0 ) {
         //    default:
                 star_box.classList.add("preview_hidden");
