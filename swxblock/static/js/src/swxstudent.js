@@ -289,7 +289,8 @@ function SWXStudent(runtime, element, data) {
         }else{
             question_stats.classList.remove("preview_hidden");
             elapsed_time_count.innerText = solution.time.toFixed();
-            grade_val.innerText = grade.toString();
+            # Grade normalized to 1.0 and weighted
+            grade_val.innerText = ((grade/3.0)*weight).toString();
             error_count.innerText = solution.errors;
             hint_count.innerText = solution.hints;
             // var attempts_string;
