@@ -1,5 +1,6 @@
 /* Javascript for SWXBlock. */
 function SWXStudent(runtime, element, data) {
+    console.info("SWXStudent data",data);
     // Get our context variables
     var question = data.question;
     var grade = data.grade;
