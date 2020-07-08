@@ -19,7 +19,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     This xblock provides up to 10 variants of a question for delivery using the StepWise UI.
     """
-    # logger.debug('SWXBlock() - instantiated')
+    logger.debug('SWXBlock() - instantiated')
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
     show_in_read_only_mode = True # tells the xblock to let the instructor view the student's work (lms/djangoapps/courseware/masquerade.py)
@@ -203,9 +203,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         xb_user = user_service.get_current_user()
             xb_user.emails[0]
         """
-        # logger.info('SWXblock student_view() - entered')
-        # logger.info("SWXblock student_view() self={a}".format(a=self))
-        # logger.info("SWXblock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
+        logger.info('SWXblock student_view() - entered')
+        logger.info("SWXblock student_view() self={a}".format(a=self))
+        logger.info("SWXblock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
 	# Can't set q_max_attempts if the imported xblock doesn't define this field, since it defaults to None (read only)?
 	# use course-wide max_attempts value if q_max_attempts is not set
@@ -521,8 +521,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # SAVE GRADE
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
-        # logger.info('SWXblock save_grade() - entered')
-        # logger.info("SWXBlock save_grade() - self.max_attempts={a}".format(a=self.max_attempts))
+        logger.info('SWXblock save_grade() - entered')
+        logger.info("SWXBlock save_grade() - self.max_attempts={a}".format(a=self.max_attempts))
 #        if data['usedShowMe']:
 #            grade=0
 #        elif data['errors']==0 and data['hints']==0:
@@ -534,32 +534,32 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
 # Check for missing grading attributes
 
-        # logger.info("SWXblock save_grade() initial self={a}".format(a=self))
+        logger.info("SWXblock save_grade() initial self={a}".format(a=self))
         logger.info("SWXblock save_grade() initial data={a}".format(a=data))
 
         try: q_grade_showme_ded = self.q_grade_showme_ded
         except (NameError,AtrributeError) as e:
-             # logger.info('SWXblock save_grade() - self.q_grade_showme_dev was not defined: {e}'.format(e=e))
+             logger.info('SWXblock save_grade() - self.q_grade_showme_dev was not defined: {e}'.format(e=e))
              q_grade_showme_ded = -1
 
         try: q_grade_hints_count = self.q_grade_hints_count
         except (NameError,AtrributeError) as e:
-             # logger.info('SWXblock save_grade() - self.q_grade_hints_count was not defined: {e}',format(e=e))
+             logger.info('SWXblock save_grade() - self.q_grade_hints_count was not defined: {e}',format(e=e))
              q_grade_hints_count = -1
 
         try: q_grade_hints_ded = self.q_grade_hints_ded
         except (NameError,AtrributeError) as e:
-             # logger.info('SWXblock save_grade() - self.q_grade_hints_ded was not defined: {e}'.format(e=e))
+             logger.info('SWXblock save_grade() - self.q_grade_hints_ded was not defined: {e}'.format(e=e))
              q_grade_hints_ded = -1
 
         try: q_grade_errors_count = self.q_grade_errors_count
         except (NameError,AtrributeError) as e:
-             # logger.info('SWXblock save_grade() - self.q_grade_errors_count was not defined: {e}'.format(e=e))
+             logger.info('SWXblock save_grade() - self.q_grade_errors_count was not defined: {e}'.format(e=e))
              q_grade_errors_count = -1
 
         try: q_grade_errors_ded = self.q_grade_errors_ded
         except (NameError,AtrributeError) as e:
-             # logger.info('SWXblock save_grade() - self.q_grade_errors_ded was not defined: {e}'.format(e=e))
+             logger.info('SWXblock save_grade() - self.q_grade_errors_ded was not defined: {e}'.format(e=e))
              q_grade_errors_ded = -1
 
         try: q_grade_min_steps_count = self.q_grade_min_steps_count
@@ -583,19 +583,19 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 # Grading defaults
 
         if q_grade_showme_ded == -1:
-            # logger.info('SWXblock save_grade() - showme default set to 3')
+            logger.info('SWXblock save_grade() - showme default set to 3')
             q_grade_showme_ded = 3
         if q_grade_hints_count == -1:
-            # logger.info('SWXblock save_grade() - hints_count default set to 2')
+            logger.info('SWXblock save_grade() - hints_count default set to 2')
             q_grade_hints_count = 2
         if q_grade_hints_ded == -1:
-            # logger.info('SWXblock save_grade() - hints_ded default set to 1')
+            logger.info('SWXblock save_grade() - hints_ded default set to 1')
             q_grade_hints_ded = 1
         if q_grade_errors_count == -1:
-            # logger.info('SWXblock save_grade() - errors_count default set to 3')
+            logger.info('SWXblock save_grade() - errors_count default set to 3')
             q_grade_errors_count = 3
         if q_grade_errors_ded == -1:
-            # logger.info('SWXblock save_grade() - errors_ded default set to 1')
+            logger.info('SWXblock save_grade() - errors_ded default set to 1')
             q_grade_errors_ded = 1
         if q_grade_min_steps_ded == -1:
             logger.info('SWXblock save_grade() - min_steps_ded default set to 0.25')
@@ -607,28 +607,28 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         valid_steps = 0;
 
-        # logger.info("SWXblock save_grade() count valid_steps data={d}".format(d=data))
+        logger.info("SWXblock save_grade() count valid_steps data={d}".format(d=data))
 	step_details = data['stepDetails']
-        # logger.info("SWXblock save_grade() count valid_steps step_details={d}".format(d=step_details))
-        # logger.info("SWXblock save_grade() count valid_steps len(step_details)={l}".format(l=len(step_details)))
+        logger.info("SWXblock save_grade() count valid_steps step_details={d}".format(d=step_details))
+        logger.info("SWXblock save_grade() count valid_steps len(step_details)={l}".format(l=len(step_details)))
         for c in range(len(step_details)):
-            # logger.info("SWXblock save_grade() count valid_steps begin examine step c={c} step_details[c]={d}".format(c=c,d=step_details[c]))
+            logger.info("SWXblock save_grade() count valid_steps begin examine step c={c} step_details[c]={d}".format(c=c,d=step_details[c]))
             for i in range (len(step_details[c]['info'])):
-                # logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info']={s}".format(c=c,i=i,s=step_details[c]['info']))
-                # logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info'][i]={s}".format(c=c,i=i,s=step_details[c]['info'][i]))
+                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info']={s}".format(c=c,i=i,s=step_details[c]['info']))
+                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info'][i]={s}".format(c=c,i=i,s=step_details[c]['info'][i]))
                 step_status = step_details[c]['info'][i]['status']
                 if (step_status == 0):       # victory
                     valid_steps += 1
-                    # logger.info("SWXblock save_grade() count valid_steps c={c} i={i} victory step found".format(c=c,i=i))
+                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} victory step found".format(c=c,i=i))
                 elif (step_status == 1):     # valid step
                     valid_steps += 1
-                    # logger.info("SWXblock save_grade() count valid_steps c={c} i={i} valid step found".format(c=c,i=i))
+                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} valid step found".format(c=c,i=i))
                 # elif (step_status == 3):   # invalid step
                 #   valid_steps += 1
                 # else:
-                    # logger.info("SWXblock save_grade() count valid_steps c={c} i={i} ignoring step_status={s}".format(c=c,i=i,s=step_status))
-                # logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_status={s} valid_steps={v}".format(c=c,i=i,s=step_status,v=valid_steps))
-        # logger.info("SWXblock save_grade() final valid_steps={v}".format(v=valid_steps))
+                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} ignoring step_status={s}".format(c=c,i=i,s=step_status))
+                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_status={s} valid_steps={v}".format(c=c,i=i,s=step_status,v=valid_steps))
+        logger.info("SWXblock save_grade() final valid_steps={v}".format(v=valid_steps))
 
         grade=3
 	max_grade=grade
@@ -636,19 +636,19 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info('SWXblock save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f} min_steps={g} valid_steps={h}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe'],g=q_grade_min_steps_count,h=valid_steps))
         if data['errors']>q_grade_errors_count:
             grade=grade-q_grade_errors_ded
-            # logger.info('SWXblock save_grade() - errors test errors_ded={a} grade={b}'.format(a=q_grade_errors_ded,b=grade))
+            logger.info('SWXblock save_grade() - errors test errors_ded={a} grade={b}'.format(a=q_grade_errors_ded,b=grade))
         if data['hints']>q_grade_hints_count:
             grade=grade-q_grade_hints_ded
-            # logger.info('SWXblock save_grade() - hints test hints_ded={a} grade={b}'.format(a=q_grade_hints_ded,b=grade))
+            logger.info('SWXblock save_grade() - hints test hints_ded={a} grade={b}'.format(a=q_grade_hints_ded,b=grade))
         if data['usedShowMe']:
             grade=grade-q_grade_showme_ded
-            # logger.info('SWXblock save_grade() - showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
+            logger.info('SWXblock save_grade() - showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
 	# fuka july-2020 partial deduction for entering too few intermediate steps
 	# TODO: Don't subtract on MatchSpec problems
         if (grade >= max_grade and valid_steps < q_grade_min_steps_count):
             grade=grade-q_grade_min_steps_ded
         if grade<0:
-            # logger.info('SWXblock save_grade() - zero negative grade')
+            logger.info('SWXblock save_grade() - zero negative grade')
             grade=0
 
         logger.info("SWXblock save_grade() final grade={a} q_weight={b}".format(a=grade,b=q_weight))
@@ -664,11 +664,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # starts a question, not when they finish.  Otherwise people can load the question as many times
         # as they want as long as they don't finish it, then reload the page.
         # self.count_attempts += 1
-        # logger.info("SWXblock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
+        logger.info("SWXblock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
 
-        # logger.info("SWXblock save_grade() final self={a}".format(a=self))
-        # logger.info("SWXblock save_grade() final self.solution={a}".format(a=self.solution))
-        # logger.info("SWXblock save_grade() final self.grade={a}".format(a=self.grade))
+        logger.info("SWXblock save_grade() final self={a}".format(a=self))
+        logger.info("SWXblock save_grade() final self.solution={a}".format(a=self.solution))
+        logger.info("SWXblock save_grade() final self.grade={a}".format(a=self.grade))
 
 
 
@@ -676,7 +676,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # workbench while developing your XBlock.
     @staticmethod
     def workbench_scenarios():
-        # logger.info('SWXblock workbench_scenarios() - entered')
+        logger.info('SWXblock workbench_scenarios() - entered')
         """A canned scenario for display in the workbench."""
         return [
             ("SWXBlock",
@@ -693,7 +693,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
 
     def studio_view(self, context=None):
-        # logger.info('SWXblock studio_view() - entered')
+        logger.info('SWXblock studio_view() - entered')
         """
         The STUDIO view of the SWXBlock, shown to instructors
         when authoring courses.
@@ -707,7 +707,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         return frag
 
     def author_view(self, context=None):
-        # logger.info('SWXblock author_view() - entered')
+        logger.info('SWXblock author_view() - entered')
         """
         The AUTHOR view of the SWXBlock, shown to instructors
         when previewing courses.
@@ -718,10 +718,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript(self.resource_string("static/js/src/swxauthor.js"))
 
-	# logger.info("swxblock SwXAuthor author_view v={a}".format(a=self.q_definition))
-	# logger.info("swxblock SwXAuthor author_view v1={a} v2={b} v3={c}".format(a=self.q1_definition,b=self.q2_definition,c=self.q3_definition))
-	# logger.info("swxblock SwXAuthor author_view v4={a} v5={b} v6={c}".format(a=self.q4_definition,b=self.q5_definition,c=self.q6_definition))
-	# logger.info("swxblock SwXAuthor author_view v7={a} v8={b} v9={c}".format(a=self.q7_definition,b=self.q8_definition,c=self.q9_definition))
+	logger.info("swxblock SwXAuthor author_view v={a}".format(a=self.q_definition))
+	logger.info("swxblock SwXAuthor author_view v1={a} v2={b} v3={c}".format(a=self.q1_definition,b=self.q2_definition,c=self.q3_definition))
+	logger.info("swxblock SwXAuthor author_view v4={a} v5={b} v6={c}".format(a=self.q4_definition,b=self.q5_definition,c=self.q6_definition))
+	logger.info("swxblock SwXAuthor author_view v7={a} v8={b} v9={c}".format(a=self.q7_definition,b=self.q8_definition,c=self.q9_definition))
 
         # tell author_view how many variants are defined
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0 and len(self.q9_definition)>0:
@@ -745,7 +745,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             variants = 1
 
-	# logger.info("swxblock SwXAuthor author_view variants={a}".format(a=variants))
+	logger.info("swxblock SwXAuthor author_view variants={a}".format(a=variants))
 
         frag.initialize_js('SWxAuthor', variants)
         return frag
@@ -753,7 +753,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # SAVE QUESTION
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
-        # logger.info('SWXblock save_question() - entered')
+        logger.info('SWXblock save_question() - entered')
         self.q_max_attempts = int(data['q_max_attempts'])
         self.q_weight = float(data['q_weight'])
         if data['q_option_showme'] == u'True':
@@ -917,23 +917,23 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     # Do necessary overrides from ScorableXBlockMixin
     def has_submitted_answer(self):
-        # logger.info('SWXblock has_submitted_answer() - entered')
+        logger.info('SWXblock has_submitted_answer() - entered')
         """
         Returns True if the problem has been answered by the runtime user.
         """
-        # logger.info("SWXblock has_submitted_answer() {a}".format(a=self.is_answered))
+        logger.info("SWXblock has_submitted_answer() {a}".format(a=self.is_answered))
         return self.is_answered
 
     def get_score(self):
-        # logger.info('SWXblock get_score() - entered')
+        logger.info('SWXblock get_score() - entered')
         """
         Return a raw score already persisted on the XBlock.  Should not
         perform new calculations.
         Returns:
             Score(raw_earned=float, raw_possible=float)
         """
-        # logger.info("SWXblock get_score() earned {e}".format(e=self.raw_earned))
-        # logger.info("SWXblock get_score() max {m}".format(m=self.max_score()))
+        logger.info("SWXblock get_score() earned {e}".format(e=self.raw_earned))
+        logger.info("SWXblock get_score() max {m}".format(m=self.max_score()))
         return Score(float(self.raw_earned), float(self.max_score()))
 
     def set_score(self, score):
@@ -947,7 +947,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Returns:
             None
         """
-        # logger.info("SWXblock set_score() earned {e}".format(e=score.raw_earned))
+        logger.info("SWXblock set_score() earned {e}".format(e=score.raw_earned))
         self.raw_earned = score.raw_earned
 
     def calculate_score(self):
@@ -957,8 +957,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Returns:
             Score(raw_earned=float, raw_possible=float)
         """
-        # logger.info("SWXblock calculate_score() grade {g}".format(g=self.grade))
-        # logger.info("SWXblock calculate_score() max {m}".format(m=self.max_score))
+        logger.info("SWXblock calculate_score() grade {g}".format(g=self.grade))
+        logger.info("SWXblock calculate_score() max {m}".format(m=self.max_score))
         return Score(float(self.grade), float(self.max_score()))
 
     def allows_rescore(self):
@@ -967,7 +967,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Subtypes may wish to override this if they need conditional support for
         rescoring.
         """
-        # logger.info("SWXblock allows_rescore() False")
+        logger.info("SWXblock allows_rescore() False")
         return False
 
     def max_score(self):
@@ -984,6 +984,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Returns the block's current saved grade multiplied by the block's
         weight- the number of points earned by the learner.
         """
-        # logger.info("SWXblock weighted_grade() earned {e}".format(e=self.raw_earned))
-        # logger.info("SWXblock weighted_grade() weight {w}".format(w=self.q_weight))
+        logger.info("SWXblock weighted_grade() earned {e}".format(e=self.raw_earned))
+        logger.info("SWXblock weighted_grade() weight {w}".format(w=self.q_weight))
         return self.raw_earned * self.q_weight
