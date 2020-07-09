@@ -15,6 +15,7 @@ logger = getLogger(__name__)
 
 
 @XBlock.wants('user')
+@XBlock.needs('course')
 class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     This xblock provides up to 10 variants of a question for delivery using the StepWise UI.
@@ -205,21 +206,21 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         logger.info('SWXblock student_view() - entered')
         logger.info("SWXblock student_view() self={a}".format(a=self))
+        logger.info("SWXblock student_view() context={a}".format(a=context))
         logger.info("SWXblock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
-        logger.info('SWXblock student_view() - course={c}'.format(c=course))
 	# Can't set self.q_max_attempts if the imported xblock doesn't define this field, since it defaults to None (read only?)
 	# so we'll use a local var to remember whether to use the course-wide setting or the per-question setting.
-	max_attempts = -1
-        try:
-             if (self.q_max_attempts == -1):
-		 max_attempts = course.max_attempts
-             else:
-                 max_attempts = self.q_max_attempts
-        except (NameError,AttributeError) as e:
-                logger.info('SWXblock student_view() - self.q_max_attempts was not defined: {e}'.format(e=e))
-                max_attempts = course.max_attempts;
-        logger.info('SWXblock student_view() - max_attempts={m}'.format(m=max_attempts))
+#	max_attempts = -1
+#        try:
+#             if (self.q_max_attempts == -1):
+#		 max_attempts = course.max_attempts
+#             else:
+#                 max_attempts = self.q_max_attempts
+#        except (NameError,AttributeError) as e:
+#                logger.info('SWXblock student_view() - self.q_max_attempts was not defined: {e}'.format(e=e))
+#                max_attempts = course.max_attempts;
+#        logger.info('SWXblock student_view() - max_attempts={m}'.format(m=max_attempts))
         # NOTE: could enforce other course-wide grading options here
 
         user_service = self.runtime.service( self, 'user')
