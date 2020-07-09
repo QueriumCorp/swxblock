@@ -161,9 +161,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # STUDENT'S QUESTION PERFORMANCE FIELDS
     grade = Float(help="The student's grade", default=-1, scope=Scope.user_state)
     solution = Dict(help="The student's last solution", default={}, scope=Scope.user_state)
-    count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.user_state)
     # count_attempts keeps track of the number of attempts of this question by this student so we can
-    # compare to self.max_attempts which is inherited as course Advanced Setting or to q_max_attempts var.
+    # compare to course.max_attempts which is inherited as course Advanced Setting or to q_max_attempts var.
+    count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.user_state)
 
     raw_possible = Float(help="Number of possible points", default=3,scope=Scope.user_state)
 
@@ -207,12 +207,18 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock student_view() self={a}".format(a=self))
         logger.info("SWXblock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
-	# Can't set q_max_attempts if the imported xblock doesn't define this field, since it defaults to None (read only)?
-	# use course-wide max_attempts value if q_max_attempts is not set
-	# if (self.q_max_attempts == -1):
-        #     self.q_max_attempts = self.max_attempts
-        # else:
-        #     self.q_max_attempts = self.max_attempts
+        logger.info('SWXblock student_view() - course={c}'.format(c=course))
+	# Can't set self.q_max_attempts if the imported xblock doesn't define this field, since it defaults to None (read only?)
+	# so we'll use a local var to remember whether to use the course-wide setting or the per-question setting.
+	max_attempts = -1
+        try: if (self.q_max_attempts == -1):
+		max_attempts = course.max_attempts
+             else:
+                max_attempts = self.q_max_attempts
+        except (NameError,AttributeError) as e:
+                logger.info('SWXblock student_view() - self.q_max_attempts was not defined: {e}'.format(e=e))
+                max_attempts = course.max_attempts;
+        logger.info('SWXblock student_view() - max_attempts={m}'.format(m=max_attempts))
         # NOTE: could enforce other course-wide grading options here
 
         user_service = self.runtime.service( self, 'user')
