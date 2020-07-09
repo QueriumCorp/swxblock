@@ -10,6 +10,7 @@ from web_fragments.fragment import Fragment
 #from xblock.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
+from lms.djangoapps.courseware.courses import get_course_by_id
 from logging import getLogger
 logger = getLogger(__name__)
 
@@ -208,6 +209,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock student_view() self={a}".format(a=self))
         logger.info("SWXblock student_view() self.runtime={a}".format(a=self.runtime))
         logger.info("SWXblock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
+	try:
+            course = get_course_by_id(self.runtime.course_id)
+            logger.info("SWXblock student_view() course={c}".format(c=course))
+        except () as e:
+            log.error('SWXblock student_view() get_course_by_id failed: {c}'.format(e=e));
         logger.info("SWXblock student_view() context={a}".format(a=context))
         logger.info("SWXblock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
