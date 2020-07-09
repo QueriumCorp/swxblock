@@ -206,6 +206,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         logger.info('SWXblock student_view() - entered')
         logger.info("SWXblock student_view() self={a}".format(a=self))
+        logger.info("SWXblock student_view() self.runtime={a}".format(a=self.runtime))
         logger.info("SWXblock student_view() context={a}".format(a=context))
         logger.info("SWXblock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
