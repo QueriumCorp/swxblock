@@ -211,10 +211,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 	# Can't set self.q_max_attempts if the imported xblock doesn't define this field, since it defaults to None (read only?)
 	# so we'll use a local var to remember whether to use the course-wide setting or the per-question setting.
 	max_attempts = -1
-        try: if (self.q_max_attempts == -1):
-		max_attempts = course.max_attempts
+        try:
+             if (self.q_max_attempts == -1):
+		 max_attempts = course.max_attempts
              else:
-                max_attempts = self.q_max_attempts
+                 max_attempts = self.q_max_attempts
         except (NameError,AttributeError) as e:
                 logger.info('SWXblock student_view() - self.q_max_attempts was not defined: {e}'.format(e=e))
                 max_attempts = course.max_attempts;
