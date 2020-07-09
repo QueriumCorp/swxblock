@@ -213,7 +213,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             course = get_course_by_id(self.runtime.course_id)
             logger.info("SWXblock student_view() course={c}".format(c=course))
         except () as e:
-            log.error('SWXblock student_view() get_course_by_id failed: {c}'.format(e=e));
+            log.error('SWXblock student_view() get_course_by_id failed: {e}'.format(e=e));
         logger.info("SWXblock student_view() context={a}".format(a=context))
         logger.info("SWXblock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
