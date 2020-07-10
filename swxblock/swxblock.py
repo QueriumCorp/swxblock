@@ -350,7 +350,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() - course.settings.stepwise_errors_ded was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_errors_ded = -1
-        logger.info('SWXblock student_view() - temp_settings_stepwise_errors_ded: {s}'.format(s=temp_settings_stepwise_ded))
+        logger.info('SWXblock student_view() - temp_settings_stepwise_errors_ded: {s}'.format(s=temp_settings_stepwise_errors_ded))
 
         try:
             temp_settings_stepwise_min_steps_count = course.settings.stepwise_min_steps_count
