@@ -399,8 +399,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             my_max_attempts = temp_max_attempts
         elif (temp_settings_stepwise_max_attempts != -1):
             my_grade_max_attempts = temp_settings_stepwise_max_attempts
+            logger.info('SWXblock student_view() - temp_settings_stepwise_max_attempts={m}'.format(m=temp_settings_max_attempts))
         else:
-	    my_grade_max_attempts = course.settings.max_attempts
+            logger.info('SWXblock student_view() - course.max_attempts={m}'.format(m=course.max_attempts))
+	    my_grade_max_attempts = course.max_attempts
         logger.info('SWXblock student_view() - my_max_attempts={m}'.format(m=my_max_attempts))
 
         if (temp_option_hint != -1):
