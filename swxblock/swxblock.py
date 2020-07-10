@@ -223,14 +223,15 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         logger.info("SWXblock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
-	# NOTE: Can't set a self.q_* field here if an older imported swxblock doesn't define this field, since it defaults to None
+        # NOTE: Can't set a self.q_* field here if an older imported swxblock doesn't define this field, since it defaults to None
         # (read only?) so we'll use a local var my_* to remember whether to use the course-wide setting or the per-question setting.
-	# Similarly, some old courses may not define the stepwise advanced settings we want, so we create local variables for them.
+        # Similarly, some old courses may not define the stepwise advanced settings we want, so we create local variables for them.
 
         # For per-xblock settings
         temp_max_attempts = -1
         temp_option_hint = -1
         temp_option_showme = -1
+        temp_grade_shome_ded = -1
         temp_grade_hints_count = -1
         temp_grade_hints_ded = -1
         temp_grade_errors_count = -1
@@ -242,6 +243,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         temp_settings_stepwise_max_attempts = -1
         temp_settings_stepwise_option_hint = -1
         temp_settings_stepwise_option_showme = -1
+        temp_settings_stepwise_grade_showme_ded = -1
         temp_settings_stepwise_grade_hints_count = -1
         temp_settings_stepwise_grade_hints_ded = -1
         temp_settings_stepwise_grade_errors_count = -1
@@ -250,15 +252,16 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         temp_settings_stepwise_grade_min_steps_ded = -1
 
         # after application of course-wide settings
-	my_max_attempts = -1
-	my_option_showme = -1
-	my_option_hint = -1
-	my_grade_hints_count = -1
-	my_grade_hints_ded = -1
-	my_grade_errors_count = -1
-	my_grade_errors_ded = -1
-	my_grade_min_steps_count = -1
-	my_grade_min_steps_ded = -1
+        my_max_attempts = -1
+        my_option_showme = -1
+        my_option_hint = -1
+        my_grade_showme_ded = -1
+        my_grade_hints_count = -1
+        my_grade_hints_ded = -1
+        my_grade_errors_count = -1
+        my_grade_errors_ded = -1
+        my_grade_min_steps_count = -1
+        my_grade_min_steps_ded = -1
 
         # Fetch the xblock-specific settings if they exist, otherwise create a default
         try:
@@ -281,6 +284,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             logger.info('SWXblock student_view() - self.option_showme was not defined in this instance: {e}'.format(e=e))
             temp_option_showme = -1
         logger.info('SWXblock student_view() - temp_option_showme: {t}'.format(t=temp_option_showme))
+
+        try:
+            temp_grade_showme_ded = self.q_grade_showme_ded
+        except (NameError,AttributeError) as e:
+            logger.info('SWXblock student_view() - self.q_grade_showme_ded was not defined in this instance: {e}'.format(e=e))
+            temp_grade_showme_ded = -1
+        logger.info('SWXblock student_view() - temp_grade_showme_ded: {t}'.format(t=temp_grade_showme_ded))
 
         try:
             temp_grade_hints_count = self.q_grade_hints_count
@@ -355,6 +365,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info('SWXblock student_view() - temp_settings_stepwise_hints_count: {s}'.format(s=temp_settings_stepwise_hints_count))
 
         try:
+            temp_settings_stepwise_showme_ded = course.settings.stepwise_showme_ded
+        except (NameError,AttributeError) as e:
+            logger.info('SWXblock student_view() - course.settings.stepwise_showme_ded was not defined in this instance: {e}'.format(e=e))
+            temp_settings_stepwise_showme_ded = -1
+        logger.info('SWXblock student_view() - temp_settings_stepwise_showme_ded: {s}'.format(s=temp_settings_stepwise_showme_ded))
+
+        try:
             temp_settings_stepwise_hints_ded = course.settings.stepwise_hints_ded
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() - course.settings.stepwise_hints_ded was not defined in this instance: {e}'.format(e=e))
@@ -390,7 +407,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info('SWXblock student_view() - temp_settings_stepwise_min_steps_ded: {s}'.format(s=temp_settings_stepwise_min_steps_ded))
 
         # Enforce course-wide grading options here.
-	# We prefer the per-question setting to the course setting.
+        # We prefer the per-question setting to the course setting.
 
         # For max_attempts: If there is a per-question max_attempts setting, use that.
         # Otherwise, if there is a course-wide stepwise_max_attempts setting, use that.
@@ -402,7 +419,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             logger.info('SWXblock student_view() - temp_settings_stepwise_max_attempts={m}'.format(m=temp_settings_max_attempts))
         else:
             logger.info('SWXblock student_view() - course.max_attempts={m}'.format(m=course.max_attempts))
-	    my_grade_max_attempts = course.max_attempts
+            my_grade_max_attempts = course.max_attempts
         logger.info('SWXblock student_view() - my_max_attempts={m}'.format(m=my_max_attempts))
 
         if (temp_option_hint != -1):
@@ -416,6 +433,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif (temp_settings_stepwise_option_showme != -1):
             my_option_showme = temp_settings_stepwise_option_showme
         logger.info('SWXblock student_view() - my_option_showme={m}'.format(m=my_option_showme))
+
+        if (temp_grade_showme_ded != -1):
+            my_grade_showme_ded = temp_grade_showme_ded
+        elif (temp_settings_stepwise_showme_ded != -1):
+            my_grade_showme_ded = temp_settings_stepwise_showme_ded
+        logger.info('SWXblock student_view() - my_grade_showme_ded={m}'.format(m=my_grade_showme_ded))
 
         if (temp_grade_hints_count != -1):
             my_grade_hints_count = temp_grade_hints_count
@@ -504,8 +527,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_ded" : my_grade_hints_ded,
                 "q_grade_errors_count" : my_grade_errors_count,
                 "q_grade_errors_ded" : my_grade_errors_ded,
-		"q_grade_min_steps_count" : my_grade_min_steps_count,
-		"q_grade_min_steps_ded" : my_grade_min_steps_ded
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
         elif q_index>=100 and q_index<200:
             question = {
@@ -529,8 +552,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_ded" : my_grade_hints_ded,
                 "q_grade_errors_count" : my_grade_errors_count,
                 "q_grade_errors_ded" : my_grade_errors_ded,
-		"q_grade_min_steps_count" : my_grade_min_steps_count,
-		"q_grade_min_steps_ded" : my_grade_min_steps_ded
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
         elif q_index>=200 and q_index<300:
             question = {
@@ -554,8 +577,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_ded" : my_grade_hints_ded,
                 "q_grade_errors_count" : my_grade_errors_count,
                 "q_grade_errors_ded" : my_grade_errors_ded,
-		"q_grade_min_steps_count" : my_grade_min_steps_count,
-		"q_grade_min_steps_ded" : my_grade_min_steps_ded
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
         elif q_index>=300 and q_index<400:
             question = {
@@ -579,8 +602,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_ded" : my_grade_hints_ded,
                 "q_grade_errors_count" : my_grade_errors_count,
                 "q_grade_errors_ded" : my_grade_errors_ded,
-		"q_grade_min_steps_count" : my_grade_min_steps_count,
-		"q_grade_min_steps_ded" : my_grade_min_steps_ded
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
         elif q_index>=400 and q_index<500:
             question = {
@@ -604,8 +627,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_ded" : my_grade_hints_ded,
                 "q_grade_errors_count" : my_grade_errors_count,
                 "q_grade_errors_ded" : my_grade_errors_ded,
-		"q_grade_min_steps_count" : my_grade_min_steps_count,
-		"q_grade_min_steps_ded" : my_grade_min_steps_ded
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
         elif q_index>=500 and q_index<600:
             question = {
@@ -629,8 +652,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_ded" : my_grade_hints_ded,
                 "q_grade_errors_count" : my_grade_errors_count,
                 "q_grade_errors_ded" : my_grade_errors_ded,
-		"q_grade_min_steps_count" : my_grade_min_steps_count,
-		"q_grade_min_steps_ded" : my_grade_min_steps_ded
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
         elif q_index>=600 and q_index<700:
             question = {
@@ -654,8 +677,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_ded" : my_grade_hints_ded,
                 "q_grade_errors_count" : my_grade_errors_count,
                 "q_grade_errors_ded" : my_grade_errors_ded,
-		"q_grade_min_steps_count" : my_grade_min_steps_count,
-		"q_grade_min_steps_ded" : my_grade_min_steps_ded
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
         elif q_index>=700 and q_index<800:
             question = {
@@ -679,8 +702,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_ded" : my_grade_hints_ded,
                 "q_grade_errors_count" : my_grade_errors_count,
                 "q_grade_errors_ded" : my_grade_errors_ded,
-		"q_grade_min_steps_count" : my_grade_min_steps_count,
-		"q_grade_min_steps_ded" : my_grade_min_steps_ded
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
         elif q_index>=800 and q_index<900:
             question = {
@@ -704,8 +727,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_ded" : my_grade_hints_ded,
                 "q_grade_errors_count" : my_grade_errors_count,
                 "q_grade_errors_ded" : my_grade_errors_ded,
-		"q_grade_min_steps_count" : my_grade_min_steps_count,
-		"q_grade_min_steps_ded" : my_grade_min_steps_ded
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
         else:
             question = {
@@ -729,8 +752,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_hints_ded" : my_grade_hints_ded,
                 "q_grade_errors_count" : my_grade_errors_count,
                 "q_grade_errors_ded" : my_grade_errors_ded,
-		"q_grade_min_steps_count" : my_grade_min_steps_count,
-		"q_grade_min_steps_ded" : my_grade_min_steps_ded
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
 
         data = {
@@ -746,15 +769,15 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         frag.add_css_url("//stepwise.querium.com/libs/mathquill/mathquill.css")
         frag.add_css_url("//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css")
-        frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.9.css")	
+        frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.9.css")
 
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript_url("//stepwise.querium.com/libs/mathquill/mathquill.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-sanitize.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js")
-        frag.add_javascript_url("//www.gstatic.com/firebasejs/4.4.0/firebase.js")	# For qEval client-side logging
-        frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.9.js")	# With start callback
+        frag.add_javascript_url("//www.gstatic.com/firebasejs/4.4.0/firebase.js")               # For qEval client-side logging
+        frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.9.js")    # With start callback
 
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
@@ -843,7 +866,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         valid_steps = 0;
 
         logger.info("SWXblock save_grade() count valid_steps data={d}".format(d=data))
-	step_details = data['stepDetails']
+        step_details = data['stepDetails']
         logger.info("SWXblock save_grade() count valid_steps step_details={d}".format(d=step_details))
         logger.info("SWXblock save_grade() count valid_steps len(step_details)={l}".format(l=len(step_details)))
         for c in range(len(step_details)):
@@ -866,7 +889,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock save_grade() final valid_steps={v}".format(v=valid_steps))
 
         grade=3.0
-	max_grade=grade
+        max_grade=grade
 
         logger.info('SWXblock save_grade() - initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f} min_steps={g} valid_steps={h}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe'],g=q_grade_min_steps_count,h=valid_steps))
         if data['errors']>q_grade_errors_count:
@@ -878,8 +901,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         if data['usedShowMe']:
             grade=grade-q_grade_showme_ded
             logger.info('SWXblock save_grade() - showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
-	# fuka july-2020 partial deduction for entering too few intermediate steps
-	# TODO: Don't subtract on MatchSpec problems
+        # fuka july-2020 partial deduction for entering too few intermediate steps
+        # TODO: Don't subtract on MatchSpec problems
         if (grade >= max_grade and valid_steps < q_grade_min_steps_count):
             grade=grade-q_grade_min_steps_ded
         if grade<0.0:
@@ -961,10 +984,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript(self.resource_string("static/js/src/swxauthor.js"))
 
-	logger.info("swxblock SwXAuthor author_view v={a}".format(a=self.q_definition))
-	logger.info("swxblock SwXAuthor author_view v1={a} v2={b} v3={c}".format(a=self.q1_definition,b=self.q2_definition,c=self.q3_definition))
-	logger.info("swxblock SwXAuthor author_view v4={a} v5={b} v6={c}".format(a=self.q4_definition,b=self.q5_definition,c=self.q6_definition))
-	logger.info("swxblock SwXAuthor author_view v7={a} v8={b} v9={c}".format(a=self.q7_definition,b=self.q8_definition,c=self.q9_definition))
+        logger.info("swxblock SwXAuthor author_view v={a}".format(a=self.q_definition))
+        logger.info("swxblock SwXAuthor author_view v1={a} v2={b} v3={c}".format(a=self.q1_definition,b=self.q2_definition,c=self.q3_definition))
+        logger.info("swxblock SwXAuthor author_view v4={a} v5={b} v6={c}".format(a=self.q4_definition,b=self.q5_definition,c=self.q6_definition))
+        logger.info("swxblock SwXAuthor author_view v7={a} v8={b} v9={c}".format(a=self.q7_definition,b=self.q8_definition,c=self.q9_definition))
 
         # tell author_view how many variants are defined
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0 and len(self.q9_definition)>0:
@@ -988,7 +1011,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             variants = 1
 
-	logger.info("swxblock SwXAuthor author_view variants={a}".format(a=variants))
+        logger.info("swxblock SwXAuthor author_view variants={a}".format(a=variants))
 
         frag.initialize_js('SWxAuthor', variants)
         return frag
