@@ -886,7 +886,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock start_attempt() - entered")
         logger.info("SWXBlock start_attempt() - self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
         self.count_attempts += 1
-        logger.info("SWXBlock start_attempt() - updated self.count_attempts={c}".format(c=self.count_attempts)
+        logger.info("SWXBlock start_attempt() - updated self.count_attempts={c}".format(c=self.count_attempts))
         logger.info("SWXBlock start_attempt() - done")
 
 
