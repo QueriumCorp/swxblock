@@ -399,14 +399,14 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() course.stepwise_grade_showme_ded was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_showme_ded = -1
-        logger.info('SWXblock student_view() temp_course_stepwise_showme_ded: {s}'.format(s=temp_course_stepwise_showme_ded))
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_showme_ded: {s}'.format(s=temp_course_stepwise_grade_showme_ded))
 
         try:
             temp_course_stepwise_grade_hints_ded = course.stepwise_grade_hints_ded
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() course.stepwise_grade_hints_ded was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_hints_ded = -1
-        logger.info('SWXblock student_view() temp_course_stepwise_hints_ded: {s}'.format(s=temp_course_stepwise_hints_ded))
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_hints_ded: {s}'.format(s=temp_course_stepwise_grade_hints_ded))
 
         try:
             temp_course_stepwise_grade_errors_count = course.stepwise_grade_errors_count
