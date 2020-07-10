@@ -883,11 +883,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # START ATTEMPT
     @XBlock.json_handler
     def start_attempt(self, data, suffix=''):
-        logger.info('SWXblock start_attempt() - entered')
+        logger.info("SWXblock start_attempt() - entered")
         logger.info("SWXBlock start_attempt() - self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
         self.count_attempts += 1
         logger.info("SWXBlock start_attempt() - updated self.count_attempts={c}".format(c=self.count_attempts)
-        logger.info("SWXBlock start_attempt() - done')
+        logger.info("SWXBlock start_attempt() - done")
 
 
     # TO-DO: change this to create the scenarios you'd like to see in the
