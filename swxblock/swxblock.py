@@ -395,12 +395,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # For max_attempts: If there is a per-question max_attempts setting, use that.
         # Otherwise, if there is a course-wide stepwise_max_attempts setting, use that.
         # Otherwise, use the course-wide max_attempts setting that is used for CAPA (non-StepWise) problems.
-        if (temp_grade_max_attempts != -1):
-            my_grade_max_attempts = temp_grade_max_attempts
+        if (temp_max_attempts != -1):
+            my_max_attempts = temp_max_attempts
         elif (temp_settings_stepwise_max_attempts != -1):
             my_grade_max_attempts = temp_settings_stepwise_max_attempts
         else:
-            my_grade_max_attempts = course.settings.stepwise_max_attempts
+	    my_grade_max_attempts = course.settings.max_attempts
         logger.info('SWXblock student_view() - my_max_attempts={m}'.format(m=my_max_attempts))
 
         if (temp_option_hint != -1):
