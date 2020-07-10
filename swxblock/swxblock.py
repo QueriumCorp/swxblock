@@ -228,6 +228,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # Similarly, some old courses may not define the stepwise advanced settings we want, so we create local variables for them.
 
         # For per-xblock settings
+        temp_weight = -1
         temp_max_attempts = -1
         temp_option_hint = -1
         temp_option_showme = -1
@@ -240,6 +241,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         temp_grade_min_steps_ded = -1
 
         # For course-wide settings
+        temp_settings_stepwise_weight = -1
         temp_settings_stepwise_max_attempts = -1
         temp_settings_stepwise_option_hint = -1
         temp_settings_stepwise_option_showme = -1
@@ -252,6 +254,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         temp_settings_stepwise_grade_min_steps_ded = -1
 
         # after application of course-wide settings
+        my_weight = -1
         my_max_attempts = -1
         my_option_showme = -1
         my_option_hint = -1
@@ -264,6 +267,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         my_grade_min_steps_ded = -1
 
         # Fetch the xblock-specific settings if they exist, otherwise create a default
+        try:
+            temp_weight = self.q_weight
+        except (NameError,AttributeError) as e:
+            logger.info('SWXblock student_view() self.q_weight was not defined in this instance: {e}'.format(e=e))
+            temp_weight = -1
+        logger.info('SWXblock student_view() temp_weight: {t}'.format(t=temp_weight))
+
         try:
             temp_max_attempts = self.q_max_attempts
         except (NameError,AttributeError) as e:
@@ -337,6 +347,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # Fetch the course-wide settings if they exist, otherwise create a default
 
         try:
+            temp_settings_stepwise_weight = course.stepwise_weight
+        except (NameError,AttributeError) as e:
+            logger.info('SWXblock student_view() course.stepwise_weight was not defined in this instance: {e}'.format(e=e))
+            temp_stepwise_stepwise_weight = -1
+        logger.info('SWXblock student_view() temp_stepwise_weight: {s}'.format(s=temp_settings_stepwise_weight))
+
+        try:
             temp_settings_stepwise_max_attempts = course.stepwise_max_attempts
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() course.stepwise_max_attempts was not defined in this instance: {e}'.format(e=e))
@@ -408,6 +425,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         # Enforce course-wide grading options here.
         # We prefer the per-question setting to the course setting.
+
+        if (temp_weight != -1):
+            my_weight = temp_weight
+        elif (temp_settings_stepwise_weight != -1):
+            my_weight = temp_settings_stepwise_weight
+        logger.info('SWXblock student_view() my_weight={m}'.format(m=my_weight))
 
         # For max_attempts: If there is a per-question max_attempts setting, use that.
         # Otherwise, if there is a course-wide stepwise_max_attempts setting, use that.
@@ -518,7 +541,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q_hint1,
                 "q_hint2" :  self.q_hint2,
                 "q_hint3" :  self.q_hint3,
-                "q_weight" :  self.q_weight,
+                "q_weight" :  my_weight
                 "q_max_attempts" : my_max_attempts,
                 "q_option_hint" : my_option_hint,
                 "q_option_showme" : my_option_showme,
@@ -795,6 +818,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock save_grade() initial self={a}".format(a=self))
         logger.info("SWXblock save_grade() initial data={a}".format(a=data))
 
+        try: q_weight = self.q_weight
+        except (NameError,AttributeError) as e:
+             logger.info('SWXblock save_grade() self.q_weight was not defined: {e}'.format(e=e))
+             q_weight = 1.0
+
         try: q_grade_showme_ded = self.q_grade_showme_ded
         except (NameError,AtrributeError) as e:
              logger.info('SWXblock save_grade() self.q_grade_showme_dev was not defined: {e}'.format(e=e))
@@ -830,16 +858,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
              logger.info('SWXblock save_grade() self.q_grade_min_steps_ded was not defined: {e}'.format(e=e))
              q_grade_min_steps_ded = -1
 
-        # mcdaniel jul-2020: fix indentation error
-        try: q_weight = self.q_weight
-        except (NameError,AttributeError) as e:
-                logger.info('SWXblock save_grade() self.q_weight was not defined: {e}'.format(e=e))
-                q_weight = 1.0
-        logger.info('SWXblock save_grade() self={a}'.format(a=self))
-        logger.info('SWXblock save_grade() q_weight={a}'.format(a=q_weight))
+        # Apply grading defaults
 
-        # Grading defaults
-
+        if q_weight == -1:
+            logger.info('SWXblock save_grade() weight set to 1.0')
+            q_weight = 1.0
         if q_grade_showme_ded == -1:
             logger.info('SWXblock save_grade() showme default set to 3.0')
             q_grade_showme_ded = 3.0
@@ -862,6 +885,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         Count the total number of VALID steps the student input.
         Used to determine if they get full credit for entering at least a min number of good steps.
+        TODO:  Use this look to find the StepWise spec to see if it is MatchSpec[].  We don't want to do the min_steps deduction for MatchSpec Qs.
+        TODO:  Ignore 'Advisory:' hints in the hint counting (maybe do in the Javascript?)
         """
         valid_steps = 0;
 
