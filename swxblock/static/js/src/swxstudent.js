@@ -34,6 +34,9 @@ function SWXStudent(runtime, element, data) {
     };
 
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
+    console.info("SWXStudent handlerUrl",grade);
+    var handlerUrlStart = runtime.handlerUrl(element, 'start_attempt');
+    console.info("SWXStudent handlerUrlStart",grade);
 
     // Get Primary Element Handles
     var swxblock_block = $('.swxblock_block', element)[0];
@@ -138,6 +141,7 @@ function SWXStudent(runtime, element, data) {
             solution.answered_question = question; // remember the question we answered for the stats display
             // console.info("celebrate solution ", solution);
 
+            // TODO: replace this simplistic grading with the real server-graded results
             if( stats.usedShowMe ){
                 grade=0.0;
             }else if( stats.errors==0 && stats.hints==0 ){
@@ -172,8 +176,24 @@ function SWXStudent(runtime, element, data) {
             });
         }
             
+        // Callback when the student begins to work on a problem (e.g. enters a step, clicks "Hint", clicks "Show Solution"
+        function start_attempt(status) {
+
+            console.info("start_attempt status={s}".format(s=status)
+            //console.info("start_attempt sessionId={s} timeMark={t} action:={a}".format(a=status.sessionId,t=status.timeMark,a=status.action)
+
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            $.ajax({
+                type: "POST",
+                url: handlerUrlStart,
+                data: JSON.stringify(stats),
+                success: null
+            });
+        }
+
         var callbacks = {
-            success: celebrate
+            success: celebrate,
+            start: start_attempt
         };
     
         var qDef = {
