@@ -227,6 +227,29 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # (read only?) so we'll use a local var my_* to remember whether to use the course-wide setting or the per-question setting.
 	# Similarly, some old courses may not define the stepwise advanced settings we want, so we create local variables for them.
 
+        # For per-xblock settings
+        temp_max_attempts = -1
+        temp_option_hint = -1
+        temp_option_showme = -1
+        temp_grade_hints_count = -1
+        temp_grade_hints_ded = -1
+        temp_grade_errors_count = -1
+        temp_grade_errors_ded = -1
+        temp_grade_min_steps_count = -1
+        temp_grade_min_steps_ded = -1
+
+        # For course-wide settings
+        temp_settings_stepwise_max_attempts = -1
+        temp_settings_stepwise_option_hint = -1
+        temp_settings_stepwise_option_showme = -1
+        temp_settings_stepwise_grade_hints_count = -1
+        temp_settings_stepwise_grade_hints_ded = -1
+        temp_settings_stepwise_grade_errors_count = -1
+        temp_settings_stepwise_grade_errors_ded = -1
+        temp_settings_stepwise_grade_min_steps_count = -1
+        temp_settings_stepwise_grade_min_steps_ded = -1
+
+        # after application of course-wide settings
 	my_max_attempts = -1
 	my_option_showme = -1
 	my_option_hint = -1
@@ -307,15 +330,15 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             temp_settings_stepwise_max_attempts = course.settings.stepwise_max_attempts
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() - course.settings.stepwise_max_attempts was not defined in this instance: {e}'.format(e=e))
-            temp_settings_stepwise_max_attempts = -1
-        logger.info('SWXblock student_view() - temp_settings_stepwise_max_attempts: {s}'.format(s=temp_settings_stepwise_max_attempts))
+            temp_stepwise_stepwise_max_attempts = -1
+        logger.info('SWXblock student_view() - temp_stepwise_max_attempts: {s}'.format(s=temp_stepwise_max_attempts))
 
         try:
             temp_settings_stepwise_option_showme = course.settings.stepwise_option_showme
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() - course.settings.stepwise_option_showme was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_option_showme = -1
-        logger.info('SWXblock student_view() - temp_settings_stepwise_option_showme: {s}'.format(s=temp_settings_stepwise_option_showme))
+        logger.info('SWXblock student_view() - temp_stepwise_option_showme: {s}'.format(s=temp_settings_stepwise_option_showme))
 
         try:
             temp_settings_stepwise_option_hint = course.settings.stepwise_option_hint
@@ -357,14 +380,14 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() - course.settings.stepwise_min_steps_count was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_min_steps_count = -1
-        logger.info('SWXblock student_view() - temp_settings_stepwise_min_steps_count: {s}'.format(s=temp_settings_min_steps_count))
+        logger.info('SWXblock student_view() - temp_settings_stepwise_min_steps_count: {s}'.format(s=temp_settings_stepwise_min_steps_count))
 
         try:
             temp_settings_stepwise_min_steps_ded = course.settings.stepwise_min_steps_ded
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() - course.settings.stepwise_min_steps_ded was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_min_steps_ded = -1
-        logger.info('SWXblock student_view() - temp_settings_stepwise_min_steps_ded: {s}'.format(s=temp_settings_min_steps_ded))
+        logger.info('SWXblock student_view() - temp_settings_stepwise_min_steps_ded: {s}'.format(s=temp_settings_stepwise_min_steps_ded))
 
         # Enforce course-wide grading options here.
 	# We prefer the per-question setting to the course setting.
@@ -429,7 +452,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info('SWXblock student_view() - my_grade_min_steps_ded={m}'.format(m=my_grade_min_steps_ded))
 
 
-        # Safe an identifier for the user
+        # Save an identifier for the user
 
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
