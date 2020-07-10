@@ -541,7 +541,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_hint1" :  self.q_hint1,
                 "q_hint2" :  self.q_hint2,
                 "q_hint3" :  self.q_hint3,
-                "q_weight" :  my_weight
+                "q_weight" :  my_weight,
                 "q_max_attempts" : my_max_attempts,
                 "q_option_hint" : my_option_hint,
                 "q_option_showme" : my_option_showme,
