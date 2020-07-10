@@ -374,7 +374,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # Otherwise, use the course-wide max_attempts setting that is used for CAPA (non-StepWise) problems.
         if (temp_grade_max_attempts != -1):
             my_grade_max_attempts = temp_grade_max_attempts
-        elsif (temp_settings_stepwise_max_attempts != -1):
+        elif (temp_settings_stepwise_max_attempts != -1):
             my_grade_max_attempts = temp_settings_stepwise_max_attempts
         else:
             my_grade_max_attempts = course.settings.stepwise_max_attempts
@@ -382,49 +382,49 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         if (temp_option_hint != -1):
             my_option_hint = temp_option_hint
-        elsif (temp_settings_stepwise_option_hint != -1):
+        elif (temp_settings_stepwise_option_hint != -1):
             my_option_hint = temp_settings_stepwise_option_hint
         logger.info('SWXblock student_view() - my_option_hint={m}'.format(m=my_option_hint))
 
         if (temp_option_showme != -1):
             my_option_showme = temp_option_showme
-        elsif (temp_settings_stepwise_option_showme != -1):
+        elif (temp_settings_stepwise_option_showme != -1):
             my_option_showme = temp_settings_stepwise_option_showme
         logger.info('SWXblock student_view() - my_option_showme={m}'.format(m=my_option_showme))
 
         if (temp_grade_hints_count != -1):
             my_grade_hints_count = temp_grade_hints_count
-        elsif (temp_settings_stepwise_hints_count != -1):
+        elif (temp_settings_stepwise_hints_count != -1):
             my_grade_hints_count = temp_settings_stepwise_hints_count
         logger.info('SWXblock student_view() - my_grade_hints_count={m}'.format(m=my_grade_hints_count))
 
         if (temp_grade_hints_ded != -1):
             my_grade_hints_ded = temp_grade_hints_ded
-        elsif (temp_settings_stepwise_hints_ded != -1):
+        elif (temp_settings_stepwise_hints_ded != -1):
             my_grade_hints_ded = temp_settings_stepwise_hints_ded
         logger.info('SWXblock student_view() - my_grade_hints_ded={m}'.format(m=my_grade_hints_ded))
 
         if (temp_grade_errors_count != -1):
             my_grade_errors_count = temp_grade_errors_count
-        elsif (temp_settings_stepwise_errors_count != -1):
+        elif (temp_settings_stepwise_errors_count != -1):
             my_grade_errors_count = temp_settings_stepwise_errors_count
         logger.info('SWXblock student_view() - my_grade_errors_count={m}'.format(m=my_grade_errors_count))
 
         if (temp_grade_errors_ded != -1):
             my_grade_errors_ded = temp_grade_errors_ded
-        elsif (temp_settings_stepwise_errors_ded != -1):
+        elif (temp_settings_stepwise_errors_ded != -1):
             my_grade_errors_ded = temp_settings_stepwise_errors_ded
         logger.info('SWXblock student_view() - my_grade_errors_ded={m}'.format(m=my_grade_errors_ded))
 
         if (temp_grade_min_steps_count != -1):
             my_grade_min_steps_count = temp_grade_min_steps_count
-        elsif (temp_settings_stepwise_min_steps_count != -1):
+        elif (temp_settings_stepwise_min_steps_count != -1):
             my_grade_min_steps_count = temp_settings_stepwise_min_steps_count
         logger.info('SWXblock student_view() - my_grade_min_steps_count={m}'.format(m=my_grade_min_steps_count))
 
         if (temp_grade_min_steps_ded != -1):
             my_grade_min_steps_ded = temp_grade_min_steps_ded
-        elsif (temp_settings_stepwise_min_steps_ded != -1):
+        elif (temp_settings_stepwise_min_steps_ded != -1):
             my_grade_min_steps_ded = temp_settings_stepwise_min_steps_ded
         logger.info('SWXblock student_view() - my_grade_min_steps_ded={m}'.format(m=my_grade_min_steps_ded))
 
