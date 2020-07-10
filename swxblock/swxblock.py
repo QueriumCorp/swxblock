@@ -241,17 +241,30 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         temp_grade_min_steps_ded = -1
 
         # For course-wide settings
-        temp_settings_stepwise_weight = -1
-        temp_settings_stepwise_max_attempts = -1
-        temp_settings_stepwise_option_hint = -1
-        temp_settings_stepwise_option_showme = -1
-        temp_settings_stepwise_grade_showme_ded = -1
-        temp_settings_stepwise_grade_hints_count = -1
-        temp_settings_stepwise_grade_hints_ded = -1
-        temp_settings_stepwise_grade_errors_count = -1
-        temp_settings_stepwise_grade_errors_ded = -1
-        temp_settings_stepwise_grade_min_steps_count = -1
-        temp_settings_stepwise_grade_min_steps_ded = -1
+        temp_course_stepwise_weight = -1
+        temp_course_stepwise_max_attempts = -1
+        temp_course_stepwise_option_hint = -1
+        temp_course_stepwise_option_showme = -1
+        temp_course_stepwise_grade_showme_ded = -1
+        temp_course_stepwise_grade_hints_count = -1
+        temp_course_stepwise_grade_hints_ded = -1
+        temp_course_stepwise_grade_errors_count = -1
+        temp_course_stepwise_grade_errors_ded = -1
+        temp_course_stepwise_grade_min_steps_count = -1
+        temp_course_stepwise_grade_min_steps_ded = -1
+
+        # Defaults For course-wide settings if they aren't defined for this course
+        def_course_stepwise_weight = 1.0
+        def_course_stepwise_max_attempts = None
+        def_course_stepwise_option_hint = True
+        def_course_stepwise_option_showme = True
+        def_course_stepwise_grade_showme_ded = 3.0
+        def_course_stepwise_grade_hints_count = 2
+        def_course_stepwise_grade_hints_ded = 1.0
+        def_course_stepwise_grade_errors_count = 2
+        def_course_stepwise_grade_errors_ded = 1.0
+        def_course_stepwise_grade_min_steps_count = 3
+        def_course_stepwise_grade_min_steps_ded = 0.25
 
         # after application of course-wide settings
         my_weight = -1
@@ -347,89 +360,92 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # Fetch the course-wide settings if they exist, otherwise create a default
 
         try:
-            temp_settings_stepwise_weight = course.stepwise_weight
+            temp_course_stepwise_weight = course.stepwise_weight
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() course.stepwise_weight was not defined in this instance: {e}'.format(e=e))
-            temp_stepwise_stepwise_weight = -1
-        logger.info('SWXblock student_view() temp_stepwise_weight: {s}'.format(s=temp_settings_stepwise_weight))
+            temp_course_stepwise_stepwise_weight = -1
+        logger.info('SWXblock student_view() temp_course_stepwise_weight: {s}'.format(s=temp_course_stepwise_weight))
 
         try:
-            temp_settings_stepwise_max_attempts = course.stepwise_max_attempts
+            temp_course_stepwise_max_attempts = course.stepwise_max_attempts
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() course.stepwise_max_attempts was not defined in this instance: {e}'.format(e=e))
-            temp_stepwise_stepwise_max_attempts = -1
-        logger.info('SWXblock student_view() temp_stepwise_max_attempts: {s}'.format(s=temp_settings_stepwise_max_attempts))
+            temp_course_stepwise_stepwise_max_attempts = -1
+        logger.info('SWXblock student_view() temp_course_stepwise_max_attempts: {s}'.format(s=temp_course_stepwise_max_attempts))
 
         try:
-            temp_settings_stepwise_option_showme = course.stepwise_option_showme
+            temp_course_stepwise_option_showme = course.stepwise_option_showme
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() course.stepwise_option_showme was not defined in this instance: {e}'.format(e=e))
-            temp_settings_stepwise_option_showme = -1
-        logger.info('SWXblock student_view() temp_stepwise_option_showme: {s}'.format(s=temp_settings_stepwise_option_showme))
+            temp_course_stepwise_option_showme = -1
+        logger.info('SWXblock student_view() temp_course_stepwise_option_showme: {s}'.format(s=temp_course_stepwise_option_showme))
 
         try:
-            temp_settings_stepwise_option_hint = course.stepwise_option_hint
+            temp_course_stepwise_option_hint = course.stepwise_option_hint
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() course.stepwise_option_hint was not defined in this instance: {e}'.format(e=e))
-            temp_settings_stepwise_option_hint = -1
-        logger.info('SWXblock student_view() temp_settings_stepwise_option_hint: {s}'.format(s=temp_settings_stepwise_option_hint))
+            temp_course_stepwise_option_hint = -1
+        logger.info('SWXblock student_view() temp_course_stepwise_option_hint: {s}'.format(s=temp_course_stepwise_option_hint))
 
         try:
-            temp_settings_stepwise_hints_count = course.stepwise_hints_count
+            temp_course_stepwise_grade_hints_count = course.stepwise_grade_hints_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() course.stepwise_hints_count was not defined in this instance: {e}'.format(e=e))
-            temp_settings_stepwise_hints_count = -1
-        logger.info('SWXblock student_view() temp_settings_stepwise_hints_count: {s}'.format(s=temp_settings_stepwise_hints_count))
+            logger.info('SWXblock student_view() course.stepwise_settings_grade_hints_count was not defined in this instance: {e}'.format(e=e))
+            temp_course_stepwise_grade_hints_count = -1
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_hints_count: {s}'.format(s=temp_course_stepwise_grade_hints_count))
 
         try:
-            temp_settings_stepwise_showme_ded = course.stepwise_showme_ded
+            temp_course_stepwise_grade_showme_ded = course.stepwise_grade_showme_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() course.stepwise_showme_ded was not defined in this instance: {e}'.format(e=e))
-            temp_settings_stepwise_showme_ded = -1
-        logger.info('SWXblock student_view() temp_settings_stepwise_showme_ded: {s}'.format(s=temp_settings_stepwise_showme_ded))
+            logger.info('SWXblock student_view() course.stepwise_grade_showme_ded was not defined in this instance: {e}'.format(e=e))
+            temp_course_stepwise_grade_showme_ded = -1
+        logger.info('SWXblock student_view() temp_course_stepwise_showme_ded: {s}'.format(s=temp_course_stepwise_showme_ded))
 
         try:
-            temp_settings_stepwise_hints_ded = course.stepwise_hints_ded
+            temp_course_stepwise_grade_hints_ded = course.stepwise_grade_hints_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() course.stepwise_hints_ded was not defined in this instance: {e}'.format(e=e))
-            temp_settings_stepwise_hints_ded = -1
-        logger.info('SWXblock student_view() temp_settings_stepwise_hints_ded: {s}'.format(s=temp_settings_stepwise_hints_ded))
+            logger.info('SWXblock student_view() course.stepwise_grade_hints_ded was not defined in this instance: {e}'.format(e=e))
+            temp_course_stepwise_grade_hints_ded = -1
+        logger.info('SWXblock student_view() temp_course_stepwise_hints_ded: {s}'.format(s=temp_course_stepwise_hints_ded))
 
         try:
-            temp_settings_stepwise_errors_count = course.stepwise_errors_count
+            temp_course_stepwise_grade_errors_count = course.stepwise_grade_errors_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() course.stepwise_errors_count was not defined in this instance: {e}'.format(e=e))
-            temp_settings_stepwise_errors_count = -1
-        logger.info('SWXblock student_view() temp_settings_stepwise_errors_count: {s}'.format(s=temp_settings_stepwise_errors_count))
+            logger.info('SWXblock student_view() course.stepwise_grade_errors_count was not defined in this instance: {e}'.format(e=e))
+            temp_course_stepwise_grade_errors_count = -1
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_errors_count: {s}'.format(s=temp_course_stepwise_grade_errors_count))
 
         try:
-            temp_settings_stepwise_errors_ded = course.stepwise_errors_ded
+            temp_course_stepwise_grade_errors_ded = course.stepwise_grade_errors_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() course.stepwise_errors_ded was not defined in this instance: {e}'.format(e=e))
-            temp_settings_stepwise_errors_ded = -1
-        logger.info('SWXblock student_view() temp_settings_stepwise_errors_ded: {s}'.format(s=temp_settings_stepwise_errors_ded))
+            logger.info('SWXblock student_view() course.stepwise_grade_errors_ded was not defined in this instance: {e}'.format(e=e))
+            temp_course_stepwise_grade_errors_ded = -1
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_errors_ded: {s}'.format(s=temp_course_stepwise_grade_errors_ded))
 
         try:
-            temp_settings_stepwise_min_steps_count = course.stepwise_min_steps_count
+            temp_course_stepwise_grade_min_steps_count = course.stepwise_grade_min_steps_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() course.stepwise_min_steps_count was not defined in this instance: {e}'.format(e=e))
-            temp_settings_stepwise_min_steps_count = -1
-        logger.info('SWXblock student_view() temp_settings_stepwise_min_steps_count: {s}'.format(s=temp_settings_stepwise_min_steps_count))
+            logger.info('SWXblock student_view() course.stepwise_grade_min_steps_count was not defined in this instance: {e}'.format(e=e))
+            temp_course_stepwise_grade_min_steps_count = -1
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_min_steps_count: {s}'.format(s=temp_course_stepwise_grade_min_steps_count))
 
         try:
-            temp_settings_stepwise_min_steps_ded = course.stepwise_min_steps_ded
+            temp_course_stepwise_grade_min_steps_ded = course.stepwise_grade_min_steps_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() course.stepwise_min_steps_ded was not defined in this instance: {e}'.format(e=e))
-            temp_settings_stepwise_min_steps_ded = -1
-        logger.info('SWXblock student_view() temp_settings_stepwise_min_steps_ded: {s}'.format(s=temp_settings_stepwise_min_steps_ded))
+            logger.info('SWXblock student_view() course.stepwise_grade_min_steps_ded was not defined in this instance: {e}'.format(e=e))
+            temp_course_stepwise_grade_min_steps_ded = -1
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_min_steps_ded: {s}'.format(s=temp_course_stepwise_grade_min_steps_ded))
 
         # Enforce course-wide grading options here.
         # We prefer the per-question setting to the course setting.
+        # If neither the question setting nor the course setting exist, use the course default.
 
         if (temp_weight != -1):
             my_weight = temp_weight
-        elif (temp_settings_stepwise_weight != -1):
-            my_weight = temp_settings_stepwise_weight
+        elif (temp_course_stepwise_weight != -1):
+            my_weight = temp_course_stepwise_weight
+        else:
+            my_weight = def_course_stepwise_weight
         logger.info('SWXblock student_view() my_weight={m}'.format(m=my_weight))
 
         # For max_attempts: If there is a per-question max_attempts setting, use that.
@@ -437,9 +453,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # Otherwise, use the course-wide max_attempts setting that is used for CAPA (non-StepWise) problems.
         if (temp_max_attempts != -1):
             my_max_attempts = temp_max_attempts
-        elif (temp_settings_stepwise_max_attempts != -1):
-            my_grade_max_attempts = temp_settings_stepwise_max_attempts
-            logger.info('SWXblock student_view() temp_settings_stepwise_max_attempts={m}'.format(m=temp_settings_stepwise_max_attempts))
+        elif (temp_course_stepwise_max_attempts != -1):
+            my_grade_max_attempts = temp_course_stepwise_max_attempts
+            logger.info('SWXblock student_view() temp_course_stepwise_max_attempts={m}'.format(m=temp_course_stepwise_max_attempts))
         else:
             logger.info('SWXblock student_view() course.max_attempts={m}'.format(m=course.max_attempts))
             my_grade_max_attempts = course.max_attempts
@@ -447,56 +463,74 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         if (temp_option_hint != -1):
             my_option_hint = temp_option_hint
-        elif (temp_settings_stepwise_option_hint != -1):
-            my_option_hint = temp_settings_stepwise_option_hint
+        elif (temp_course_stepwise_option_hint != -1):
+            my_option_hint = temp_course_stepwise_option_hint
+        else:
+            my_option_hint = def_course_stepwise_option_hint
         logger.info('SWXblock student_view() my_option_hint={m}'.format(m=my_option_hint))
 
         if (temp_option_showme != -1):
             my_option_showme = temp_option_showme
-        elif (temp_settings_stepwise_option_showme != -1):
-            my_option_showme = temp_settings_stepwise_option_showme
+        elif (temp_course_stepwise_option_showme != -1):
+            my_option_showme = temp_course_stepwise_option_showme
+        else:
+            my_option_showme = def_course_stepwise_option_showme
         logger.info('SWXblock student_view() my_option_showme={m}'.format(m=my_option_showme))
 
         if (temp_grade_showme_ded != -1):
             my_grade_showme_ded = temp_grade_showme_ded
-        elif (temp_settings_stepwise_showme_ded != -1):
-            my_grade_showme_ded = temp_settings_stepwise_showme_ded
+        elif (temp_course_stepwise_grade_showme_ded != -1):
+            my_grade_showme_ded = temp_course_stepwise_grade_showme_ded
+        else:
+            my_grade_showme_ded = def_course_stepwise_grade_showme_ded
         logger.info('SWXblock student_view() my_grade_showme_ded={m}'.format(m=my_grade_showme_ded))
 
         if (temp_grade_hints_count != -1):
             my_grade_hints_count = temp_grade_hints_count
-        elif (temp_settings_stepwise_hints_count != -1):
-            my_grade_hints_count = temp_settings_stepwise_hints_count
+        elif (temp_course_stepwise_grade_hints_count != -1):
+            my_grade_hints_count = temp_settings_stepwise_grade_hints_count
+        else:
+            my_grade_hints_count = def_settings_stepwise_grade_hints_count
         logger.info('SWXblock student_view() my_grade_hints_count={m}'.format(m=my_grade_hints_count))
 
         if (temp_grade_hints_ded != -1):
             my_grade_hints_ded = temp_grade_hints_ded
-        elif (temp_settings_stepwise_hints_ded != -1):
-            my_grade_hints_ded = temp_settings_stepwise_hints_ded
+        elif (temp_course_stepwise_grade_hints_ded != -1):
+            my_grade_hints_ded = temp_course_stepwise_grade_hints_ded
+        else:
+            my_grade_hints_ded = def_course_stepwise_grade_hints_ded
         logger.info('SWXblock student_view() my_grade_hints_ded={m}'.format(m=my_grade_hints_ded))
 
         if (temp_grade_errors_count != -1):
             my_grade_errors_count = temp_grade_errors_count
-        elif (temp_settings_stepwise_errors_count != -1):
-            my_grade_errors_count = temp_settings_stepwise_errors_count
+        elif (temp_course_stepwise_grade_errors_count != -1):
+            my_grade_errors_count = temp_course_stepwise_grade_errors_count
+        else:
+            my_grade_errors_count = def_course_stepwise_grade_errors_count
         logger.info('SWXblock student_view() my_grade_errors_count={m}'.format(m=my_grade_errors_count))
 
         if (temp_grade_errors_ded != -1):
             my_grade_errors_ded = temp_grade_errors_ded
-        elif (temp_settings_stepwise_errors_ded != -1):
-            my_grade_errors_ded = temp_settings_stepwise_errors_ded
+        elif (temp_course_stepwise_grade_errors_ded != -1):
+            my_grade_errors_ded = temp_course_stepwise_grade_errors_ded
+        else:
+            my_grade_errors_ded = def_course_stepwise_grade_errors_ded
         logger.info('SWXblock student_view() my_grade_errors_ded={m}'.format(m=my_grade_errors_ded))
 
         if (temp_grade_min_steps_count != -1):
             my_grade_min_steps_count = temp_grade_min_steps_count
-        elif (temp_settings_stepwise_min_steps_count != -1):
-            my_grade_min_steps_count = temp_settings_stepwise_min_steps_count
+        elif (temp_course_stepwise_grade_min_steps_count != -1):
+            my_grade_min_steps_count = temp_course_stepwise_grade_min_steps_count
+        else:
+            my_grade_min_steps_count = def_course_stepwise_grade_min_steps_count
         logger.info('SWXblock student_view() my_grade_min_steps_count={m}'.format(m=my_grade_min_steps_count))
 
         if (temp_grade_min_steps_ded != -1):
             my_grade_min_steps_ded = temp_grade_min_steps_ded
-        elif (temp_settings_stepwise_min_steps_ded != -1):
-            my_grade_min_steps_ded = temp_settings_stepwise_min_steps_ded
+        elif (temp_course_stepwise_grade_min_steps_ded != -1):
+            my_grade_min_steps_ded = temp_course_stepwise_grade_min_steps_ded
+        else:
+            my_grade_min_steps_ded = def_course_stepwise_grade_min_steps_ded
         logger.info('SWXblock student_view() my_grade_min_steps_ded={m}'.format(m=my_grade_min_steps_ded))
 
 
