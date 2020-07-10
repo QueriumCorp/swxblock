@@ -331,7 +331,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         except (NameError,AttributeError) as e:
             logger.info('SWXblock student_view() - course.settings.stepwise_max_attempts was not defined in this instance: {e}'.format(e=e))
             temp_stepwise_stepwise_max_attempts = -1
-        logger.info('SWXblock student_view() - temp_stepwise_max_attempts: {s}'.format(s=temp_stepwise_max_attempts))
+        logger.info('SWXblock student_view() - temp_stepwise_max_attempts: {s}'.format(s=temp_settings_stepwise_max_attempts))
 
         try:
             temp_settings_stepwise_option_showme = course.settings.stepwise_option_showme
