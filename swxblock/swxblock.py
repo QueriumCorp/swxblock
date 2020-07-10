@@ -337,72 +337,72 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # Fetch the course-wide settings if they exist, otherwise create a default
 
         try:
-            temp_settings_stepwise_max_attempts = course.settings.stepwise_max_attempts
+            temp_settings_stepwise_max_attempts = course.stepwise_max_attempts
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() - course.settings.stepwise_max_attempts was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() - course.stepwise_max_attempts was not defined in this instance: {e}'.format(e=e))
             temp_stepwise_stepwise_max_attempts = -1
         logger.info('SWXblock student_view() - temp_stepwise_max_attempts: {s}'.format(s=temp_settings_stepwise_max_attempts))
 
         try:
-            temp_settings_stepwise_option_showme = course.settings.stepwise_option_showme
+            temp_settings_stepwise_option_showme = course.stepwise_option_showme
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() - course.settings.stepwise_option_showme was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() - course.stepwise_option_showme was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_option_showme = -1
         logger.info('SWXblock student_view() - temp_stepwise_option_showme: {s}'.format(s=temp_settings_stepwise_option_showme))
 
         try:
-            temp_settings_stepwise_option_hint = course.settings.stepwise_option_hint
+            temp_settings_stepwise_option_hint = course.stepwise_option_hint
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() - course.settings.stepwise_option_hint was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() - course.stepwise_option_hint was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_option_hint = -1
         logger.info('SWXblock student_view() - temp_settings_stepwise_option_hint: {s}'.format(s=temp_settings_stepwise_option_hint))
 
         try:
-            temp_settings_stepwise_hints_count = course.settings.stepwise_hints_count
+            temp_settings_stepwise_hints_count = course.stepwise_hints_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() - course.settings.stepwise_hints_count was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() - course.stepwise_hints_count was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_hints_count = -1
         logger.info('SWXblock student_view() - temp_settings_stepwise_hints_count: {s}'.format(s=temp_settings_stepwise_hints_count))
 
         try:
-            temp_settings_stepwise_showme_ded = course.settings.stepwise_showme_ded
+            temp_settings_stepwise_showme_ded = course.stepwise_showme_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() - course.settings.stepwise_showme_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() - course.stepwise_showme_ded was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_showme_ded = -1
         logger.info('SWXblock student_view() - temp_settings_stepwise_showme_ded: {s}'.format(s=temp_settings_stepwise_showme_ded))
 
         try:
-            temp_settings_stepwise_hints_ded = course.settings.stepwise_hints_ded
+            temp_settings_stepwise_hints_ded = course.stepwise_hints_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() - course.settings.stepwise_hints_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() - course.stepwise_hints_ded was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_hints_ded = -1
         logger.info('SWXblock student_view() - temp_settings_stepwise_hints_ded: {s}'.format(s=temp_settings_stepwise_hints_ded))
 
         try:
-            temp_settings_stepwise_errors_count = course.settings.stepwise_errors_count
+            temp_settings_stepwise_errors_count = course.stepwise_errors_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() - course.settings.stepwise_errors_count was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() - course.stepwise_errors_count was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_errors_count = -1
         logger.info('SWXblock student_view() - temp_settings_stepwise_errors_count: {s}'.format(s=temp_settings_stepwise_errors_count))
 
         try:
-            temp_settings_stepwise_errors_ded = course.settings.stepwise_errors_ded
+            temp_settings_stepwise_errors_ded = course.stepwise_errors_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() - course.settings.stepwise_errors_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() - course.stepwise_errors_ded was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_errors_ded = -1
         logger.info('SWXblock student_view() - temp_settings_stepwise_errors_ded: {s}'.format(s=temp_settings_stepwise_errors_ded))
 
         try:
-            temp_settings_stepwise_min_steps_count = course.settings.stepwise_min_steps_count
+            temp_settings_stepwise_min_steps_count = course.stepwise_min_steps_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() - course.settings.stepwise_min_steps_count was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() - course.stepwise_min_steps_count was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_min_steps_count = -1
         logger.info('SWXblock student_view() - temp_settings_stepwise_min_steps_count: {s}'.format(s=temp_settings_stepwise_min_steps_count))
 
         try:
-            temp_settings_stepwise_min_steps_ded = course.settings.stepwise_min_steps_ded
+            temp_settings_stepwise_min_steps_ded = course.stepwise_min_steps_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXblock student_view() - course.settings.stepwise_min_steps_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() - course.stepwise_min_steps_ded was not defined in this instance: {e}'.format(e=e))
             temp_settings_stepwise_min_steps_ded = -1
         logger.info('SWXblock student_view() - temp_settings_stepwise_min_steps_ded: {s}'.format(s=temp_settings_stepwise_min_steps_ded))
 
