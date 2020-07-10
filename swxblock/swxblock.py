@@ -488,9 +488,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         if (temp_grade_hints_count != -1):
             my_grade_hints_count = temp_grade_hints_count
         elif (temp_course_stepwise_grade_hints_count != -1):
-            my_grade_hints_count = temp_settings_stepwise_grade_hints_count
+            my_grade_hints_count = temp_course_stepwise_grade_hints_count
         else:
-            my_grade_hints_count = def_settings_stepwise_grade_hints_count
+            my_grade_hints_count = def_course_stepwise_grade_hints_count
         logger.info('SWXblock student_view() my_grade_hints_count={m}'.format(m=my_grade_hints_count))
 
         if (temp_grade_hints_ded != -1):
