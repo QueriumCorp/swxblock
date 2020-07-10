@@ -885,8 +885,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         Count the total number of VALID steps the student input.
         Used to determine if they get full credit for entering at least a min number of good steps.
-        TODO:  Use this look to find the StepWise spec to see if it is MatchSpec[].  We don't want to do the min_steps deduction for MatchSpec Qs.
-        TODO:  Ignore 'Advisory:' hints in the hint counting (maybe do in the Javascript?)
         """
         valid_steps = 0;
 
@@ -927,8 +925,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             grade=grade-q_grade_showme_ded
             logger.info('SWXblock save_grade() showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
         # fuka july-2020 partial deduction for entering too few intermediate steps
-        # TODO: Don't subtract on MatchSpec problems
-        if (grade >= max_grade and valid_steps < q_grade_min_steps_count):
+        # Don't subtract min_steps points on a MatchSpec problem
+        logger.info("SWXblock save_grade() data.question.q_definition.count('MatchSpec')={c}".format(c=data.question.q_definition.count('MatchSpec')))
+        if (grade >= max_grade and valid_steps < q_grade_min_steps_count and data.question.q_definition.count('MatchSpec') == 0 ):
             grade=grade-q_grade_min_steps_ded
         if grade<0.0:
             logger.info('SWXblock save_grade() zero negative grade')
