@@ -104,7 +104,6 @@ function SWXStudent(runtime, element, data) {
     var used_showme = $('.used-showme', swxblock_block)[0];
 
     // Get Top Element Handles
-    var weight_element = $('.points-possible', element)[0];
     var made_attempts = $('.made-attempts', swxblock_block)[0];
 
     // Get Solution Element Handles
@@ -112,15 +111,15 @@ function SWXStudent(runtime, element, data) {
 
     // Update question top info
 
-    // Show question weight
-    console.info('weight_element',weight_element);
-    weight_string = '('+weight.toFixed(2)+' point';
+    // Show question points/weight
+    console.info('initial grade_val',grade_val);
+    grade_string = '('+((grade/3.0)*weight).toFixed(2)+'/'+weight.toFixed(2)+' point';
     if (weight > 1.0) {
-        weight_string = weight_string + 's)';
+        grade_string = grade_string + 's)';
     } else {
-        weight_string = ')';
+        grade_string = ')';
     }
-    weight_element.innerText = weight_string;
+    grade_val.innerText = grade_string;
 
     // Show attempts and no attempts message
 
@@ -390,8 +389,13 @@ function SWXStudent(runtime, element, data) {
         }else{
             question_stats.classList.remove("preview_hidden");
             elapsed_time_count.innerText = solution.time.toFixed(0);
-            // Grade normalized to 1.0 and weighted
-            grade_val.innerText = ((grade/3.0)*weight).toFixed(2);
+            grade_string = '('+((grade/3.0)*weight).toFixed(2)+'/'+weight.toFixed(2)+' point';
+            if (weight > 1.0) {
+                grade_string = grade_string + 's)';
+            } else {
+                grade_string = ')';
+            }
+            grade_val.innerText = grade_string;
             error_count.innerText = solution.errors;
             hint_count.innerText = solution.hints;
             var attempts_string;
