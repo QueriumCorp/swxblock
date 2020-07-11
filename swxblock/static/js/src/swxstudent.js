@@ -116,7 +116,7 @@ function SWXStudent(runtime, element, data) {
     }
     attempts_string += ' attempts';
     console.info('initial attempts_string',attempts_string);
-    console.info('initial made_attempts',made_attempts);
+    console.info('and initial made_attempts',made_attempts);
     made_attempts.innerText = attempts_string;
 
     if (count_attempts < max_attempts) {
