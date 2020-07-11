@@ -164,11 +164,11 @@ function SWXStudent(runtime, element, data) {
 
             console.log('   start calc grade=',grade);
             grade = 3.0;
-            console.log('   stats.errors=',stats.errors,' question.q_grade_errors_count=',quest.q_grade_errors_count,' question.q_grade_errors_ded');
+            console.log('   stats.errors=',stats.errors,' question.q_grade_errors_count=',question.q_grade_errors_count,' question.q_grade_errors_ded=',question.q_grade_errors_ded);
             if (stats.errors>question.q_grade_errors_count) {
                 grade=grade-question.q_grade_errors_ded;
             }
-            console.log('   stats.hints=',stats.hints,' question.q_grade_hints_count=',quest.q_grade_hints_count,' question.q_grade_hints_ded');
+            console.log('   stats.hints=',stats.hints,' question.q_grade_hints_count=',question.q_grade_hints_count,' question.q_grade_hints_ded=',question.q_grade_hints_ded);
             if (stats.hints>question.q_grade_hints_count) {
                 grade=grade-question.q_grade_hints_ded;
             }
