@@ -91,6 +91,14 @@ function SWXStudent(runtime, element, data) {
     preview_element.classList.remove("preview_hidden");
     preview_element.onclick = previewClicked;
 
+    if (count_attempts < max_attempts) {
+        $(".click-to-begin").show();
+        $(".too-many-attempts").hide();
+    } else {
+        $(".click-to-begin").hide();
+        $(".too-many-attempts").show();
+    }
+
     // Get Statistics Element Handles
     var question_stats = $('.question-stats', swxblock_block)[0];
     var star_box = $('.star-box', swxblock_block)[0];
@@ -128,6 +136,8 @@ function SWXStudent(runtime, element, data) {
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts >= max_attempts) {
             console.info("SWXstudent previewClicked() too many attempts");
+            $(".click-to-begin").hide();
+            $(".too-many-attempts").show();
             return;
         };
         count_attempts++;  // need to do this hear, since the Python code does update this
