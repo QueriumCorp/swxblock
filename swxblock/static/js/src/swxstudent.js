@@ -179,8 +179,8 @@ function SWXStudent(runtime, element, data) {
         // Callback when the student begins to work on a problem (e.g. enters a step, clicks "Hint", clicks "Show Solution"
         function start_attempt(status) {
 
-            console.info("start_attempt status={s}".format(s=status)
-            //console.info("start_attempt sessionId={s} timeMark={t} action:={a}".format(a=status.sessionId,t=status.timeMark,a=status.action)
+            console.info("start_attempt status={s}".format(s=status))
+            //console.info("start_attempt sessionId={s} timeMark={t} action:={a}".format(a=status.sessionId,t=status.timeMark,a=status.action))
 
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             $.ajax({
