@@ -964,7 +964,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info('SWXblock save_grade() check on min_steps deduction grade={g} max_grade={m} q_grade_min_steps_count={c} q_grade_min_steps_ded={d} my_q_definition={q}'.format(g=grade,m=max_grade,c=q_grade_min_steps_count,d=q_grade_min_steps_ded,q=my_q_definition))
         if (grade >= max_grade and valid_steps < q_grade_min_steps_count and my_q_definition.count('MatchSpec') == 0 ):
             grade=grade-q_grade_min_steps_ded
-            logger.info('SWXblock save_grade() taken min_steps deduction after grade={g}'.format(g=grade))
+            logger.info('SWXblock save_grade() took min_steps deduction after grade={g}'.format(g=grade))
+        else:
+            logger.info('SWXblock save_grade() did not take min_steps deduction after grade={g}'.format(g=grade))
 
         if grade<0.0:
             logger.info('SWXblock save_grade() zero negative grade')
