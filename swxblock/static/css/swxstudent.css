@@ -199,6 +199,14 @@ div#practice-page {
     font-size: 20px;
 }
 
+.question-info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 14px;
+}
+
 .time-box {
     min-width: 48px;
     min-height: 48px;
