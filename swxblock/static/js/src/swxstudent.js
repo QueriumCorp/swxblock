@@ -140,6 +140,7 @@ function SWXStudent(runtime, element, data) {
 
     if (count_attempts < max_attempts) {
         $(".click-to-begin").show();
+        $(".question-info").onclick = null;
         $(".click-to-begin").onclick = null;
         $(".xblock-student_view").onclick = null;		// Can't click on the UI
         $(".too-many-attempts").hide();
