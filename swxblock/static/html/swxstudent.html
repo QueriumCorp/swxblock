@@ -25,9 +25,19 @@
 
         <div class='qq_preview0 preview_hidden'>
             <h3 class="hd hd-3 problem-header">{self.q_label}</h3>
-            <div class='practice-problem'>
-                <p class='stimulus'>{self.q_stimulus}</p>
-                <p class='display-math'>{self.q_display_math}</p>
+            <div class='practice-problem-with-reset'>
+                <div class='practice-problem'>
+                    <p class='stimulus'>{self.q_stimulus}</p>
+                    <p class='display-math'>{self.q_display_math}</p>
+                </div>
+                <div class='stepwise-reset'>
+                    <button type="button" class="reset problem-action-btn btn-default btn-small" data-value="Reset"
+                        <span class="icon fa fa-refresh" aria-hidden="false">
+                          ::before
+                        </span>
+                        <span aria-hidden="false">Reset</span>
+                    </button>
+                </div>
             </div>
         </div>
         <div class='qq_preview1 preview_hidden'>
