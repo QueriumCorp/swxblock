@@ -229,10 +229,7 @@ div#practice-page {
 }
 
 .too-many-attempts-box {
-    min-width: 48px;
-    min-height: 48px;
     display: flex;
-    align-items: center;
 }
 
 .used-showme {
