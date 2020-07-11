@@ -120,14 +120,14 @@ function SWXStudent(runtime, element, data) {
         };
     
         // console.info("SWXstudent previewClicked() started");
-        // console.info("SWXstudent previewClicked() count_attempts ",count_attempts);
-        // console.info("SWXstudent previewClicked() max_attempts ",max_attempts);
+        console.info("SWXstudent previewClicked() count_attempts ",count_attempts);
+        console.info("SWXstudent previewClicked() max_attempts ",max_attempts);
         console.info("SWXstudent previewClicked() weight ",weight);
-        console.info("SWXstudent previewClicked() min_steps ",min_steps);
-        console.info("SWXstudent previewClicked() min_steps_ded ",min_steps_ded);
+        // console.info("SWXstudent previewClicked() min_steps ",min_steps);
+        // console.info("SWXstudent previewClicked() min_steps_ded ",min_steps_ded);
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts >= max_attempts) {
-            // console.info("SWXstudent previewClicked() too many attempts");
+            console.info("SWXstudent previewClicked() too many attempts");
             return;
         };
         // console.info("SWXstudent previewClicked() continues");
@@ -144,38 +144,19 @@ function SWXStudent(runtime, element, data) {
             // NOTE: We compute the grade here for display purposes, but the Python code on the server also calculates the grade itself.
             //       We could pass all of this info over to the server to avoid this duplication of code, provided we trust these browser-based calcs.
 
-            // TODO: replace this simplistic grading with the real server-graded results
-            // if( stats.usedShowMe ){
-            //     grade=0.0;
-            // }else if( stats.errors==0 && stats.hints==0 ){
-            //     grade=3.0;
-            // }else if( stats.errors<2 && stats.hints<3 ){
-            //     grade=2.0;
-            // }else{
-            //     grade=1.0;
-            // }
-
-	    // // partial deduction for not providing min steps with full credit
-            // console.info("celebrate tool check min steps ",min_steps," steps ",stats.stepCount);
-	    // if (grade == 3.0 && stats.stepCount < min_steps) {
-            //     console.info("celebrate tool tool min steps deduction ",min_steps_ded);
-            //     grade=grade-min_steps_ded;
-	    // }
-
-            console.log('   start calc grade=',grade);
             grade = 3.0;
-            console.log('   stats.errors=',stats.errors,' question.q_grade_errors_count=',question.q_grade_errors_count,' question.q_grade_errors_ded=',question.q_grade_errors_ded);
+            console.log('start grade calc stats.errors=',stats.errors,' question.q_grade_errors_count=',question.q_grade_errors_count,' question.q_grade_errors_ded=',question.q_grade_errors_ded);
             if (stats.errors>question.q_grade_errors_count) {
                 grade=grade-question.q_grade_errors_ded;
             }
-            console.log('   stats.hints=',stats.hints,' question.q_grade_hints_count=',question.q_grade_hints_count,' question.q_grade_hints_ded=',question.q_grade_hints_ded);
+            console.log('stats.hints=',stats.hints,' question.q_grade_hints_count=',question.q_grade_hints_count,' question.q_grade_hints_ded=',question.q_grade_hints_ded);
             if (stats.hints>question.q_grade_hints_count) {
                 grade=grade-question.q_grade_hints_ded;
             }
-            console.log('   stats.usedShowMe=',stats.usedShowMe,' question.q_grade_showme_ded=',question.q_grade_showme_ded);
+            console.log('stats.usedShowMe=',stats.usedShowMe,' question.q_grade_showme_ded=',question.q_grade_showme_ded);
             if (stats.usedShowMe) {
                 grade=grade-question.q_grade_showme_ded;
-                console.info('    used showme');
+                console.info('used showme');
             }
 
             //  Count valid steps
@@ -185,7 +166,7 @@ function SWXStudent(runtime, element, data) {
 
             for( c=0; c<solution.stepDetails.length; c++){
                 for( i=0; i<solution.stepDetails[c].info.length; i++){
-                    console.info('       i=',i,' c=',c,' info=',solution.stepDetails[c].info[i])
+                    console.info('i=',i,' c=',c,' info=',solution.stepDetails[c].info[i])
                     switch( solution.stepDetails[c].info[i].status ){
                         case 0: // victory
                             valid_step_count++;
@@ -202,15 +183,15 @@ function SWXStudent(runtime, element, data) {
                     }
                 }
             }
-            console.log('   valid_step_count=',valid_step_count);
-            console.log('   question.q_definition=',question.q_definition);
-            console.log('   question.q_grade_min_steps_count=',question.q_grade_min_steps_count,' question.q_grade_min_steps_ded=',question.q_grade_min_steps_ded);
+            console.log('valid_step_count=',valid_step_count);
+            console.log('question.q_definition=',question.q_definition);
+            console.log('question.q_grade_min_steps_count=',question.q_grade_min_steps_count,' question.q_grade_min_steps_ded=',question.q_grade_min_steps_ded);
 
             if (grade >= 3.0 && valid_step_count < question.q_grade_min_steps_count && question.q_definition.indexOf('MatchSpec') > -1 ) {
                 grade=grade-question.q_grade_min_steps_ded;
-                console.log('   took min_steps deduction after grade=',grade);
+                console.log('took min_steps deduction after grade=',grade);
             } else {
-                console.log('   did not take min_steps deduction after grade=',grade);
+                console.log('did not take min_steps deduction after grade=',grade);
             }
 
             updateStats();
@@ -273,11 +254,11 @@ function SWXStudent(runtime, element, data) {
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
         // console.info("SWXblock previewClicked() count_attempts ",count_attempts);
-        data.count_attempts += 1;
-        count_attempts = data.count_attempts;
+        // data.count_attempts += 1;
+        // count_attempts = data.count_attempts;
         // console.info("SWXStudent incremented count_attempts ",count_attempts);
         // console.info("SWXblock previewClicked() max_attempts ",max_attempts);
-        console.info("SWXblock previewClicked() weight ",weight);
+        // console.info("SWXblock previewClicked() weight ",weight);
         // console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
