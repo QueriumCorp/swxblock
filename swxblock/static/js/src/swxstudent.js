@@ -171,6 +171,7 @@ function SWXStudent(runtime, element, data) {
             console.log('   stats.hints=',stats.hints,' question.q_grade_hints_count=',quest.q_grade_hints_count,' question.q_grade_hints_ded');
             if (stats.hints>question.q_grade_hints_count) {
                 grade=grade-question.q_grade_hints_ded;
+            }
             console.log('   stats.usedShowMe=',stats.usedShowMe,' question.q_grade_showme_ded=',question.q_grade_showme_ded);
             if (stats.usedShowMe) {
                 grade=grade-question.q_grade_showme_ded;
