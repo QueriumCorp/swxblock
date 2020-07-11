@@ -182,13 +182,13 @@ function SWXStudent(runtime, element, data) {
             console.info("start_attempt status=",status)
             //console.info("start_attempt sessionId=",status.sessionId," timeMark=",status.timeMark," action=",a=status.action)
 
-            // MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            // $.ajax({
-                // type: "POST",
-                // url: handlerUrlStart,
-                // data: JSON.stringify(stats),
-                // success: null
-            // });
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            $.ajax({
+                type: "POST",
+                url: handlerUrlStart,
+                data: JSON.stringify(stats),
+                success: null
+            });
         }
 
         var callbacks = {
