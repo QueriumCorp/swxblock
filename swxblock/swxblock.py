@@ -960,10 +960,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             logger.info('SWXblock save_grade() showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
         
         # Don't subtract min_steps points on a MatchSpec problem
-        logger.info("SWXblock save_grade() data.question.q_definition.count('MatchSpec')={c}".format(c=data.answered_question.q_definition.count('MatchSpec')))
-        if (grade >= max_grade and valid_steps < q_grade_min_steps_count and data.answered_question.q_definition.count('MatchSpec') == 0 ):
+        my_q_definition = data['answered_question']['q_definition']
+        logger.info('SWXblock save_grade() check on min_steps deduction grade={g} max_grade={m} q_grade_min_steps_count={c} q_grade_min_steps_ded={d} my_q_definition={q}'.format(g=grade,m=max_grade,c=q_grade_min_steps_count,d=q_grade_min_steps_ded,q=my_q_definition))
+        if (grade >= max_grade and valid_steps < q_grade_min_steps_count and my_q_definition.count('MatchSpec') == 0 ):
             grade=grade-q_grade_min_steps_ded
-            logger.info('SWXblock save_grade() taken min_steps deduction after grade={g} q_grade_min_steps_count={c} q_grade_min_steps_ded={q}'.format(g=grade,c=q_grade_min_steps_count,q=q_grade_min_steps_ded))
+            logger.info('SWXblock save_grade() taken min_steps deduction after grade={g}'.format(g=grade))
 
         if grade<0.0:
             logger.info('SWXblock save_grade() zero negative grade')
