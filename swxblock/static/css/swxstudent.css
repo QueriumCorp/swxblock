@@ -235,6 +235,7 @@ div#practice-page {
 }
 
 .too-many-attempts p {
+    color: red;
     margin-bottom: 0px!important;
 }
 
