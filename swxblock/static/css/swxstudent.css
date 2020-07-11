@@ -21,7 +21,9 @@
 }
 
 .swxblock_block p.stimulus {
-    margin-bottom: 5px;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid forestgreen;
 }
 
 .swxblock_block .grade-box {
@@ -239,6 +241,17 @@ div#practice-page {
     margin-bottom: 0px!important;
 }
 
+.click-to-begin p {
+    font-size: 14px;
+    margin-bottom: 0px!important;
+}
+
+.swxblock_block p.stimulus {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid gray;
+}
+
 .used-showme {
     min-width: 48px;
     min-height: 48px;
@@ -264,3 +277,4 @@ div#practice-page {
     font-size: 14px;
     margin-bottom: 10px;
 }
+

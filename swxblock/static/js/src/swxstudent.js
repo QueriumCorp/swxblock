@@ -1,4 +1,6 @@
-/* Javascript for SWXBlock. */
+/* Javascript for SWXBlock.
+ * TODO:  Enforce assignment due date for not starting another attempt.
+ */
 function SWXStudent(runtime, element, data) {
     console.info("SWXStudent data",data);
     // Get our context variables
@@ -138,6 +140,8 @@ function SWXStudent(runtime, element, data) {
 
     if (count_attempts < max_attempts) {
         $(".click-to-begin").show();
+        $(".click-to-begin").onclick = null;
+        $(".xblock-student_view").onclick = null;		// Can't click on the UI
         $(".too-many-attempts").hide();
         // Show the active question preview
         preview_element.classList.remove("preview_hidden");
