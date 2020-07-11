@@ -97,6 +97,7 @@ function SWXStudent(runtime, element, data) {
     } else {
         $(".click-to-begin").hide();
         $(".too-many-attempts").show();
+        display_math.classList.add("preview_hidden");	// Don't show another preview
     }
 
     // Get Statistics Element Handles
