@@ -96,7 +96,13 @@ function SWXStudent(runtime, element, data) {
 
     // Show question weight
     console.info('weight_element',weight_element);
-    weight_element.innerText = weight.toFixed(2);
+    weight_string = '('+weight.toFixed(2)+' point';
+    if (weight > 1.0) {
+        weight_string = weight_string + 's)';
+    } else {
+        weight_string = ')';
+    }
+    weight_element.innerText = weight_string;
 
     // Show attempts and no attempts message
 
@@ -393,6 +399,7 @@ function SWXStudent(runtime, element, data) {
                attempts_string += max_attempts;
             }
             attempts_string += ' attempts';
+            console.info('attempts_string',attempts_string);
             made_attempts.innerText = attempts_string;
     
             if( solution.usedShowMe ){
