@@ -233,7 +233,7 @@ div#practice-page {
     margin-bottom: 0px;
 }
 
-.too-many-attempts {
+.too-many-attempts p {
     margin-bottom: 0px;
 }
 
@@ -260,4 +260,5 @@ div#practice-page {
 
 .last-attempt-text {
     font-size: 14px;
+    margin-bottom: 10px;
 }
