@@ -140,16 +140,19 @@ function SWXStudent(runtime, element, data) {
 
     if (count_attempts < max_attempts) {
         $(".click-to-begin").show();
-        $(".question-info").onclick = null;
         $(".click-to-begin").onclick = null;
+        $(".question-info").onclick = null;
         $(".xblock-student_view").onclick = null;		// Can't click on the UI
         $(".too-many-attempts").hide();
+        $(".too-many-attempts").onclick = null;
         // Show the active question preview
         preview_element.classList.remove("preview_hidden");
         preview_element.onclick = previewClicked;
     } else {
         $(".click-to-begin").hide();
+        $(".click-to-begin").onclick = null;
         $(".too-many-attempts").show();
+        $(".too-many-attempts").onclick = null;
         preview_element.classList.add("preview_hidden");	// Don't show another preview
         preview_element.onclick = null;				// Don't let them click again
     }
@@ -176,7 +179,9 @@ function SWXStudent(runtime, element, data) {
         if (max_attempts != -1 && count_attempts >= max_attempts) {
             console.info("SWXstudent previewClicked() too many attempts");
             $(".click-to-begin").hide();
+            $(".click-to-begin").onclick = null;
             $(".too-many-attempts").show();
+            $(".too-many-attempts").onclick = null;
             return;
         };
         count_attempts++;  // need to do this hear, since the Python code does update this
