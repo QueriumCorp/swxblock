@@ -41,7 +41,6 @@ function SWXStudent(runtime, element, data) {
     // Get Primary Element Handles
     var swxblock_block = $('.swxblock_block', element)[0];
     var stepwise_element = $('querium', element)[0];
-    var weight_element = $('.points-possible', element)[0];
 
     // Get Active Preview Element Handles
     var preview_element;
@@ -92,6 +91,25 @@ function SWXStudent(runtime, element, data) {
     preview_element.classList.remove("preview_hidden");
     preview_element.onclick = previewClicked;
 
+    // Get Statistics Element Handles
+    var question_stats = $('.question-stats', swxblock_block)[0];
+    var star_box = $('.star-box', swxblock_block)[0];
+    var star1 = $('.star1', swxblock_block)[0];
+    var star2 = $('.star2', swxblock_block)[0];
+    var star3 = $('.star3', swxblock_block)[0];
+    var elapsed_time_count = $('.elapsed-time-count', swxblock_block)[0];
+    var grade_val = $('.grade-val', swxblock_block)[0];
+    var error_count = $('.error-count', swxblock_block)[0];
+    var hint_count = $('.hint-count', swxblock_block)[0];
+    var used_showme = $('.used-showme', swxblock_block)[0];
+
+    // Get Top Element Handles
+    var weight_element = $('.points-possible', element)[0];
+    var made_attempts = $('.made-attempts', swxblock_block)[0];
+
+    // Get Solution Element Handles
+    var solution_element = $('.solution', element)[0];
+
     // Update question top info
 
     // Show question weight
@@ -131,22 +149,6 @@ function SWXStudent(runtime, element, data) {
         preview_element.classList.add("preview_hidden");	// Don't show another preview
         preview_element.onclick = null;				// Don't let them click again
     }
-
-    // Get Statistics Element Handles
-    var question_stats = $('.question-stats', swxblock_block)[0];
-    var star_box = $('.star-box', swxblock_block)[0];
-    var star1 = $('.star1', swxblock_block)[0];
-    var star2 = $('.star2', swxblock_block)[0];
-    var star3 = $('.star3', swxblock_block)[0];
-    var elapsed_time_count = $('.elapsed-time-count', swxblock_block)[0];
-    var grade_val = $('.grade-val', swxblock_block)[0];
-    var error_count = $('.error-count', swxblock_block)[0];
-    var hint_count = $('.hint-count', swxblock_block)[0];
-    var used_showme = $('.used-showme', swxblock_block)[0];
-    var made_attempts = $('.made-attempts', swxblock_block)[0];
-
-    // Get Solution Element Handles
-    var solution_element = $('.solution', element)[0];
 
     // Init preview mode
     updateStats();
