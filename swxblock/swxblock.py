@@ -958,11 +958,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         if data['usedShowMe']:
             grade=grade-q_grade_showme_ded
             logger.info('SWXblock save_grade() showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
-        # fuka july-2020 partial deduction for entering too few intermediate steps
+        
         # Don't subtract min_steps points on a MatchSpec problem
-        logger.info("SWXblock save_grade() data.question.q_definition.count('MatchSpec')={c}".format(c=data.question.q_definition.count('MatchSpec')))
-        if (grade >= max_grade and valid_steps < q_grade_min_steps_count and data.question.q_definition.count('MatchSpec') == 0 ):
+        logger.info("SWXblock save_grade() data.question.q_definition.count('MatchSpec')={c}".format(c=data.answered_question.q_definition.count('MatchSpec')))
+        if (grade >= max_grade and valid_steps < q_grade_min_steps_count and data.answered_question.q_definition.count('MatchSpec') == 0 ):
             grade=grade-q_grade_min_steps_ded
+            logger.info('SWXblock save_grade() taken min_steps deduction after grade={g} q_grade_min_steps_count={c} q_grade_min_steps_ded={q}'.format(g=grade,c=q_grade_min_steps_count,q=q_grade_min_steps_ded))
+
         if grade<0.0:
             logger.info('SWXblock save_grade() zero negative grade')
             grade=0.0
