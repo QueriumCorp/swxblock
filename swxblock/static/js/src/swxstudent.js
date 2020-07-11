@@ -41,6 +41,7 @@ function SWXStudent(runtime, element, data) {
     // Get Primary Element Handles
     var swxblock_block = $('.swxblock_block', element)[0];
     var stepwise_element = $('querium', element)[0];
+    var weight_element = $('.points-possible', element)[0];
 
     // Get Active Preview Element Handles
     var preview_element;
@@ -90,6 +91,13 @@ function SWXStudent(runtime, element, data) {
     // Show the active question preview
     preview_element.classList.remove("preview_hidden");
     preview_element.onclick = previewClicked;
+
+    // Update question top info
+
+    // Show question weight
+    points_possible.innerText = weight.toFixed(2);
+
+    // Show attempts and no attempts message
 
     if (count_attempts < max_attempts) {
         $(".click-to-begin").show();
