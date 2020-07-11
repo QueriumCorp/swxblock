@@ -228,17 +228,14 @@ div#practice-page {
 }
 
 .too-many-attempts-box {
+    min-width: 48px;
     min-height: 48px;
     display: flex;
-    margin-bottom: 0px;
+    align-items: center;
 }
 
-div.too-many-attempts {
-    margin-bottom: 0px;
-}
-
-p.too-many-attempts {
-    margin-bottom: 0px;
+.too-many-attempts p {
+    margin-bottom: 0px!important;
 }
 
 .used-showme {
