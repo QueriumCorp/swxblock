@@ -257,3 +257,7 @@ div#practice-page {
     display: flex;
     align-items: center;
 }
+
+.last-attempt-text {
+    font-size: 14px;
+}
