@@ -94,10 +94,14 @@ function SWXStudent(runtime, element, data) {
     if (count_attempts < max_attempts) {
         $(".click-to-begin").show();
         $(".too-many-attempts").hide();
+        // Show the active question preview
+        preview_element.classList.remove("preview_hidden");
+        preview_element.onclick = previewClicked;
     } else {
         $(".click-to-begin").hide();
         $(".too-many-attempts").show();
-        display_math.classList.add("preview_hidden");	// Don't show another preview
+        preview_element.classList.add("preview_hidden");	// Don't show another preview
+        preview_element.onclick = null;				// Don't let them click again
     }
 
     // Get Statistics Element Handles
