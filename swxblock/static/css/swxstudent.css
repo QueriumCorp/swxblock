@@ -233,7 +233,11 @@ div#practice-page {
     margin-bottom: 0px;
 }
 
-.too-many-attempts p {
+div.too-many-attempts {
+    margin-bottom: 0px;
+}
+
+p.too-many-attempts {
     margin-bottom: 0px;
 }
 
