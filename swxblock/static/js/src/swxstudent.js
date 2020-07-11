@@ -95,9 +95,21 @@ function SWXStudent(runtime, element, data) {
     // Update question top info
 
     // Show question weight
-    points_possible.innerText = weight.toFixed(2);
+    console.info('weight_element',weight_element);
+    weight_element.innerText = weight.toFixed(2);
 
     // Show attempts and no attempts message
+
+    var attempts_string;
+    attempts_string = count_attempts;
+    attempts_string += ' of ';
+    if( max_attempts == -1) {
+               attempts_string += 'unlimited';
+    }else{
+               attempts_string += max_attempts;
+    }
+    attempts_string += ' attempts';
+    made_attempts.innerText = attempts_string;
 
     if (count_attempts < max_attempts) {
         $(".click-to-begin").show();
