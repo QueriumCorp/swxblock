@@ -186,7 +186,7 @@ function SWXStudent(runtime, element, data) {
             $.ajax({
                 type: "POST",
                 url: handlerUrlStart,
-                data: JSON.stringify(stats),
+                data: JSON.stringify(status),
                 success: null
             });
         }
