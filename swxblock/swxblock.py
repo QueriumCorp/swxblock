@@ -52,13 +52,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         enforce_type=True
     )
 
-    q_grade_showme_ded = Float(help="Point deduction for using Show Solution", default=-1.0, scope=Scope.content)
-    q_grade_hints_count = Integer(help="Number of Hints before deduction", default=-1, scope=Scope.content)
-    q_grade_hints_ded = Float(help="Point deduction for using excessive Hints", default=-1.0, scope=Scope.content)
-    q_grade_errors_count = Integer(help="Number of Errors before deduction", default=-1, scope=Scope.content)
-    q_grade_errors_ded = Float(help="Point deduction for excessive Errors", default=-1.0, scope=Scope.content)
+    q_grade_showme_ded = Float(display_name="Point deduction for using Show Solution",help="Raw points deducted from 3.0 (Default: 3.0)", default=3.0, scope=Scope.content)
+    q_grade_hints_count = Integer(help="Number of Hints before deduction", default=2, scope=Scope.content)
+    q_grade_hints_ded = Float(help="Point deduction for using excessive Hints", default=1.0, scope=Scope.content)
+    q_grade_errors_count = Integer(help="Number of Errors before deduction", default=2, scope=Scope.content)
+    q_grade_errors_ded = Float(help="Point deduction for excessive Errors", default=1.0, scope=Scope.content)
     q_grade_min_steps_count = Integer(help="Minimum valid steps in solution for full credit", default=3, scope=Scope.content)
-    q_grade_min_steps_ded = Float(help="Point deduction for fewer than minimum valid steps", default=0.0, scope=Scope.content)
+    q_grade_min_steps_ded = Float(help="Point deduction for fewer than minimum valid steps", default=0.25, scope=Scope.content)
 
     # PER-QUESTION HINTS/SHOW SOLUTION OPTIONS
     q_option_hint = Boolean(help='Display Hint button if "True"', default=True, scope=Scope.content)
@@ -826,7 +826,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         frag.add_css_url("//stepwise.querium.com/libs/mathquill/mathquill.css")
         frag.add_css_url("//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css")
-        frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.8.css")
+        frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.9.css")
 
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript_url("//stepwise.querium.com/libs/mathquill/mathquill.js")
@@ -834,7 +834,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-sanitize.min.js")
         frag.add_javascript_url("//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js")
         frag.add_javascript_url("//www.gstatic.com/firebasejs/4.4.0/firebase.js")               # For qEval client-side logging
-        frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.8.js")    # REVERT TO 1.6.8 FOR NOW
+        frag.add_javascript_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.9.js")    # 1.6.9 adds new 'start' callback used for attempt counting
 
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
