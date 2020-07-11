@@ -17,8 +17,8 @@ function SWXStudent(runtime, element, data) {
     // console.info("SWXStudent enable_showme",enable_showme);
     // console.info("SWXStudent enable_hint",enable_hint);
     console.info("SWXStudent solution",solution);
-    // console.info("SWXStudent count_attempts",count_attempts);
-    // console.info("SWXStudent max_attempts",max_attempts);
+    console.info("SWXStudent count_attempts",count_attempts);
+    console.info("SWXStudent max_attempts",max_attempts);
     console.info("SWXStudent weight ",weight);
     console.info("SWXStudent min steps",min_steps);
     console.info("SWXStudent min steps dec",min_steps_ded);
@@ -130,7 +130,8 @@ function SWXStudent(runtime, element, data) {
             console.info("SWXstudent previewClicked() too many attempts");
             return;
         };
-        // console.info("SWXstudent previewClicked() continues");
+        count_attempts++;  // need to do this hear, since the Python code does update this
+        console.info("SWXstudent previewClicked() continues");
 
         function celebrate(stats) {
             swxblock_block.classList.remove("block_working");
