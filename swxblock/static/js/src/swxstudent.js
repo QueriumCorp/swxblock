@@ -141,6 +141,9 @@ function SWXStudent(runtime, element, data) {
             solution.answered_question = question; // remember the question we answered for the stats display
             // console.info("celebrate solution ", solution);
 
+            // NOTE: We compute the grade here for display purposes, but the Python code on the server also calculates the grade itself.
+            //       We could pass all of this info over to the server to avoid this duplication of code, provided we trust these browser-based calcs.
+
             // TODO: replace this simplistic grading with the real server-graded results
             // if( stats.usedShowMe ){
             //     grade=0.0;
@@ -159,7 +162,7 @@ function SWXStudent(runtime, element, data) {
             //     grade=grade-min_steps_ded;
 	    // }
 
-            console.log('   grade=',grade);
+            console.log('   start calc grade=',grade);
             grade = 3.0;
             console.log('   stats.errors=',stats.errors,' question.q_grade_errors_count=',quest.q_grade_errors_count,' question.q_grade_errors_ded');
             if (stats.errors>question.q_grade_errors_count) {
@@ -203,7 +206,7 @@ function SWXStudent(runtime, element, data) {
             console.log('   question.q_grade_min_steps_count=',question.q_grade_min_steps_count,' question.q_grade_min_steps_ded=',question.q_grade_min_steps_ded);
 
             if (grade >= 3.0 && count_valid_steps < question.q_grade_min_steps_count && question.q_definition.indexOf('MatchSpec') > -1 ) {
-                grade=grade-question.q_grade_min_steps_ded:
+                grade=grade-question.q_grade_min_steps_ded;
                 console.log('   took min_steps deduction after grade=',grade);
             } else {
                 console.log('   did not take min_steps deduction after grade=',grade);
