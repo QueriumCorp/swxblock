@@ -278,3 +278,6 @@ div#practice-page {
     margin-bottom: 10px;
 }
 
+.solution div {
+    margin: 5px;
+}
