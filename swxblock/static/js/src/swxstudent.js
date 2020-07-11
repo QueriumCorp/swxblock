@@ -34,9 +34,9 @@ function SWXStudent(runtime, element, data) {
     };
 
     var handlerUrl = runtime.handlerUrl(element, 'save_grade');
-    console.info("SWXStudent handlerUrl",grade);
+    console.info("SWXStudent handlerUrl",handlerUrl);
     var handlerUrlStart = runtime.handlerUrl(element, 'start_attempt');
-    console.info("SWXStudent handlerUrlStart",grade);
+    console.info("SWXStudent handlerUrlStart",handlerUrlStart);
 
     // Get Primary Element Handles
     var swxblock_block = $('.swxblock_block', element)[0];
