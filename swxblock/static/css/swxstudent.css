@@ -27,7 +27,6 @@
 .swxblock_block .grade-box {
     text-align: center;
     user-select: none;
-    margin-bottom: 10px;
 }
 
 .swxblock_block .star-box {
@@ -229,7 +228,13 @@ div#practice-page {
 }
 
 .too-many-attempts-box {
+    min-height: 48px;
     display: flex;
+    margin-bottom: 0px;
+}
+
+.too-many-attempts {
+    margin-bottom: 0px;
 }
 
 .used-showme {
