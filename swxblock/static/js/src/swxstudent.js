@@ -308,21 +308,21 @@ function SWXStudent(runtime, element, data) {
             question_stats.classList.add("preview_hidden");
         }else{
             question_stats.classList.remove("preview_hidden");
-            elapsed_time_count.innerText = solution.time.toFixed();
+            elapsed_time_count.innerText = solution.time.toFixed(0);
             // Grade normalized to 1.0 and weighted
-            grade_val.innerText = ((grade/3.0)*weight).toString();
+            grade_val.innerText = ((grade/3.0)*weight).toFixed(2);
             error_count.innerText = solution.errors;
             hint_count.innerText = solution.hints;
-            // var attempts_string;
-            // attempts_string = count_attempts;
-            // attempts_string += ' of ';
-            // if( max_attempts == -1) {
-            //    attempts_string += 'unlimited';
-            // }else{
-            //    attempts_string += max_attempts;
-            // }
-            // attempts_string += ' attempts';
-            // made_attempts.innerText = attempts_string;
+            var attempts_string;
+            attempts_string = count_attempts;
+            attempts_string += ' of ';
+            if( max_attempts == -1) {
+               attempts_string += 'unlimited';
+            }else{
+               attempts_string += max_attempts;
+            }
+            attempts_string += ' attempts';
+            made_attempts.innerText = attempts_string;
     
             if( solution.usedShowMe ){
                 used_showme.classList.remove("preview_hidden");
