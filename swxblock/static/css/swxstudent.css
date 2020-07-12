@@ -303,13 +303,13 @@ div#practice-page {
 
 .reset-container-left {
   width: 85%;
-  height: 200px;
+  height: 100px;
   background: red;
   float: left;
 }
 
 .reset-container-right {
   margin-left: 85%;
-  height: 200px;
+  height: 100px;
   background: green;
 }
