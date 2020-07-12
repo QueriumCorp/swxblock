@@ -303,9 +303,10 @@ div#practice-page {
 
 .reset-container-left {
   width: 85%;
-  height: 100px;
+  height: 200px;
   background: red;
   float: left;
+  overflow: scroll;
 }
 
 .reset-container-right {
