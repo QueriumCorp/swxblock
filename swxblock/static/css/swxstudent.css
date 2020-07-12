@@ -292,3 +292,24 @@ div#practice-page {
 }
 
 .fa-refresh:before{content:"\f021"}
+
+.reset-container {
+  width: 80%;
+  height: 200px;
+  background: aqua;
+  margin: auto;
+  padding: 10px;
+}
+
+.reset-container-left {
+  width: 85%;
+  height: 200px;
+  background: red;
+  float: left;
+}
+
+.reset-contrainer-right {
+  margin-left: 85%;
+  height: 200px;
+  background: green;
+}
