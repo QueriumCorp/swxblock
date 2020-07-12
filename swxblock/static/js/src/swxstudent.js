@@ -151,6 +151,7 @@ function SWXStudent(runtime, element, data) {
     } else {
         $(".click-to-begin").hide();
         $(".click-to-begin").onclick = null;
+        $(".question-info").onclick = null;
         $(".too-many-attempts").show();
         $(".too-many-attempts").onclick = null;
         preview_element.classList.add("preview_hidden");	// Don't show another preview
