@@ -275,3 +275,20 @@ div#practice-page {
 .solution div {
     margin: 5px;
 }
+
+.reset button {
+    padding: 25px;
+    border: 1px solid forestgreen;
+    background-color: lighten(forestgreen, 25%);
+    border-radius: 3px;
+    font-size: 1em;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+.fa-refresh {
+    font-family: "FontAwesome";
+}
+
+.fa-refresh:before{content:"\f021"}
