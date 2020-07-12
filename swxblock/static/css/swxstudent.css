@@ -242,8 +242,9 @@ div#practice-page {
 }
 
 .click-to-begin p {
-    font-size: 12px;
+    font-size: 14px;
     margin-bottom: 0px!important;
+    margin-left: 5px;
 }
 
 p.click-to-begin {
