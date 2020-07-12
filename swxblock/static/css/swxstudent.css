@@ -246,6 +246,11 @@ div#practice-page {
     margin-bottom: 0px!important;
 }
 
+p.click-to-begin {
+    font-size: 12px;
+    margin-bottom: 0px!important;
+}
+
 .used-showme {
     min-width: 48px;
     min-height: 48px;
