@@ -308,6 +308,7 @@ p.click-to-begin {
   background: white;
   float: left;
   overflow: scroll;
+  overflow-x: hidden;
 }
 
 .reset-container-right {
