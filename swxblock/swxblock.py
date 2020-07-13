@@ -1092,10 +1092,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         ###
         v = data['q_index']
         logger.info("variant is {v}".format(v=v))
-        # if v in self.variants_attempted:
+        if v in self.variants_attempted:
         #     logger.info("variant {v} has already been attempted!".format(v=v))
-        # else:
+            logger.info("in");
+        else:
         #     self.variants_attempted.add(v)
+            logger.info("out");
         #     logger.info("adding variant {v} to self.variants_attempted len={l}".format(v=v,l=len(self.variants_attempted)))
         ###
         logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
