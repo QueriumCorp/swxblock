@@ -200,7 +200,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # compare to course.max_attempts which is inherited as an per-question setting or a course-wide setting.
     count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.user_state)
     raw_possible = Float(help="Number of possible points", default=3,scope=Scope.user_state)
-    variants_attempts = Set(scope=Scope.user_state)
+    # Remember the set of variant q_index values the student has already attempted
+    variants_attempted = Set(scope=Scope.user_state)
 
     # FIELDS FOR THE ScorableXBlockMixin
 
