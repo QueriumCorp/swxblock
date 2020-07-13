@@ -1095,9 +1095,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             logger.info("variant {v} has already been attempted!".format(v=v))
         else:
         ###
-        #    self.variants_attempted |= set([v])
+            myset = set([v])
+            logger.info("type(self.variants_attempted)={t1} type(myset)={t2} myset=m".format(t1=type(self.variants_attempted),t2=type(myset),m=myset))
+            self.variants_attempted = self.variants_attempted | myset
         ###
-            logger.info("type(self.variants_attempted)={t} type(v)={v}".format(t=type(self.variants_attempted),v=type(v)))
             logger.info("adding variant {v} to self.variants_attempted len={l}".format(v=v,l=len(self.variants_attempted)))
         logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
         logger.info("SWXBlock start_attempt() updated len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
