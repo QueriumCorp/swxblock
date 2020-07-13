@@ -1,13 +1,47 @@
 <div class="swxblock_block" data-ng-strict-di>
     <div class='stepwise_container'>
 
+        <div class='question-info'>
+             <div class="grade-box">
+                 <span class="grade-val">(3.00/3.00 points)</span>
+            </div>
+
+            <div class="attempts-made-box">
+                <div class="made-attempts">
+                    <div>3 of 3 attempts</div>
+                </div>
+            </div>
+
+            <div class="too-many-attempts-box">
+                <div class="too-many-attempts">
+                     <p class="too-many-attempts">You&apos;ve used all your attempts on this question.</p>
+                </div>
+            </div>
+
+        </div>
+        <p class="click-to-begin">Click problem text below to solve this step-by-step question:</p>
+
         <querium style='display: none;'></querium>
 
         <div class='qq_preview0 preview_hidden'>
             <h3 class="hd hd-3 problem-header">{self.q_label}</h3>
-            <div class='practice-problem'>
-                <p class='stimulus'>{self.q_stimulus}</p>
-                <p class='display-math'>{self.q_display_math}</p>
+            <div class='reset-container'>
+              <div class='reset-container-left'>
+                <div class='practice-problem'>
+                    <p class='stimulus'>{self.q_stimulus}</p>
+                    <p class='display-math'>{self.q_display_math}</p>
+                </div>
+              </div>
+              <div class='reset-container-right'>
+                <div class='stepwise-reset'>
+                    <button type="button" class="reset problem-action-btn btn-default btn-small" data-value="Reset">
+                        <span class="icon fa fa-refresh" aria-hidden="false">
+                           <!-- :before css adds fontawsome icon -->
+                        </span>
+                        <span aria-hidden="false">Reset</span>
+                    </button>
+                </div>
+              </div>
             </div>
         </div>
         <div class='qq_preview1 preview_hidden'>
@@ -75,10 +109,6 @@
         </div>
 
         <div class='question-stats preview_hidden'>
-            <div class="grade-box">
-                <span class="grade-val">33</span><span> pts</span>
-            </div>
-
             <div class="star-box preview_hidden">
                 <span class="star1 star-icon">☆</span>
                 <span class="star2 star-icon">☆</span>
@@ -103,15 +133,10 @@
             <div class="used-showme">
                 <div>Used Show Solution</div>
             </div>   
-
-            <div class="made-attempts">
-                <div>3 of 3 attempts</div>
-            </div>
         </div>
 
         <div class="solution preview_hidden">
         </div>
     </div>
 </div>
-
 
