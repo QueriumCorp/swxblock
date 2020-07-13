@@ -1083,7 +1083,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def start_attempt(self, data, suffix=''):
         logger.info("SWXblock start_attempt() entered")
-        logger.info("SWXblock start_attempt() data={d}",format(d=data))
+        logger.info("SWXblock start_attempt() data={d}".format(d=data))
         # logger.info("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m} len(self.variants_attempted)={l}".format(c=self.count_attempts,m=self.max_attempts,l=len(self.variants_attempted)))
         # logger.info("SWXBlock start_attempt() len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
         # logger.info("SWXBlock start_attempt() action={d} sessionId={s} timeMark={t}".format(d=data['status']['action'],s=data['status']['sessionId'],t=data['status']['timeMark']))
