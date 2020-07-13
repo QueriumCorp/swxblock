@@ -625,7 +625,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 break
             else:
                 log.info("try {t}: variant {q} has already been attempted set is len {l} of {c}".format(t=tries,q=q_index,l=len(self.variants_attempted),c=variants_count))
-                if len(self.variants_attempted >= variants_count:
+                if len(self.variants_attempted) >= variants_count:
                     log.info("try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=variants_count))
                     q_index = 0		# Default
                     self.variants_attempted.clear()
