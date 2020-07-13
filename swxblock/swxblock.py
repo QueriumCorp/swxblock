@@ -9,14 +9,21 @@ We count question attempts made by the student.  We don't consider an attempt to
 in the attempt, or requests a hint, or requests to see the worked-out solution ('ShowMe').
 We use a callback from the StepWise UI client code to know that the student has begun their attempt.
 
-When the student completes work on the StepWise problem ('victory'), we use a callback from the StepWise UI client code to record
-the student's score.
+An attempt isn't counted until the student submits their first step since the student can visit the question, then leave the question
+without doing any work, and come back later.  We don't want to wait until after the student submits their final answer to count the attempt
+to prevent the student from (1) visiting the problem, (2) clicking show solution, (3) writing down the steps, and (4) reloading the browser
+web page.  In this scenario the student has seen the steps to the solution, but is not charged for an attempt.
 
-Note that the xblock Python code for computing the score is somewhat duplicated the the xblock Javascript code since the Javascript is
+When the student completes work on the StepWise problem ('victory'), we use a callback from the StepWise UI client code to record
+the student's score on that attempt.
+
+The Javascript code in this xblock displays the score and steps on the student's most recent attempt (only).
+
+Note that the xblock Python code's logic for computing the score is somewhat duplicated in the xblock's Javascript code since the Javascript is
 responsible for updating the information displayed to the student on their results, and the Python code does not currently provide
 this detailed scoring data down to the Javascript code.  It may be possible for the results of the scoring callback POST to return
-the scoring details to the Javascript code for display, but this is not currently done.  Thus, if you need to update the scoring code
-here in Python, you need to check the Javascript source in swxstudent.js to make sure you don't also have to change the score display
+the scoring details to the Javascript code for display, but this is not currently done.  Thus, if you need to update the scoring logic
+here in Python, you need to check the Javascript source in js/src/swxstudent.js to make sure you don't also have to change the score display
 logic there.
 """
 
@@ -40,10 +47,10 @@ making use of course-wide StepWise defaults if set.
 If the student has exceeded the max mumber of attempts (course-wide setting or per-question setting), we won't let them
 start another attempt.
 We'll then get two call-backs:
-1. When the student begins work on the question (e.g. submits a first step, clicks 'Hint', or clicks 'Show Solution'.
-This will increment the attempts counter.
-2. When the student completes the problem ('victory'), we'll store their grade on this attempt.
-Note that the student can start an attempt, but never finish (abandoned attempt), but we will still want to count the attempt.
+1. When the student begins work on the question (e.g. submits a first step, clicks 'Hint', or clicks 'Show Solution',
+the callback code here will increment the attempts counter.
+2. When the student completes the problem ('victory'), we'll compute their grade and save their grade for this attempt.
+Note that the student can start an attempt, but never finish (abandoned attempt), but we will still want to count that attempt.
 """
 
 @XBlock.wants('user')
