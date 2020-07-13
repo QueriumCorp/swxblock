@@ -1099,7 +1099,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock start_attempt() updated len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
         logger.info("SWXBlock start_attempt() done")
         ###
-        return Null
+        return None
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
