@@ -1083,17 +1083,19 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def start_attempt(self, data, suffix=''):
         logger.info("SWXblock start_attempt() entered")
-        logger.info("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m} len(self.variants_attempted)={l}".format(c=self.count_attempts,m=self.max_attempts,l=len(self.variants_attempted)))
-        logger.info("SWXBlock start_attempt() len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
-        logger.info("SWXBlock start_attempt() action={d} sessionId={s} timeMark={t}".format(d=data['status']['action'],s=data['status']['sessionId'],t=data['status']['timeMark']))
-        self.count_attempts += 1
-        if data['q_index'] in self.variants_attempted:
-            logger.info("variant {v} has already been attempted!".format(v=data['q_index']))
-        else:
-            self.variants_attempted.add(data['q_index'])
-            logger.info("adding variant {v} to self.variants_attempted len={l}".format(v=data['q_index'],l=len(self.variants_attempted)))
-        logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
-        logger.info("SWXBlock start_attempt() updated len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
+        logger.info("SWXblock start_attempt() data={d}",format(d=data))
+        # logger.info("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m} len(self.variants_attempted)={l}".format(c=self.count_attempts,m=self.max_attempts,l=len(self.variants_attempted)))
+        # logger.info("SWXBlock start_attempt() len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
+        # logger.info("SWXBlock start_attempt() action={d} sessionId={s} timeMark={t}".format(d=data['status']['action'],s=data['status']['sessionId'],t=data['status']['timeMark']))
+        # logger.info("SWXBlock start_attempt() passed q_index={q}".format(q=data['q_index']))
+        # self.count_attempts += 1
+        # if data['q_index'] in self.variants_attempted:
+        #     logger.info("variant {v} has already been attempted!".format(v=data['q_index']))
+        # else:
+        #     self.variants_attempted.add(data['q_index'])
+        #     logger.info("adding variant {v} to self.variants_attempted len={l}".format(v=data['q_index'],l=len(self.variants_attempted)))
+        # logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
+        # logger.info("SWXBlock start_attempt() updated len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
         logger.info("SWXBlock start_attempt() done")
 
     # TO-DO: change this to create the scenarios you'd like to see in the
