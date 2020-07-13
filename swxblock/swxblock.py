@@ -37,6 +37,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     has_score = True       # tells the xblock to not ignore the grade event
     show_in_read_only_mode = True # tells the xblock to let the instructor view the student's work (lms/djangoapps/courseware/masquerade.py)
 
+    MAX_VARIANTS = 10	   # This code handles 10 or fewer variants
+
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
 
@@ -177,8 +179,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # count_attempts keeps track of the number of attempts of this question by this student so we can
     # compare to course.max_attempts which is inherited as an per-question setting or a course-wide setting.
     count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.user_state)
-
     raw_possible = Float(help="Number of possible points", default=3,scope=Scope.user_state)
+    variants_attempts = Set(scope=Scope.user_state)
 
     # FIELDS FOR THE ScorableXBlockMixin
 
@@ -217,6 +219,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock student_view() self={a}".format(a=self))
         logger.info("SWXblock student_view() self.runtime={a}".format(a=self.runtime))
         logger.info("SWXblock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
+        logger.info("SWXblock student_view() len(self.variants_attempted)={l}, self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
 
         course = get_course_by_id(self.runtime.course_id)
         logger.info("SWXblock student_view() course={c}".format(c=course))
@@ -541,28 +544,76 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         # Determine which stepwise variant to use
 
-        if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0  and len(self.q9_definition)>0:
-            q_index = random.randint(0, 999)
-        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0:
-            q_index = random.randint(0, 899)
-        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0:
-            q_index = random.randint(0, 799)
-        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0:
-            q_index = random.randint(0, 699)
-        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0:
-            q_index = random.randint(0, 599)
-        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0:
-            q_index = random.randint(0, 499)
-        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0:
-            q_index = random.randint(0, 399)
-        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
-            q_index = random.randint(0, 299)
-        elif len(self.q_definition)>0 and len(self.q1_definition)>0:
-            q_index = random.randint(0, 199)
-        else:
-            q_index = 0
+        variants_count = 0
 
-        if q_index>=0 and q_index<100:
+        if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0  and len(self.q9_definition)>0:
+            variants_count = 10
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0:
+            variants_count = 9
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0:
+            variants_count = 8
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0:
+            variants_count = 7
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0:
+            variants_count = 6
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0:
+            variants_count = 5
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0:
+            variants_count = 4
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
+            variants_count = 3
+        elif len(self.q_definition)>0 and len(self.q1_definition)>0:
+            variants_count = 2
+        else:
+            variants_count = 2
+
+        # Pick a variant at random, and make sure that it is one we haven't attempted before.
+
+        if len(self.variants_attempted) >= MAX_VARIANTS:
+            logger.warn("SWXblock student_view() seen all variants, clearing variants_attempted len={l}".format(l=len(self.variants_attempted)))
+            self.variants_attempted.clear()		# We have not yet attempted any variants
+
+        tries = 0					# Make sure we dont try forever to find a new variant
+        max_tries = 100
+        while tries<max_tries:
+            tries=tries+1
+            q_randint = random.randint(0, ((variants_count*100)-1))	# 0..999 for 10 variants, 0..100 for 1 variant, etc.
+    
+            if q_randint>=0 and q_randint<100:
+                q_index=0
+            elif q_randint>=100 and q_randint<200:
+                q_index=1
+            elif q_randint>=200 and q_randint<300:
+                q_index=2
+            elif q_randint>=300 and q_randint<400:
+                q_index=3
+            elif q_randint>=400 and q_randint<500:
+                q_index=4
+            elif q_randint>=500 and q_randint<600:
+                q_index=5
+            elif q_randint>=600 and q_randint<700:
+                q_index=6
+            elif q_randint>=700 and q_randint<800:
+                q_index=7
+            elif q_randint>=800 and q_randint<900:
+                q_index=8
+            else:
+                q_index=9
+    
+            if q_index not in self.variants_attempted:
+    	        log.info("try {t}: found unattempted variant {v}".format(t=tries,v=q_index))
+                break
+            else:
+                log.info("try {t}: variant {v} has already been attempted. try again.".format(t=tries,v=q_index))
+
+        if tries>=max_tries:
+            log.error("could not find an unattempted variant of {i} {l} in {m} tries! clearing self.variants_attempted.".format(i=self.q_id,l=self.q_label,m=max_tries))
+            q_index = 0		# Default
+            self.variants_attempted.clear()
+
+        log.info("Selected unattempted variant {v}".format(v=q_index))
+
+        if q_index==0:
             question = {
                 "q_id" : self.q_id,
                 "q_user" : xb_user.emails[0],
@@ -587,7 +638,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_min_steps_count" : my_grade_min_steps_count,
                 "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
-        elif q_index>=100 and q_index<200:
+        elif q_index==1:
             question = {
                 "q_id" : self.q1_id,
                 "q_user" : xb_user.emails[0],
@@ -612,7 +663,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_min_steps_count" : my_grade_min_steps_count,
                 "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
-        elif q_index>=200 and q_index<300:
+        elif q_index==2:
             question = {
                 "q_id" : self.q2_id,
                 "q_user" : xb_user.emails[0],
@@ -637,7 +688,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_min_steps_count" : my_grade_min_steps_count,
                 "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
-        elif q_index>=300 and q_index<400:
+        elif q_index==3:
             question = {
                 "q_id" : self.q3_id,
                 "q_user" : xb_user.emails[0],
@@ -662,7 +713,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_min_steps_count" : my_grade_min_steps_count,
                 "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
-        elif q_index>=400 and q_index<500:
+        elif q_index==4:
             question = {
                 "q_id" : self.q4_id,
                 "q_user" : xb_user.emails[0],
@@ -687,7 +738,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_min_steps_count" : my_grade_min_steps_count,
                 "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
-        elif q_index>=500 and q_index<600:
+        elif q_index==5:
             question = {
                 "q_id" : self.q5_id,
                 "q_user" : xb_user.emails[0],
@@ -712,7 +763,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_min_steps_count" : my_grade_min_steps_count,
                 "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
-        elif q_index>=600 and q_index<700:
+        elif q_index==6:
             question = {
                 "q_id" : self.q6_id,
                 "q_user" : xb_user.emails[0],
@@ -737,7 +788,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_min_steps_count" : my_grade_min_steps_count,
                 "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
-        elif q_index>=700 and q_index<800:
+        elif q_index==7:
             question = {
                 "q_id" : self.q7_id,
                 "q_user" : xb_user.emails[0],
@@ -762,7 +813,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_min_steps_count" : my_grade_min_steps_count,
                 "q_grade_min_steps_ded" : my_grade_min_steps_ded
             }
-        elif q_index>=800 and q_index<900:
+        elif q_index==8:
             question = {
                 "q_id" : self.q8_id,
                 "q_user" : xb_user.emails[0],
@@ -989,17 +1040,23 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
         logger.info("SWXblock save_grade() final self.solution={a}".format(a=self.solution))
         logger.info("SWXblock save_grade() final self.grade={a}".format(a=self.grade))
+        logger.info("SWXblock save_grade() final len(self.variants_attempted)={l}, self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
 
 
     # START ATTEMPT
     @XBlock.json_handler
     def start_attempt(self, data, suffix=''):
         logger.info("SWXblock start_attempt() entered")
-        logger.info("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
+        logger.info("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m} len(self.variants_attempted)={l}".format(c=self.count_attempts,m=self.max_attempts,l=len(self.variants_attempted)))
+        logger.info("SWXBlock start_attempt() data={d}".format(d=data))
         self.count_attempts += 1
+        if data.q_index in self.variants_attempted:
+            log.warn("variant {v} has already been attempted!".format(v=data.q_index))
+        else:
+            self.variants_attemepted.add(data.q_index)
+            log.info("adding variant {v} to self.variants_attempted len={l}".format(v=data.q_index,l=len(self.variants_attempted)))
         logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
         logger.info("SWXBlock start_attempt() done")
-
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
