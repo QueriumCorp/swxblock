@@ -1,6 +1,4 @@
-/* Javascript for SWXBlock.
- * TODO:  Enforce assignment due date for not starting another attempt.
- */
+/* Javascript for SWXBlock. */
 function SWXStudent(runtime, element, data) {
     console.info("SWXStudent data",data);
     // Get our context variables
@@ -19,8 +17,8 @@ function SWXStudent(runtime, element, data) {
     // console.info("SWXStudent enable_showme",enable_showme);
     // console.info("SWXStudent enable_hint",enable_hint);
     console.info("SWXStudent solution",solution);
-    console.info("SWXStudent count_attempts",count_attempts);
-    console.info("SWXStudent max_attempts",max_attempts);
+    // console.info("SWXStudent count_attempts",count_attempts);
+    // console.info("SWXStudent max_attempts",max_attempts);
     console.info("SWXStudent weight ",weight);
     console.info("SWXStudent min steps",min_steps);
     console.info("SWXStudent min steps dec",min_steps_ded);
@@ -104,59 +102,10 @@ function SWXStudent(runtime, element, data) {
     var error_count = $('.error-count', swxblock_block)[0];
     var hint_count = $('.hint-count', swxblock_block)[0];
     var used_showme = $('.used-showme', swxblock_block)[0];
-
-    // Get Top Element Handles
     var made_attempts = $('.made-attempts', swxblock_block)[0];
 
     // Get Solution Element Handles
     var solution_element = $('.solution', element)[0];
-
-    // Update question top info
-
-    // Show question points/weight
-    console.info('initial grade_val',grade_val);
-    grade_string = '('+((grade/3.0)*weight).toFixed(2)+'/'+weight.toFixed(2)+' point';
-    if (weight > 1.0) {
-        grade_string = grade_string + 's)';
-    } else {
-        grade_string = ')';
-    }
-    grade_val.innerText = grade_string;
-
-    // Show attempts and no attempts message
-
-    var attempts_string;
-    attempts_string = count_attempts;
-    attempts_string += ' of ';
-    if( max_attempts == -1) {
-               attempts_string += 'unlimited';
-    }else{
-               attempts_string += max_attempts;
-    }
-    attempts_string += ' attempts';
-    console.info('initial attempts_string',attempts_string);
-    console.info('and initial made_attempts',made_attempts);
-    made_attempts.innerText = attempts_string;
-
-    if (count_attempts < max_attempts) {
-        $(".click-to-begin").show();
-        $(".click-to-begin").onclick = null;
-        $(".question-info").onclick = null;
-        $(".xblock-student_view").onclick = null;		// Can't click on the UI
-        $(".too-many-attempts").hide();
-        $(".too-many-attempts").onclick = null;
-        // Show the active question preview
-        preview_element.classList.remove("preview_hidden");
-        preview_element.onclick = previewClicked;
-    } else {
-        $(".click-to-begin").hide();
-        $(".click-to-begin").onclick = null;
-        $(".question-info").onclick = null;
-        $(".too-many-attempts").show();
-        $(".too-many-attempts").onclick = null;
-        preview_element.classList.add("preview_hidden");	// Don't show another preview
-        preview_element.onclick = null;				// Don't let them click again
-    }
 
     // Init preview mode
     updateStats();
@@ -171,22 +120,17 @@ function SWXStudent(runtime, element, data) {
         };
     
         // console.info("SWXstudent previewClicked() started");
-        console.info("SWXstudent previewClicked() count_attempts ",count_attempts);
-        console.info("SWXstudent previewClicked() max_attempts ",max_attempts);
+        // console.info("SWXstudent previewClicked() count_attempts ",count_attempts);
+        // console.info("SWXstudent previewClicked() max_attempts ",max_attempts);
         console.info("SWXstudent previewClicked() weight ",weight);
-        // console.info("SWXstudent previewClicked() min_steps ",min_steps);
-        // console.info("SWXstudent previewClicked() min_steps_ded ",min_steps_ded);
+        console.info("SWXstudent previewClicked() min_steps ",min_steps);
+        console.info("SWXstudent previewClicked() min_steps_ded ",min_steps_ded);
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts >= max_attempts) {
-            console.info("SWXstudent previewClicked() too many attempts");
-            $(".click-to-begin").hide();
-            $(".click-to-begin").onclick = null;
-            $(".too-many-attempts").show();
-            $(".too-many-attempts").onclick = null;
+            // console.info("SWXstudent previewClicked() too many attempts");
             return;
         };
-        count_attempts++;  // need to do this hear, since the Python code does update this
-        console.info("SWXstudent previewClicked() continues");
+        // console.info("SWXstudent previewClicked() continues");
 
         function celebrate(stats) {
             swxblock_block.classList.remove("block_working");
@@ -197,58 +141,8 @@ function SWXStudent(runtime, element, data) {
             solution.answered_question = question; // remember the question we answered for the stats display
             // console.info("celebrate solution ", solution);
 
-            // NOTE: We compute the grade here for display purposes, but the Python code on the server also calculates the grade itself.
-            //       We could pass all of this info over to the server to avoid this duplication of code, provided we trust these browser-based calcs.
-
-            grade = 3.0;
-            console.log('start grade calc stats.errors=',stats.errors,' question.q_grade_errors_count=',question.q_grade_errors_count,' question.q_grade_errors_ded=',question.q_grade_errors_ded);
-            if (stats.errors>question.q_grade_errors_count) {
-                grade=grade-question.q_grade_errors_ded;
-            }
-            console.log('stats.hints=',stats.hints,' question.q_grade_hints_count=',question.q_grade_hints_count,' question.q_grade_hints_ded=',question.q_grade_hints_ded);
-            if (stats.hints>question.q_grade_hints_count) {
-                grade=grade-question.q_grade_hints_ded;
-            }
-            console.log('stats.usedShowMe=',stats.usedShowMe,' question.q_grade_showme_ded=',question.q_grade_showme_ded);
-            if (stats.usedShowMe) {
-                grade=grade-question.q_grade_showme_ded;
-                console.info('used showme');
-            }
-
-            //  Count valid steps
-
-            var c, i;
-            var valid_step_count = 0;
-
-            for( c=0; c<solution.stepDetails.length; c++){
-                for( i=0; i<solution.stepDetails[c].info.length; i++){
-                    console.info('i=',i,' c=',c,' info=',solution.stepDetails[c].info[i])
-                    switch( solution.stepDetails[c].info[i].status ){
-                        case 0: // victory
-                            valid_step_count++;
-                            break;
-                        case 1: // valid step
-                            valid_step_count++;
-                            break;
-                        case 3: // invalid step
-                            break;
-                        case 4: // hint request
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-            console.log('valid_step_count=',valid_step_count);
-            console.log('question.q_definition=',question.q_definition);
-            console.log('question.q_grade_min_steps_count=',question.q_grade_min_steps_count,' question.q_grade_min_steps_ded=',question.q_grade_min_steps_ded);
-
-            if (grade >= 3.0 && valid_step_count < question.q_grade_min_steps_count && question.q_definition.indexOf('MatchSpec') > -1 ) {
-                grade=grade-question.q_grade_min_steps_ded;
-                console.log('took min_steps deduction after grade=',grade);
-            } else {
-                console.log('did not take min_steps deduction after grade=',grade);
-            }
+            console.info("celebrate solution.grade=", solution.grade);
+            grade=solution.grade
 
             updateStats();
             updateSolution();
@@ -256,7 +150,7 @@ function SWXStudent(runtime, element, data) {
             preview_element.classList.remove("preview_hidden");
             stepwise_element.style.display = 'none';
 
-            stats.grade = grade;
+            // stats.grade = grade;
 
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             $.ajax({
@@ -270,19 +164,14 @@ function SWXStudent(runtime, element, data) {
         // Callback when the student begins to work on a problem (e.g. enters a step, clicks "Hint", clicks "Show Solution"
         function start_attempt(status) {
 
-            console.info("start_attempt sessionId=",status.sessionId," timeMark=",status.timeMark," action=",a=status.action)
-            console.info("start_attempt question.q_index=",question.q_index)
-
-            start_attempt_data = {
-                status: status
-                q_index: question.q_index
-            }
+            console.info("start_attempt status=",status)
+            //console.info("start_attempt sessionId=",status.sessionId," timeMark=",status.timeMark," action=",a=status.action)
 
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             $.ajax({
                 type: "POST",
                 url: handlerUrlStart,
-                data: JSON.stringify(start_attempt_data),
+                data: JSON.stringify(status),
                 success: null
             });
         }
@@ -315,11 +204,11 @@ function SWXStudent(runtime, element, data) {
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
         // console.info("SWXblock previewClicked() count_attempts ",count_attempts);
-        // data.count_attempts += 1;
-        // count_attempts = data.count_attempts;
+        data.count_attempts += 1;
+        count_attempts = data.count_attempts;
         // console.info("SWXStudent incremented count_attempts ",count_attempts);
         // console.info("SWXblock previewClicked() max_attempts ",max_attempts);
-        // console.info("SWXblock previewClicked() weight ",weight);
+        console.info("SWXblock previewClicked() weight ",weight);
         // console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
@@ -394,13 +283,8 @@ function SWXStudent(runtime, element, data) {
         }else{
             question_stats.classList.remove("preview_hidden");
             elapsed_time_count.innerText = solution.time.toFixed(0);
-            grade_string = '('+((grade/3.0)*weight).toFixed(2)+'/'+weight.toFixed(2)+' point';
-            if (weight > 1.0) {
-                grade_string = grade_string + 's)';
-            } else {
-                grade_string = ')';
-            }
-            grade_val.innerText = grade_string;
+            // Grade normalized to 1.0 and weighted
+            grade_val.innerText = ((grade/3.0)*weight).toFixed(2);
             error_count.innerText = solution.errors;
             hint_count.innerText = solution.hints;
             var attempts_string;
@@ -412,7 +296,6 @@ function SWXStudent(runtime, element, data) {
                attempts_string += max_attempts;
             }
             attempts_string += ' attempts';
-            console.info('updateStats attempts_string',attempts_string);
             made_attempts.innerText = attempts_string;
     
             if( solution.usedShowMe ){
@@ -440,7 +323,7 @@ function SWXStudent(runtime, element, data) {
             stimulus_el = document.createElement("div");
             stimulus_el.classList.add("stimulus");
             stimulus_el_text = document.createElement("div");
-            stimulus_el_text.classList.add("last-attempt-text");
+            stimulus_el_text.classList.add("stimulus-text");
             stimulus_el_text.innerText= "Last problem attempt was:";
             stimulus_el_problem = document.createElement("div");
             stimulus_el_problem.classList.add("stimulus-problem");
@@ -537,3 +420,4 @@ function SWXStudent(runtime, element, data) {
     angular.bootstrap($(element), ['querium-stepwise']);
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
+
