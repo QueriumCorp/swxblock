@@ -168,7 +168,7 @@ function SWXStudent(runtime, element, data) {
             console.info("start_attempt question.q_index=",question.q_index)
 
             start_attempt_data = {
-                status: status
+                status: status,
                 q_index: question.q_index
             }
 
