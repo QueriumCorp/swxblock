@@ -54,7 +54,6 @@ Note that the student can start an attempt, but never finish (abandoned attempt)
 """
 
 @XBlock.wants('user')
-@XBlock.needs('course')
 class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     This xblock provides up to 10 variants of a question for delivery using the StepWise UI.
@@ -210,10 +209,16 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     # Remember the set of variant q_index values the student has already attempted
     # Can't add a Set to Scope.user_state, or get get runtime errors:
-    # TypeError: Object of type set is not JSON serializable
-    # variants_attempted = Set(scope=Scope.user_state)
-    # so we'll leave to local
-    variants_attempted = set([])
+    #      variants_attempted = Set(scope=Scope.user_state)
+    #      TypeError: Object of type set is not JSON serializable
+    # so we'll leave it in an Int() and fiddle the bits ourself :-(
+    # We define our own bitwise utility functions below:
+    #    count_ones()
+    #    set_one()
+    #    is_set()
+    # so we don't have to mess with Fields.Set().
+
+    variants_attempted = Int(help="Variant attempted bitmap", default=0,scope=Scope.user_state)
 
     # FIELDS FOR THE ScorableXBlockMixin
 
@@ -603,9 +608,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock student_view() variants_count={c}".format(c=variants_count))
         # Pick a variant at random, and make sure that it is one we haven't attempted before.
 
-        if len(self.variants_attempted) >= variants_count:
+        if count_ones(self.variants_attempted) >= variants_count:
             logger.warn("SWXblock student_view() seen all variants, clearing variants_attempted len={l}".format(l=len(self.variants_attempted)))
-            self.variants_attempted.clear()		# We have not yet attempted any variants
+            self.variants_attempted = 0			# We have not yet attempted any variants
 
         tries = 0					# Make sure we dont try forever to find a new variant
         max_tries = 100
@@ -642,13 +647,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 if len(self.variants_attempted) >= variants_count:
                     logger.info("try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=variants_count))
                     q_index = 0		# Default
-                    self.variants_attempted.clear()
+                    self.variants_attempted = 0;
                     break
 
         if tries>=max_tries:
             logger.error("could not find an unattempted variant of {i} {l} in {m} tries! clearing self.variants_attempted.".format(i=self.q_id,l=self.q_label,m=max_tries))
             q_index = 0		# Default
-            self.variants_attempted.clear()
+            self.variants_attempted = 0;
 
         logger.info("Selected variant {v}".format(v=q_index))
 
@@ -1090,23 +1095,18 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock start_attempt() entered")
         logger.info("SWXblock start_attempt() data={d}".format(d=data))
         logger.info("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
-        logger.info("SWXBlock start_attempt() len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
-        logger.info("SWXBlock start_attempt() action={d} sessionId={s} timeMark={t}".format(d=data['status']['action'],s=data['status']['sessionId'],t=data['status']['timeMark']))
+        logger.info("SWXBlock start_attempt() self.variants_attempted={v}".format(v=self.variants_attempted))
+        # logger.info("SWXBlock start_attempt() action={d} sessionId={s} timeMark={t}".format(d=data['status']['action'],s=data['status']['sessionId'],t=data['status']['timeMark']))
         logger.info("SWXBlock start_attempt() passed q_index={q}".format(q=data['q_index']))
         self.count_attempts += 1
-        v = data['q_index']
-        logger.info("variant is {v}".format(v=v))
-        if v in self.variants_attempted:
-            logger.info("variant {v} has already been attempted!".format(v=v))
-        else:
-        ###
-            myset = set([v])
-            logger.info("type(self.variants_attempted)={t1} type(myset)={t2} myset=m".format(t1=type(self.variants_attempted),t2=type(myset),m=myset))
-            self.variants_attempted = self.variants_attempted | myset
-        ###
-            logger.info("adding variant {v} to self.variants_attempted len={l}".format(v=v,l=len(self.variants_attempted)))
         logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
-        logger.info("SWXBlock start_attempt() updated len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
+        variant = data['q_index']
+        logger.info("variant is {v}".format(v=variant))
+        if is_set(self.variants_attempted,variant):
+            logger.info("variant {v} has already been attempted!".format(v=variant))
+        else:
+            set_one(self.variants_attempted,variant)
+            logger.info("adding variant {v} to self.variants_attempted={s}".format(v=variant,s=self.variants_attempted))
         logger.info("SWXBlock start_attempt() done")
         return None
 
@@ -1425,3 +1425,38 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock weighted_grade() earned {e}".format(e=self.raw_earned))
         logger.info("SWXblock weighted_grade() weight {w}".format(w=self.q_weight))
         return self.raw_earned * self.q_weight
+
+    def count_ones(var):
+        """
+        Returns the count of one bits in an integer variable
+        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
+        """
+        logger.info("SWXblock count_ones var={v}".format(v=var))
+        count=0
+        bits = var
+        for b in range(32):
+            lsb = (bits >> b) & 1;
+            count = count + lsb;
+        
+        logger.info("SWXblock count_ones result={c}".format(c=count))
+        return count
+
+    def set_one(var,bitnum):
+        """
+        var = var with bit 'bitnum' set
+        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
+        """
+        logger.info("SWXblock set_one var={v} bitnum={b}".format(v=var,b=bitnum))
+        var = var | (1 << bitnum)
+        logger.info("SWXblock set_one result={v}".format(v=var))
+        return var
+     
+    def is_set(var,bitnum):
+        """
+        return True if bit bitnum is set in var
+        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
+        """
+        logger.info("SWXblock is_set var={v} bitnum={b}".format(v=var,b=bitnum))
+        result = var & (1 << bitnum)
+        logger.info("SWXblock set_one result={v} b={b}".format(v=result,b=Bool(result)))
+        return Bool(result)
