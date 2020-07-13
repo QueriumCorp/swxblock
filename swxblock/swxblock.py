@@ -1077,6 +1077,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock save_grade() final self.solution={a}".format(a=self.solution))
         logger.info("SWXblock save_grade() final self.grade={a}".format(a=self.grade))
         logger.info("SWXblock save_grade() final len(self.variants_attempted)={l}, self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
+        return True
 
 
     # START ATTEMPT
@@ -1099,6 +1100,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
         # logger.info("SWXBlock start_attempt() updated len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
         logger.info("SWXBlock start_attempt() done")
+        return True
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
