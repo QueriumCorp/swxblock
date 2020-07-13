@@ -1,10 +1,30 @@
 """This Xblock manages problems for Step-Wise Virtual Tutor(tm) from Querium Corp."""
 
+"""
+StepWise xblock questions can contain up to 10 variants.  The xblock remembers which variants the student has attempted and if the student
+requests a new variant, we will try to assign one that has not yet been attempted. Once the student has attempted all available variants,
+if they request another variant, we will clear the list of attempted variants and start assigning variants over again.
+
+We count question attempts made by the student.  We don't consider an attempt to have begun until the student submits their first step
+in the attempt, or requests a hint, or requests to see the worked-out solution ('ShowMe').
+We use a callback from the StepWise UI client code to know that the student has begun their attempt.
+
+When the student completes work on the StepWise problem ('victory'), we use a callback from the StepWise UI client code to record
+the student's score.
+
+Note that the xblock Python code for computing the score is somewhat duplicated the the xblock Javascript code since the Javascript is
+responsible for updating the information displayed to the student on their results, and the Python code does not currently provide
+this detailed scoring data down to the Javascript code.  It may be possible for the results of the scoring callback POST to return
+the scoring details to the Javascript code for display, but this is not currently done.  Thus, if you need to update the scoring code
+here in Python, you need to check the Javascript source in swxstudent.js to make sure you don't also have to change the score display
+logic there.
+"""
+
 import pkg_resources
 import random
 
 from xblock.core import XBlock
-from xblock.fields import Integer, String, Scope, Dict, Float, Boolean
+from xblock.fields import Integer, String, Scope, Dict, Float, Boolean, Set
 from web_fragments.fragment import Fragment
 # McDaniel apr-2019: this is deprecated.
 #from xblock.fragment import Fragment
@@ -565,11 +585,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif len(self.q_definition)>0 and len(self.q1_definition)>0:
             variants_count = 2
         else:
-            variants_count = 2
+            variants_count = 1
 
         # Pick a variant at random, and make sure that it is one we haven't attempted before.
 
-        if len(self.variants_attempted) >= MAX_VARIANTS:
+        if len(self.variants_attempted) >= variants_count:
             logger.warn("SWXblock student_view() seen all variants, clearing variants_attempted len={l}".format(l=len(self.variants_attempted)))
             self.variants_attempted.clear()		# We have not yet attempted any variants
 
@@ -601,17 +621,24 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 q_index=9
     
             if q_index not in self.variants_attempted:
-    	        log.info("try {t}: found unattempted variant {v}".format(t=tries,v=q_index))
+                log.info("try {t}: found unattempted variant {q}".format(t=tries,q=q_index))
                 break
             else:
-                log.info("try {t}: variant {v} has already been attempted. try again.".format(t=tries,v=q_index))
+                log.info("try {t}: variant {q} has already been attempted set is len {l} of {c}".format(t=tries,q=q_index,l=len(self.variants_attempted),c=variants_count))
+                if len(self.variants_attempted >= variants_count:
+                    log.info("try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=variants_count))
+                    q_index = 0		# Default
+                    self.variants_attempted.clear()
+                    break
 
         if tries>=max_tries:
             log.error("could not find an unattempted variant of {i} {l} in {m} tries! clearing self.variants_attempted.".format(i=self.q_id,l=self.q_label,m=max_tries))
             q_index = 0		# Default
             self.variants_attempted.clear()
 
-        log.info("Selected unattempted variant {v}".format(v=q_index))
+        log.info("Selected variant {v}".format(v=q_index))
+
+        # Note: we won't set self.variants_attempted for this variant until they actually begin work on it (see start_attempt() below)
 
         if q_index==0:
             question = {
@@ -1051,9 +1078,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock start_attempt() data={d}".format(d=data))
         self.count_attempts += 1
         if data.q_index in self.variants_attempted:
-            log.warn("variant {v} has already been attempted!".format(v=data.q_index))
+            log.info("variant {v} has already been attempted!".format(v=data.q_index))
         else:
-            self.variants_attemepted.add(data.q_index)
+            self.variants_attempted.add(data.q_index)
             log.info("adding variant {v} to self.variants_attempted len={l}".format(v=data.q_index,l=len(self.variants_attempted)))
         logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
         logger.info("SWXBlock start_attempt() done")
