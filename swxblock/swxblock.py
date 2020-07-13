@@ -622,22 +622,22 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 q_index=9
     
             if q_index not in self.variants_attempted:
-                log.info("try {t}: found unattempted variant {q}".format(t=tries,q=q_index))
+                logger.info("try {t}: found unattempted variant {q}".format(t=tries,q=q_index))
                 break
             else:
-                log.info("try {t}: variant {q} has already been attempted set is len {l} of {c}".format(t=tries,q=q_index,l=len(self.variants_attempted),c=variants_count))
+                logger.info("try {t}: variant {q} has already been attempted set is len {l} of {c}".format(t=tries,q=q_index,l=len(self.variants_attempted),c=variants_count))
                 if len(self.variants_attempted) >= variants_count:
-                    log.info("try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=variants_count))
+                    logger.info("try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=variants_count))
                     q_index = 0		# Default
                     self.variants_attempted.clear()
                     break
 
         if tries>=max_tries:
-            log.error("could not find an unattempted variant of {i} {l} in {m} tries! clearing self.variants_attempted.".format(i=self.q_id,l=self.q_label,m=max_tries))
+            logger.error("could not find an unattempted variant of {i} {l} in {m} tries! clearing self.variants_attempted.".format(i=self.q_id,l=self.q_label,m=max_tries))
             q_index = 0		# Default
             self.variants_attempted.clear()
 
-        log.info("Selected variant {v}".format(v=q_index))
+        logger.info("Selected variant {v}".format(v=q_index))
 
         # Note: we won't set self.variants_attempted for this variant until they actually begin work on it (see start_attempt() below)
 
@@ -1079,10 +1079,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock start_attempt() data={d}".format(d=data))
         self.count_attempts += 1
         if data.q_index in self.variants_attempted:
-            log.info("variant {v} has already been attempted!".format(v=data.q_index))
+            logger.info("variant {v} has already been attempted!".format(v=data.q_index))
         else:
             self.variants_attempted.add(data.q_index)
-            log.info("adding variant {v} to self.variants_attempted len={l}".format(v=data.q_index,l=len(self.variants_attempted)))
+            logger.info("adding variant {v} to self.variants_attempted len={l}".format(v=data.q_index,l=len(self.variants_attempted)))
         logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
         logger.info("SWXBlock start_attempt() done")
 
