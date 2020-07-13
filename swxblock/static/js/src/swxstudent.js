@@ -204,12 +204,12 @@ function SWXStudent(runtime, element, data) {
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
         // console.info("SWXblock previewClicked() count_attempts ",count_attempts);
-        data.count_attempts += 1;
-        count_attempts = data.count_attempts;
+        // data.count_attempts += 1;
+        // count_attempts = data.count_attempts;
         // console.info("SWXStudent incremented count_attempts ",count_attempts);
         // console.info("SWXblock previewClicked() max_attempts ",max_attempts);
         console.info("SWXblock previewClicked() weight ",weight);
-        // console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
+        console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
 
@@ -283,8 +283,13 @@ function SWXStudent(runtime, element, data) {
         }else{
             question_stats.classList.remove("preview_hidden");
             elapsed_time_count.innerText = solution.time.toFixed(0);
-            // Grade normalized to 1.0 and weighted
-            grade_val.innerText = ((grade/3.0)*weight).toFixed(2);
+            grade_string = '('+((grade/3.0)*weight).toFixed(2)+'/'+weight.toFixed(2)+' point';
+            if (weight > 1.0) {
+                grade_string = grade_string + 's)';
+            } else {
+                grade_string = ')';
+            }
+            grade_val.innerText = grade_string;
             error_count.innerText = solution.errors;
             hint_count.innerText = solution.hints;
             var attempts_string;
@@ -295,6 +300,7 @@ function SWXStudent(runtime, element, data) {
             }else{
                attempts_string += max_attempts;
             }
+            console.info('updateStats attempts_string',attempts_string);
             attempts_string += ' attempts';
             made_attempts.innerText = attempts_string;
     
@@ -323,7 +329,7 @@ function SWXStudent(runtime, element, data) {
             stimulus_el = document.createElement("div");
             stimulus_el.classList.add("stimulus");
             stimulus_el_text = document.createElement("div");
-            stimulus_el_text.classList.add("stimulus-text");
+            stimulus_el_text.classList.add("last-attempt-text");
             stimulus_el_text.innerText= "Last problem attempt was:";
             stimulus_el_problem = document.createElement("div");
             stimulus_el_problem.classList.add("stimulus-problem");
