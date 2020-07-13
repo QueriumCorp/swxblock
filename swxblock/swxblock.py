@@ -1077,7 +1077,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock save_grade() final self.solution={a}".format(a=self.solution))
         logger.info("SWXblock save_grade() final self.grade={a}".format(a=self.grade))
         logger.info("SWXblock save_grade() final len(self.variants_attempted)={l}, self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
-        return True
 
 
     # START ATTEMPT
@@ -1089,18 +1088,18 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock start_attempt() len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
         logger.info("SWXBlock start_attempt() action={d} sessionId={s} timeMark={t}".format(d=data['status']['action'],s=data['status']['sessionId'],t=data['status']['timeMark']))
         logger.info("SWXBlock start_attempt() passed q_index={q}".format(q=data['q_index']))
-        ###
         self.count_attempts += 1
-        if data['q_index'] in self.variants_attempted:
-            logger.info("variant {v} has already been attempted!".format(v=data['q_index']))
-        else:
-            self.variants_attempted.add(data['q_index'])
-            logger.info("adding variant {v} to self.variants_attempted len={l}".format(v=data['q_index'],l=len(self.variants_attempted)))
         ###
-        # logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
-        # logger.info("SWXBlock start_attempt() updated len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
+        # if data['q_index'] in self.variants_attempted:
+        #     logger.info("variant {v} has already been attempted!".format(v=data['q_index']))
+        # else:
+        #     self.variants_attempted.add(data['q_index'])
+        #     logger.info("adding variant {v} to self.variants_attempted len={l}".format(v=data['q_index'],l=len(self.variants_attempted)))
+        logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
+        logger.info("SWXBlock start_attempt() updated len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
         logger.info("SWXBlock start_attempt() done")
-        return True
+        ###
+        return Null
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
