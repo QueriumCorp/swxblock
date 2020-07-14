@@ -1216,10 +1216,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
 
     def pick_variant(self):
-       # pick_variant() selects one of the available question variants that we have not yet attempted. If we've attempted all variants,
-       # we clear the list of attempted variants and pick again.  Returns the question structure for the one we will use this time.
+       # pick_variant() selects one of the available question variants that we have not yet attempted.
+       # If there is only one variant left, we have to return that one.
+       # If there are 2+ variants left, do not return the same one we started with.
+       # If we've attempted all variants, we clear the list of attempted variants and pick again.
+       #  Returns the question structure for the one we will use this time.
 
-        logger.info("SWXBlock pick_variant() started")
+        logger.info("SWXBlock pick_variant() started replacing q_index={i}".format(i=self.q_index))
 
         if self.bit_count_ones(self.variants_attempted) >= self.variants_count:
             logger.warn("SWXBlock pick_variant() seen all variants, clearing variants_attempted")
@@ -1227,10 +1230,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         tries = 0					# Make sure we dont try forever to find a new variant
         max_tries = 100
+        prev_index = self.q_index
+
         while tries<max_tries:
             tries=tries+1
             q_randint = random.randint(0, ((self.variants_count*100)-1))	# 0..999 for 10 variants, 0..100 for 1 variant, etc.
-            logger.info("SWXBlock pick_variant() q_randint={r}".format(r=q_randint))
+            logger.info("SWXBlock pick_variant() } q_randint={r}".format(r=q_randint))
  
             if q_randint>=0 and q_randint<100:
                 q_index=0
@@ -1252,6 +1257,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 q_index=8
             else:
                 q_index=9
+
+            # If there are 2+ variants left and we have more tries left, do not return the same variant we started with.
+            if q_index == prev_index && tries<max_tries and self.variants_attempted < self.count_variants-1:
+                logger.info("SWXBlock pick_variant() try {t}: with variants_attempted={v} < count_variants={c}-1 we won't use the same variant {q} as prev variant".format(t=tries,v=self.variants_attempted,c=self.count_variants,q=q_index))
+                break
 
             if not self.bit_is_set(self.variants_attempted,q_index):
                 logger.info("SWXBlock pick_variant() try {t}: found unattempted variant {q}".format(t=tries,q=q_index))
