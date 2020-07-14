@@ -1190,12 +1190,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         return bool(result)
 
 
-"""
-pick_variant() selects one of the available question variants that we have not yet attempted. If we've attempted all variants,
-we clear the list of attempted variants and pick again.  Returns the question structure for the one we will use this time.
-"""
-
     def pick_variant(self):
+       # pick_variant() selects one of the available question variants that we have not yet attempted. If we've attempted all variants,
+       # we clear the list of attempted variants and pick again.  Returns the question structure for the one we will use this time.
 
         logger.info("SWXBlock pick_variant() started")
 
