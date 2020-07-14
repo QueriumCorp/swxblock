@@ -141,7 +141,8 @@ function SWXStudent(runtime, element, data) {
                   console.info("SWXstudent reset POST success");
                   console.info("SWXstudent reset POST data",data);
                   console.info("SWXstudent reset POST msg",msg);
-                  question = data.question;
+                  question_obj = JSON.parse(data);
+                  question = question_obj.question;
                   console.info("SWXstudent reset POST response question",question);
                   preview_element = set_preview_element();
                   console.info("SWXstudent reset POST new preview_element",preview_element);
