@@ -551,7 +551,7 @@ function SWXStudent(runtime, element, data) {
             stimulus_el.classList.add("stimulus");
             stimulus_el_text = document.createElement("div");
             stimulus_el_text.classList.add("last-attempt-text");
-            stimulus_el_text.innerText= "Last problem attempt was:";
+            stimulus_el_text.innerText= "Your last problem attempt was:";
             stimulus_el_problem = document.createElement("div");
             stimulus_el_problem.classList.add("stimulus-problem");
             stimulus_el_problem.innerHTML= solution.answered_question.q_stimulus;
