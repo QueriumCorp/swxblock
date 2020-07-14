@@ -833,8 +833,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     # RESET: PICK A NEW VARIANT
     @XBlock.json_handler
-    def reset(self, suffix=''):
+    def reset(self, data, suffix=''):
         logger.info("SWXBlock reset() entered")
+        logger.info("SWXBlock reset() data={d}".format(d=data))
         logger.info("SWXBlock reset() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
         logger.info("SWXBlock reset() self.variants_attempted={v}".format(v=self.variants_attempted))
         logger.info("SWXBlock reset() pre-pick_question q_index={i}".format(v=self.question['q_index']))

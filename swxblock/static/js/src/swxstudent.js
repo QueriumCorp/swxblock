@@ -149,6 +149,13 @@ function SWXStudent(runtime, element, data) {
     console.info('and initial made_attempts',made_attempts);
     made_attempts.innerText = attempts_string;
 
+
+    reset_data = {
+        q_index: question.q_index
+    }
+
+    console.info("reset JSON data",JSON.stringify(start_attempt_data));
+
     if (max_attempts == -1 || count_attempts < max_attempts) {
         $('.click-to-begin').show();
         $('.click-to-begin').onclick = null;
@@ -165,10 +172,11 @@ function SWXStudent(runtime, element, data) {
         // $('.reset').onclick = resetClicked;
         $('.reset').click(function() {
           console.info('reset button clicked');
+          console.info("reset JSON data",JSON.stringify(reset_data));
           $.ajax({
               type: "POST",
               url: handlerUrlReset,
-              // data: JSON.stringify(),
+              data: JSON.stringify(reset_data),
               success: function (data,msg) {
                   console.info("SWXstudent reset POST success");
                   console.info("SWXstudent reset POST data",data);
@@ -195,7 +203,7 @@ function SWXStudent(runtime, element, data) {
           $.ajax({
               type: "POST",
               url: handlerUrlReset,
-              // data: JSON.stringify(),
+              data: JSON.stringify(reset_data),
               success: function (data,msg) {
                   console.info("SWXstudent reset POST success");
                   console.info("SWXstudent reset POST data",data);
@@ -342,7 +350,8 @@ function SWXStudent(runtime, element, data) {
 
         var callbacks = {
             success: celebrate,
-            start: start_attempt
+            start: start_attempt,
+            reset: reset
         };
     
         var qDef = {
