@@ -107,7 +107,7 @@ function SWXStudent(runtime, element, data) {
 
     // Get Top Element Handles
     var made_attempts = $('.made-attempts', swxblock_block)[0];
-    var click_to_begin = $('.click-to-begin', swxblock_block)[0];
+    // var click_to_begin = $('.click-to-begin', swxblock_block)[0];
     var question_info = $('.question-info', swxblock_block)[0];
     var too_many_attempts = $('.too-many-attempts', swxblock_block)[0];
 
@@ -148,8 +148,8 @@ function SWXStudent(runtime, element, data) {
     made_attempts.innerText = attempts_string;
 
     if (max_attempts == -1 || count_attempts < max_attempts) {
-        click_to_begin.show();
-        click_to_begin.onclick = null;
+        $('.click-to-begin', swxblock_block)[0].show();
+        $('.click-to-begin', swxblock_block)[0].onclick = null;
         question_info.onclick = null;
         xblock_student_view.onclick = null;		// Can't click on the UI
         too_many_attempts.hide();
@@ -159,8 +159,8 @@ function SWXStudent(runtime, element, data) {
         preview_element.onclick = previewClicked;
         reset_button.prop('disabled', false);			// Let them click Reset
     } else {
-        click_to_begin.hide();
-        click_to_begin.onclick = null;
+        $('.click-to-begin', swxblock_block)[0].hide();
+        $('.click-to-begin', swxblock_block)[0].onclick = null;
         question_info.onclick = null;
         too_many_attempts.show();
         too_many_attempts.onclick = null;
@@ -190,8 +190,8 @@ function SWXStudent(runtime, element, data) {
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts >= max_attempts) {
             console.info("SWXstudent previewClicked() too many attempts");
-            click_to_begin.hide();
-            click_to_begin.onclick = null;
+            $('.click-to-begin', swxblock_block)[0].hide();
+            $('.click-to-begin', swxblock_block)[0].onclick = null;
             too_many_attempts.show();
             too_many_attempts.onclick = null;
             return;
