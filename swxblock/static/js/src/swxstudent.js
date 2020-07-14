@@ -148,8 +148,8 @@ function SWXStudent(runtime, element, data) {
     made_attempts.innerText = attempts_string;
 
     if (max_attempts == -1 || count_attempts < max_attempts) {
-        $('.click-to-begin', swxblock_block)[0].show();
-        $('.click-to-begin', swxblock_block)[0].onclick = null;
+        $('.click-to-begin').show();
+        $('.click-to-begin').onclick = null;
         question_info.onclick = null;
         xblock_student_view.onclick = null;		// Can't click on the UI
         too_many_attempts.hide();
@@ -159,8 +159,8 @@ function SWXStudent(runtime, element, data) {
         preview_element.onclick = previewClicked;
         reset_button.prop('disabled', false);			// Let them click Reset
     } else {
-        $('.click-to-begin', swxblock_block)[0].hide();
-        $('.click-to-begin', swxblock_block)[0].onclick = null;
+        $('.click-to-begin').hide();
+        $('.click-to-begin').onclick = null;
         question_info.onclick = null;
         too_many_attempts.show();
         too_many_attempts.onclick = null;
