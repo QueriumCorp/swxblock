@@ -54,6 +54,7 @@ Note that the student can start an attempt, but never finish (abandoned attempt)
 """
 
 @XBlock.wants('user')
+@XBlock.needs('course')
 class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     This xblock provides up to 10 variants of a question for delivery using the StepWise UI.
