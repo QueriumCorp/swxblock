@@ -233,6 +233,14 @@ function SWXStudent(runtime, element, data) {
             display_math.classList.add("preview_hidden");
         }
 
+        // Enable clicks on the new variant if we have attempts left
+	console.log('set_preview_element count_attempts=',count_attempts,' max_attempts=',max_attempts);
+        if (max_attempts == -1 || count_attempts < max_attempts) {
+            preview_element.onclick = previewClicked;
+        } else {
+            preview_element.onclick = null
+        }
+
         return preview_element;
     };
 
