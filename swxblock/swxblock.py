@@ -838,9 +838,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock reset() data={d}".format(d=data))
         logger.info("SWXBlock reset() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
         logger.info("SWXBlock reset() self.variants_attempted={v}".format(v=self.variants_attempted))
-        logger.info("SWXBlock reset() pre-pick_question q_index={i}".format(v=self.question['q_index']))
-        self.question = pick_variant()
-        logger.info("SWXBlock reset() post-pick returning q_index={i} self.question={q}".format(i=self.question['q_index'],q=self.question))
+        # logger.info("SWXBlock reset() pre-pick_question q_index={i}".format(v=self.question['q_index']))
+        self.question = self.pick_variant()
+        # logger.info("SWXBlock reset() post-pick returning q_index={i} self.question={q}".format(i=self.question['q_index'],q=self.question))
+        logger.info("SWXBlock reset() post-pick returning self.question={q}".format(q=self.question))
         return self.question
 
 
