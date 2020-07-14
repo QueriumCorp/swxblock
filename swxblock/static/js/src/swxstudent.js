@@ -173,6 +173,13 @@ function SWXStudent(runtime, element, data) {
     updateSolution();
     
     function set_preview_element() {
+        console.log('set_preview_element hide old preview_element');
+        preview_element.classList.remove("preview_hidden");
+
+        // Hide old display_math
+        display_math = $('.display-math', preview_element)[0];
+        display_math.classList.add("preview_hidden");
+
         switch( question.q_index ){
             case 0:
                 preview_element = $('.qq_preview0', element)[0];
@@ -208,8 +215,13 @@ function SWXStudent(runtime, element, data) {
                 preview_element = $('.qq_preview0', element)[0];
         }
 
-        // Hide Display Math if empty
-        var display_math = $('.display-math', preview_element)[0];
+        console.log('set_preview_element hide old preview_element');
+
+        // Reveal new variant
+        preview_element.classList.remove("preview_hidden");
+
+        // Reveal New Display Math if empty
+        display_math = $('.display-math', preview_element)[0];
         if ( display_math.innerText.length>5 ){
             display_math.classList.remove("preview_hidden");
         }else{
