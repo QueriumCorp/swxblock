@@ -59,6 +59,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     This xblock provides up to 10 variants of a question for delivery using the StepWise UI.
     """
     logger.debug('SWXBlock instantiated')
+
+    return Null		# Bail out
+
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
     show_in_read_only_mode = True # tells the xblock to let the instructor view the student's work (lms/djangoapps/courseware/masquerade.py)
