@@ -216,6 +216,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # We define our own bitwise utility functions below: bit_count_ones() bit_is_set() bit_is_set()
 
     variants_attempted = Integer(help="Bitmap of attempted variants", default=0,scope=Scope.user_state)
+    variants_count = Integer(help="Count of available variants", default=0,scope=Scope.user_state)
 
     # FIELDS FOR THE ScorableXBlockMixin
 
@@ -580,30 +581,30 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         # Determine which stepwise variant to use
 
-        variants_count = 0
+        self.variants_count = 0
 
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0  and len(self.q9_definition)>0:
-            variants_count = 10
+            self.variants_count = 10
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0:
-            variants_count = 9
+            self.variants_count = 9
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0:
-            variants_count = 8
+            self.variants_count = 8
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0:
-            variants_count = 7
+            self.variants_count = 7
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0:
-            variants_count = 6
+            self.variants_count = 6
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0:
-            variants_count = 5
+            self.variants_count = 5
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0:
-            variants_count = 4
+            self.variants_count = 4
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
-            variants_count = 3
+            self.variants_count = 3
         elif len(self.q_definition)>0 and len(self.q1_definition)>0:
-            variants_count = 2
+            self.variants_count = 2
         else:
-            variants_count = 1
+            self.variants_count = 1
 
-        logger.info("SWXBlock student_view() variants_count={c}".format(c=variants_count))
+        logger.info("SWXBlock student_view() self.variants_count={c}".format(c=self.variants_count))
         # Pick a variant at random, and make sure that it is one we haven't attempted before.
 
         self.question = self.pick_variant()
@@ -1196,7 +1197,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         logger.info("SWXBlock pick_variant() started")
 
-        if self.bit_count_ones(self.variants_attempted) >= variants_count:
+        if self.bit_count_ones(self.variants_attempted) >= self.variants_count:
             logger.warn("SWXBlock pick_variant() seen all variants, clearing variants_attempted")
             self.variants_attempted = 0			# We have not yet attempted any variants
 
@@ -1204,7 +1205,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         max_tries = 100
         while tries<max_tries:
             tries=tries+1
-            q_randint = random.randint(0, ((variants_count*100)-1))	# 0..999 for 10 variants, 0..100 for 1 variant, etc.
+            q_randint = random.randint(0, ((self.variants_count*100)-1))	# 0..999 for 10 variants, 0..100 for 1 variant, etc.
  
             if q_randint>=0 and q_randint<100:
                 q_index=0
@@ -1232,8 +1233,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 break
             else:
                 logger.info("pick_variant() try {t}: variant {q} has already been attempted".format(t=tries,q=q_index))
-                if self.bit_count_ones(self.variants_attempted) >= variants_count:
-                    logger.info("pick_variant() try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=self.bit_count_ones(variants_count)))
+                if self.bit_count_ones(self.variants_attempted) >= self.variants_count:
+                    logger.info("pick_variant() try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=self.bit_count_ones(self.variants_attempted)))
                     q_index = 0		# Default
                     self.variants_attempted = 0;
                     break
