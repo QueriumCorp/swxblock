@@ -200,6 +200,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q9_hint3 = String(help="Third Hint", default='', scope=Scope.content)
 
     # STUDENT'S QUESTION PERFORMANCE FIELDS
+    xb_user_email = String(help="The user's email addr", default="", scope=Scope.user_state)
     grade = Float(help="The student's grade", default=-1, scope=Scope.user_state)
     solution = Dict(help="The student's last solution", default={}, scope=Scope.user_state)
     # count_attempts keeps track of the number of attempts of this question by this student so we can
@@ -578,6 +579,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
+        self.xb_user_email = xb_user.emails[0]
 
         # Determine which stepwise variant to use
 
@@ -1251,7 +1253,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         if q_index==0:
             question = {
                 "q_id" : self.q_id,
-                "q_user" : xb_user.emails[0],
+                "q_user" : self.xb_user_email,
                 "q_index" : 0,
                 "q_label" : self.q_label,
                 "q_stimulus" : self.q_stimulus,
@@ -1276,7 +1278,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif q_index==1:
             question = {
                 "q_id" : self.q1_id,
-                "q_user" : xb_user.emails[0],
+                "q_user" : self.xb_user_email,
                 "q_index" : 1,
                 "q_label" : self.q1_label,
                 "q_stimulus" : self.q1_stimulus,
@@ -1301,7 +1303,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif q_index==2:
             question = {
                 "q_id" : self.q2_id,
-                "q_user" : xb_user.emails[0],
+                "q_user" : self.xb_user_email,
                 "q_index" : 2,
                 "q_label" : self.q2_label,
                 "q_stimulus" : self.q2_stimulus,
@@ -1326,7 +1328,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif q_index==3:
             question = {
                 "q_id" : self.q3_id,
-                "q_user" : xb_user.emails[0],
+                "q_user" : self.xb_user_email,
                 "q_index" : 3,
                 "q_label" : self.q3_label,
                 "q_stimulus" : self.q3_stimulus,
@@ -1351,7 +1353,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif q_index==4:
             question = {
                 "q_id" : self.q4_id,
-                "q_user" : xb_user.emails[0],
+                "q_user" : self.xb_user_email,
                 "q_index" : 4,
                 "q_label" : self.q4_label,
                 "q_stimulus" : self.q4_stimulus,
@@ -1376,7 +1378,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif q_index==5:
             question = {
                 "q_id" : self.q5_id,
-                "q_user" : xb_user.emails[0],
+                "q_user" : self.xb_user_email,
                 "q_index" : 5,
                 "q_label" : self.q5_label,
                 "q_stimulus" : self.q5_stimulus,
@@ -1401,7 +1403,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif q_index==6:
             question = {
                 "q_id" : self.q6_id,
-                "q_user" : xb_user.emails[0],
+                "q_user" : self.xb_user_email,
                 "q_index" : 6,
                 "q_label" : self.q6_label,
                 "q_stimulus" : self.q6_stimulus,
@@ -1426,7 +1428,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif q_index==7:
             question = {
                 "q_id" : self.q7_id,
-                "q_user" : xb_user.emails[0],
+                "q_user" : self.xb_user_email,
                 "q_index" : 7,
                 "q_label" : self.q7_label,
                 "q_stimulus" : self.q7_stimulus,
@@ -1451,7 +1453,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         elif q_index==8:
             question = {
                 "q_id" : self.q8_id,
-                "q_user" : xb_user.emails[0],
+                "q_user" : self.xb_user_email,
                 "q_index" : 8,
                 "q_label" : self.q8_label,
                 "q_stimulus" : self.q8_stimulus,
@@ -1476,7 +1478,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             question = {
                 "q_id" : self.q9_id,
-                "q_user" : xb_user.emails[0],
+                "q_user" : self.xb_user_email,
                 "q_index" : 9,
                 "q_label" : self.q9_label,
                 "q_stimulus" : self.q9_stimulus,
