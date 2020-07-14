@@ -1259,7 +1259,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 q_index=9
 
             # If there are 2+ variants left and we have more tries left, do not return the same variant we started with.
-            if q_index == prev_index && tries<max_tries and self.variants_attempted < self.count_variants-1:
+            if q_index == prev_index and tries<max_tries and self.variants_attempted < self.variants_count-1:
                 logger.info("SWXBlock pick_variant() try {t}: with variants_attempted={v} < count_variants={c}-1 we won't use the same variant {q} as prev variant".format(t=tries,v=self.variants_attempted,c=self.count_variants,q=q_index))
                 break
 
