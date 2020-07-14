@@ -243,6 +243,42 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
 
+    def count_ones(var):
+        """
+        Returns the count of one bits in an integer variable
+        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
+        """
+        logger.info("SWXblock count_ones var={v}".format(v=var))
+        count=0
+        bits = var
+        for b in range(32):
+            lsb = (bits >> b) & 1;
+            count = count + lsb;
+        
+        logger.info("SWXblock count_ones result={c}".format(c=count))
+        return count
+
+    def set_one(var,bitnum):
+        """
+        var = var with bit 'bitnum' set
+        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
+        """
+        logger.info("SWXblock set_one var={v} bitnum={b}".format(v=var,b=bitnum))
+        var = var | (1 << bitnum)
+        logger.info("SWXblock set_one result={v}".format(v=var))
+        return var
+
+    def is_set(var,bitnum):
+        """
+        return True if bit bitnum is set in var
+        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
+        """
+        logger.info("SWXblock is_set var={v} bitnum={b}".format(v=var,b=bitnum))
+        result = var & (1 << bitnum)
+        logger.info("SWXblock set_one result={v} b={b}".format(v=result,b=Bool(result)))
+        return Bool(result)
+
+
     # STUDENT_VIEW
     def student_view(self, context=None):
         """
@@ -1423,37 +1459,3 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock weighted_grade() weight {w}".format(w=self.q_weight))
         return self.raw_earned * self.q_weight
 
-    def count_ones(var):
-        """
-        Returns the count of one bits in an integer variable
-        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
-        """
-        logger.info("SWXblock count_ones var={v}".format(v=var))
-        count=0
-        bits = var
-        for b in range(32):
-            lsb = (bits >> b) & 1;
-            count = count + lsb;
-        
-        logger.info("SWXblock count_ones result={c}".format(c=count))
-        return count
-
-    def set_one(var,bitnum):
-        """
-        var = var with bit 'bitnum' set
-        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
-        """
-        logger.info("SWXblock set_one var={v} bitnum={b}".format(v=var,b=bitnum))
-        var = var | (1 << bitnum)
-        logger.info("SWXblock set_one result={v}".format(v=var))
-        return var
-     
-    def is_set(var,bitnum):
-        """
-        return True if bit bitnum is set in var
-        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
-        """
-        logger.info("SWXblock is_set var={v} bitnum={b}".format(v=var,b=bitnum))
-        result = var & (1 << bitnum)
-        logger.info("SWXblock set_one result={v} b={b}".format(v=result,b=Bool(result)))
-        return Bool(result)
