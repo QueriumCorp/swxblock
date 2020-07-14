@@ -157,7 +157,9 @@ function SWXStudent(runtime, element, data) {
         // Show the active question preview
         preview_element.classList.remove("preview_hidden");
         preview_element.onclick = previewClicked;
-        $('.stepwise-reset').prop('disabled', false);			// Let them click Reset
+        $('.reset').prop('disabled', false);			// Let them click Reset
+        $('.reset').onclick = resetClicked;
+        console.info('enabled reset button');
     } else {
         $('.click-to-begin').hide();
         $('.click-to-begin').onclick = null;
@@ -166,7 +168,9 @@ function SWXStudent(runtime, element, data) {
         $('.too-many-attempts').onclick = null;
         preview_element.classList.add("preview_hidden");	// Don't show another preview
         preview_element.onclick = null;				// Don't let them click again
-        $('.stepwise-reset').prop('disabled', true);			// Don't let them click Reset
+        $('.reset').prop('disabled', true);			// Don't let them click Reset
+        $('.reset').onclick = null;
+        console.info('disabled reset button');
     }
 
     // Init preview mode
@@ -194,6 +198,8 @@ function SWXStudent(runtime, element, data) {
             $('.click-to-begin').onclick = null;
             $('.too-many-attempts').show();
             $('.too-many-attempts').onclick = null;
+            $('.reset').hide();
+            $('.reset').onclick = null;
             return;
         };
         count_attempts++;  // need to do this hear, since the Python code does update this
@@ -336,6 +342,10 @@ function SWXStudent(runtime, element, data) {
         // console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
+
+    function resetClicked(){
+        console.info("SWXstudent resetClicked() started");
+        console.info("SWXstudent resetClicked() ended");
 
     function updateStats(){
         console.info('updateStats:', grade)
