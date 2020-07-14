@@ -48,48 +48,8 @@ function SWXStudent(runtime, element, data) {
 
     // Get Active Preview Element Handles
     var preview_element;
-    switch( question.q_index ){
-        case 0:
-            preview_element = $('.qq_preview0', element)[0];
-            break;
-        case 1:
-            preview_element = $('.qq_preview1', element)[0];
-            break;
-        case 2:
-            preview_element = $('.qq_preview2', element)[0];
-            break;
-        case 3:
-            preview_element = $('.qq_preview3', element)[0];
-            break;
-        case 4:
-            preview_element = $('.qq_preview4', element)[0];
-            break;
-        case 5:
-            preview_element = $('.qq_preview5', element)[0];
-            break;
-        case 6:
-            preview_element = $('.qq_preview6', element)[0];
-            break;
-        case 7:
-            preview_element = $('.qq_preview7', element)[0];
-            break;
-        case 8:
-            preview_element = $('.qq_preview8', element)[0];
-            break;
-        case 9:
-            preview_element = $('.qq_preview9', element)[0];
-            break;
-        default:
-            preview_element = $('.qq_preview0', element)[0];
-    }
 
-    // Hide Display Math if empty
-    var display_math = $('.display-math', preview_element)[0];
-    if ( display_math.innerText.length>5 ){
-        display_math.classList.remove("preview_hidden");
-    }else{
-        display_math.classList.add("preview_hidden");
-    }
+    preview_element = set_preview_element();
 
     // Show the active question preview
     preview_element.classList.remove("preview_hidden");
@@ -181,6 +141,10 @@ function SWXStudent(runtime, element, data) {
                   console.info("SWXstudent reset POST success");
                   console.info("SWXstudent reset POST data",data);
                   console.info("SWXstudent reset POST msg",msg);
+                  question = data.question;
+                  console.info("SWXstudent reset POST response question",question);
+                  preview_element = set_preview_element();
+                  console.info("SWXstudent reset POST new preview_element",preview_element);
               }
           });
           console.info("reset button click ended");
@@ -199,18 +163,7 @@ function SWXStudent(runtime, element, data) {
         $('.reset').prop('disabled', true);			// Don't let them click Reset
         // $('.reset').onclick = resetClicked;
         $('.reset').click(function() {
-          console.info('reset button clicked');
-          $.ajax({
-              type: "POST",
-              url: handlerUrlReset,
-              data: JSON.stringify(reset_data),
-              success: function (data,msg) {
-                  console.info("SWXstudent reset POST success");
-                  console.info("SWXstudent reset POST data",data);
-                  console.info("SWXstudent reset POST msg",msg);
-              }
-          });
-          console.info("reset button click ended");
+          console.info('empty reset button clicked');
         });
         console.info('disabled reset button');
     }
@@ -219,6 +172,53 @@ function SWXStudent(runtime, element, data) {
     updateStats();
     updateSolution();
     
+    function set_preview_element() {
+        switch( question.q_index ){
+            case 0:
+                preview_element = $('.qq_preview0', element)[0];
+                break;
+            case 1:
+                preview_element = $('.qq_preview1', element)[0];
+                break;
+            case 2:
+                preview_element = $('.qq_preview2', element)[0];
+                break;
+            case 3:
+                preview_element = $('.qq_preview3', element)[0];
+                break;
+            case 4:
+                preview_element = $('.qq_preview4', element)[0];
+                break;
+            case 5:
+                preview_element = $('.qq_preview5', element)[0];
+                break;
+            case 6:
+                preview_element = $('.qq_preview6', element)[0];
+                break;
+            case 7:
+                preview_element = $('.qq_preview7', element)[0];
+                break;
+            case 8:
+                preview_element = $('.qq_preview8', element)[0];
+                break;
+            case 9:
+                preview_element = $('.qq_preview9', element)[0];
+                break;
+            default:
+                preview_element = $('.qq_preview0', element)[0];
+        }
+
+        // Hide Display Math if empty
+        var display_math = $('.display-math', preview_element)[0];
+        if ( display_math.innerText.length>5 ){
+            display_math.classList.remove("preview_hidden");
+        }else{
+            display_math.classList.add("preview_hidden");
+        }
+
+        return preview_element;
+    };
+
     function previewClicked(){ 
         var options = {
             hideMenu: true,
