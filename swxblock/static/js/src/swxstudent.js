@@ -107,9 +107,18 @@ function SWXStudent(runtime, element, data) {
 
     // Get Top Element Handles
     var made_attempts = $('.made-attempts', swxblock_block)[0];
+    var click_to_begin = $('.click-to-begin', swxblock_block)[0];
+    var question_info = $('.question-info', swxblock_block)[0];
+    var too_many_attempts = $('.too-many-attempts', swxblock_block)[0];
 
     // Get Solution Element Handles
     var solution_element = $('.solution', element)[0];
+
+    // Get Reset Button Handles
+    var reset_button = $('.stepwise-reset', swxblock_block)[0];
+
+    // Overall StepWise UI Handles
+    var xblock_student_view = $('.xblock-student_view', swxblock_block)[0];
 
     // Update question top info
 
@@ -138,24 +147,26 @@ function SWXStudent(runtime, element, data) {
     console.info('and initial made_attempts',made_attempts);
     made_attempts.innerText = attempts_string;
 
-    if (count_attempts < max_attempts) {
-        $(".click-to-begin").show();
-        $(".click-to-begin").onclick = null;
-        $(".question-info").onclick = null;
-        $(".xblock-student_view").onclick = null;		// Can't click on the UI
-        $(".too-many-attempts").hide();
-        $(".too-many-attempts").onclick = null;
+    if (max_attempts == -1 || count_attempts < max_attempts) {
+        click_to_begin.show();
+        click_to_begin.onclick = null;
+        question_info.onclick = null;
+        xblock_student_view.onclick = null;		// Can't click on the UI
+        too_many_attempts.hide();
+        too_many_attempts.onclick = null;
         // Show the active question preview
         preview_element.classList.remove("preview_hidden");
         preview_element.onclick = previewClicked;
+        reset_button.prop('disabled', false);			// Let them click Reset
     } else {
-        $(".click-to-begin").hide();
-        $(".click-to-begin").onclick = null;
-        $(".question-info").onclick = null;
-        $(".too-many-attempts").show();
-        $(".too-many-attempts").onclick = null;
+        click_to_begin.hide();
+        click_to_begin.onclick = null;
+        question_info.onclick = null;
+        too_many_attempts.show();
+        too_many_attempts.onclick = null;
         preview_element.classList.add("preview_hidden");	// Don't show another preview
         preview_element.onclick = null;				// Don't let them click again
+        reset_button.prop('disabled', true);			// Don't let them click Reset
     }
 
     // Init preview mode
@@ -179,10 +190,10 @@ function SWXStudent(runtime, element, data) {
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts >= max_attempts) {
             console.info("SWXstudent previewClicked() too many attempts");
-            $(".click-to-begin").hide();
-            $(".click-to-begin").onclick = null;
-            $(".too-many-attempts").show();
-            $(".too-many-attempts").onclick = null;
+            click_to_begin.hide();
+            click_to_begin.onclick = null;
+            too_many_attempts.show();
+            too_many_attempts.onclick = null;
             return;
         };
         count_attempts++;  // need to do this hear, since the Python code does update this
