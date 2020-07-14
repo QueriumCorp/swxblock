@@ -375,8 +375,7 @@ function SWXStudent(runtime, element, data) {
 
         var callbacks = {
             success: celebrate,
-            start: start_attempt,
-            reset: reset
+            start: start_attempt
         };
     
         var qDef = {
