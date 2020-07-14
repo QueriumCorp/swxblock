@@ -622,6 +622,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock student_view() self.variants_count={c}".format(c=self.variants_count))
         # Pick a variant at random, and make sure that it is one we haven't attempted before.
 
+        random.seed()				# Use the clock to seed the random number generator for picking variants
         self.question = self.pick_variant()
 
         question = self.question
@@ -1223,6 +1224,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         while tries<max_tries:
             tries=tries+1
             q_randint = random.randint(0, ((self.variants_count*100)-1))	# 0..999 for 10 variants, 0..100 for 1 variant, etc.
+            logger.info("SWXBlock pick_variant() q_randint={r}",q_randint)
  
             if q_randint>=0 and q_randint<100:
                 q_index=0
