@@ -254,7 +254,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock student_view() self={a}".format(a=self))
         logger.info("SWXblock student_view() self.runtime={a}".format(a=self.runtime))
         logger.info("SWXblock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
-        logger.info("SWXblock student_view() len(self.variants_attempted)={l}, self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
+        logger.info("SWXblock student_view() self.variants_attempted={v}".format(v=self.variants_attempted))
 
         course = get_course_by_id(self.runtime.course_id)
         logger.info("SWXblock student_view() course={c}".format(c=course))
@@ -606,7 +606,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # Pick a variant at random, and make sure that it is one we haven't attempted before.
 
         if count_ones(self.variants_attempted) >= variants_count:
-            logger.warn("SWXblock student_view() seen all variants, clearing variants_attempted len={l}".format(l=len(self.variants_attempted)))
+            logger.warn("SWXblock student_view() seen all variants, clearing variants_attempted")
             self.variants_attempted = 0			# We have not yet attempted any variants
 
         tries = 0					# Make sure we dont try forever to find a new variant
@@ -636,13 +636,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             else:
                 q_index=9
     
-            if q_index not in self.variants_attempted:
+            if not is_set(self.variants_attempted,q_index):
                 logger.info("try {t}: found unattempted variant {q}".format(t=tries,q=q_index))
                 break
             else:
-                logger.info("try {t}: variant {q} has already been attempted set is len {l} of {c}".format(t=tries,q=q_index,l=len(self.variants_attempted),c=variants_count))
-                if len(self.variants_attempted) >= variants_count:
-                    logger.info("try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=variants_count))
+                logger.info("try {t}: variant {q} has already been attempted".format(t=tries,q=q_index))
+                if count_ones(self.variants_attempted) >= variants_count:
+                    logger.info("try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=count_ones(variants_count)))
                     q_index = 0		# Default
                     self.variants_attempted = 0;
                     break
@@ -1083,7 +1083,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
         logger.info("SWXblock save_grade() final self.solution={a}".format(a=self.solution))
         logger.info("SWXblock save_grade() final self.grade={a}".format(a=self.grade))
-        logger.info("SWXblock save_grade() final len(self.variants_attempted)={l}, self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
+        logger.info("SWXblock save_grade() final self.variants_attempted={v}".format(v=self.variants_attempted))
 
 
     # START ATTEMPT
