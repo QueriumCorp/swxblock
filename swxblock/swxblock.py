@@ -243,7 +243,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
 
-    def count_ones(var):
+    def count_ones(self,var):
         """
         Returns the count of one bits in an integer variable
         Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
@@ -258,7 +258,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock count_ones result={c}".format(c=count))
         return count
 
-    def set_one(var,bitnum):
+    def set_one(self,var,bitnum):
         """
         var = var with bit 'bitnum' set
         Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
@@ -268,7 +268,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock set_one result={v}".format(v=var))
         return var
 
-    def is_set(var,bitnum):
+    def is_set(self,var,bitnum):
         """
         return True if bit bitnum is set in var
         Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
