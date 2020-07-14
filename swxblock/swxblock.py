@@ -211,7 +211,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     # We can't add a Set to Scope.user_state, or we get get runtime errors whenever we update this field:
     #      variants_attempted = Set(scope=Scope.user_state)
     #      TypeError: Object of type set is not JSON serializable
-    # so we'll leave it in an Integer field and fiddle the bits ourselves :-(
+    # See e.g. this:  https://stackoverflow.com/questions/8230315/how-to-json-serialize-sets
+    # So we'll leave the variants in an Integer field and fiddle the bits ourselves :-(
     # We define our own bitwise utility functions below: count_ones() set_one() is_set()
 
     variants_attempted = Integer(help="Bitmap of attempted variants", default=0,scope=Scope.user_state)
