@@ -39,6 +39,8 @@ function SWXStudent(runtime, element, data) {
     console.info("SWXStudent handlerUrl",handlerUrl);
     var handlerUrlStart = runtime.handlerUrl(element, 'start_attempt');
     console.info("SWXStudent handlerUrlStart",handlerUrlStart);
+    var handlerUrlReset = runtime.handlerUrl(element, 'reset');
+    console.info("SWXStudent handlerUrlReset",handlerUrlReset);
 
     // Get Primary Element Handles
     var swxblock_block = $('.swxblock_block', element)[0];
@@ -345,7 +347,24 @@ function SWXStudent(runtime, element, data) {
 
     function resetClicked(){
         console.info("SWXstudent resetClicked() started");
+        $.ajax({
+            type: "POST",
+            url: handlerUrlReset,
+            data: JSON.stringify(stats),
+            success: resetSuccess
+        }).done(function() {
+            console.info( "resetClicked done function called" );
+        })
         console.info("SWXstudent resetClicked() ended");
+    }
+
+    //success Type: Function( PlainObject data, String textStatus, jqXHR jqXHR )
+    function resetSuccess(data, textstatus, jqXHR) {
+        console.info("SWXstudent resetSuccess() started");
+        console.info("SWXstudent resetSuccess() data",data);
+        console.info("SWXstudent resetSuccess() textStatus",textStatus);
+        console.info("SWXstudent resetSuccess() jqXHR",jqXHR);
+        console.info("SWXstudent resetSuccess() ended");
     }
 
     function updateStats(){
