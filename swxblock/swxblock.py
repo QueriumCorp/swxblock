@@ -267,8 +267,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         logger.info('SWXBlock student_view() entered')
 
-        return None		# Bail out
-
         logger.info("SWXBlock student_view() self={a}".format(a=self))
         logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
         logger.info("SWXBlock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
@@ -656,7 +654,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
-        frag.initialize_js('swxblock SWXStudent', data)
+        frag.initialize_js('SWXStudent', data)
         return frag
 
 
@@ -876,7 +874,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_css(self.resource_string("static/css/swxstudio.css"))
         frag.add_javascript(self.resource_string("static/js/src/swxstudio.js"))
 
-        frag.initialize_js('swxblock SWXStudio')
+        frag.initialize_js('SWXStudio')
         return frag
 
 
@@ -921,7 +919,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         logger.info("SWXBlock SWXAuthor author_view variants={a}".format(a=variants))
 
-        frag.initialize_js('swxblock SWXAuthor', variants)
+        frag.initialize_js('SWXAuthor', variants)
         return frag
 
 
