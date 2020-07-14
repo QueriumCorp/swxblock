@@ -118,7 +118,7 @@ function SWXStudent(runtime, element, data) {
     var reset_button = $('.stepwise-reset', swxblock_block)[0];
 
     // Overall StepWise UI Handles
-    var xblock_student_view = $('.xblock-student_view', swxblock_block)[0];
+    // var xblock_student_view = $('.xblock-student_view', swxblock_block)[0];
 
     // Update question top info
 
@@ -151,7 +151,7 @@ function SWXStudent(runtime, element, data) {
         $('.click-to-begin').show();
         $('.click-to-begin').onclick = null;
         question_info.onclick = null;
-        xblock_student_view.onclick = null;		// Can't click on the UI
+        $('.xblock-student_view').onclick = null;		// Can't click on the UI
         too_many_attempts.hide();
         too_many_attempts.onclick = null;
         // Show the active question preview
@@ -190,8 +190,8 @@ function SWXStudent(runtime, element, data) {
         // Don't let student launch question if they've exceeded the limit on question attempts
         if (max_attempts != -1 && count_attempts >= max_attempts) {
             console.info("SWXstudent previewClicked() too many attempts");
-            $('.click-to-begin', swxblock_block)[0].hide();
-            $('.click-to-begin', swxblock_block)[0].onclick = null;
+            $('.click-to-begin').hide();
+            $('.click-to-begin').onclick = null;
             too_many_attempts.show();
             too_many_attempts.onclick = null;
             return;
