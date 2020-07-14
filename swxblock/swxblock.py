@@ -267,7 +267,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         logger.info('SWXBlock student_view() entered')
 
-        return Null		# Bail out
+        return None		# Bail out
 
         logger.info("SWXBlock student_view() self={a}".format(a=self))
         logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
