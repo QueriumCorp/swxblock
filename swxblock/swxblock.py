@@ -31,7 +31,7 @@ import pkg_resources
 import random
 
 from xblock.core import XBlock
-from xblock.fields import Integer, String, Scope, Dict, Float, Boolean
+from xblock.fields import Integer, String, Scope, Dict, Float, Boolean, Set
 from web_fragments.fragment import Fragment
 # McDaniel apr-2019: this is deprecated.
 #from xblock.fragment import Fragment
@@ -54,11 +54,12 @@ Note that the student can start an attempt, but never finish (abandoned attempt)
 """
 
 @XBlock.wants('user')
+@XBlock.needs('course')
 class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     This xblock provides up to 10 variants of a question for delivery using the StepWise UI.
     """
-    logger.debug('SWXBlock instantiated')
+    logger.debug('SWXBlock() instantiated')
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
     show_in_read_only_mode = True # tells the xblock to let the instructor view the student's work (lms/djangoapps/courseware/masquerade.py)
@@ -200,36 +201,14 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     q9_hint3 = String(help="Third Hint", default='', scope=Scope.content)
 
     # STUDENT'S QUESTION PERFORMANCE FIELDS
-    xb_user_email = String(help="The user's email addr", default="", scope=Scope.user_state)
     grade = Float(help="The student's grade", default=-1, scope=Scope.user_state)
     solution = Dict(help="The student's last solution", default={}, scope=Scope.user_state)
     # count_attempts keeps track of the number of attempts of this question by this student so we can
     # compare to course.max_attempts which is inherited as an per-question setting or a course-wide setting.
     count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.user_state)
     raw_possible = Float(help="Number of possible points", default=3,scope=Scope.user_state)
-
-    my_weight  = Integer(help="Remember weight course setting vs question setting", default=-1, scope=Scope.user_state)
-    my_max_attempts  = Integer(help="Remember max_attempts course setting vs question setting", default=-1, scope=Scope.user_state)
-    my_option_showme  = Integer(help="Remember option_showme course setting vs question setting", default=-1, scope=Scope.user_state)
-    my_option_hint  = Integer(help="Remember option_hint course setting vs question setting", default=-1, scope=Scope.user_state)
-    my_grade_showme_ded  = Integer(help="Remember grade_showme_ded course setting vs question setting", default=-1, scope=Scope.user_state)
-    my_grade_hints_count  = Integer(help="Remember grade_hints_count course setting vs question setting", default=-1, scope=Scope.user_state)
-    my_grade_hints_ded  = Integer(help="Remember grade_hints_ded course setting vs question setting", default=-1, scope=Scope.user_state)
-    my_grade_errors_count  = Integer(help="Remember grade_errors_count course setting vs question setting", default=-1, scope=Scope.user_state)
-    my_grade_errors_ded  = Integer(help="Remember grade_errors_ded course setting vs question setting", default=-1, scope=Scope.user_state)
-    my_grade_min_steps_count  = Integer(help="Remember grade_min_steps_count course setting vs question setting", default=-1, scope=Scope.user_state)
-    my_grade_min_steps_ded  = Integer(help="Remember grade_min_steps_ded course setting vs question setting", default=-1, scope=Scope.user_state)
-
-    # variant_attempted: Remembers the set of variant q_index values the student has already attempted.
-    # We can't add a Set to Scope.user_state, or we get get runtime errors whenever we update this field:
-    #      variants_attempted = Set(scope=Scope.user_state)
-    #      TypeError: Object of type set is not JSON serializable
-    # See e.g. this:  https://stackoverflow.com/questions/8230315/how-to-json-serialize-sets
-    # So we'll leave the variants in an Integer field and fiddle the bits ourselves :-(
-    # We define our own bitwise utility functions below: bit_count_ones() bit_is_set() bit_is_set()
-
-    variants_attempted = Integer(help="Bitmap of attempted variants", default=0,scope=Scope.user_state)
-    variants_count = Integer(help="Count of available variants", default=0,scope=Scope.user_state)
+    # Remember the set of variant q_index values the student has already attempted
+    variants_attempted = Set(scope=Scope.user_state)
 
     # FIELDS FOR THE ScorableXBlockMixin
 
@@ -257,7 +236,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
 
-
     # STUDENT_VIEW
     def student_view(self, context=None):
         """
@@ -265,19 +243,19 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         when viewing courses.  We set up the question parameters (referring to course-wide settings), then launch
         the javascript StepWise client.
         """
-        logger.info('SWXBlock student_view() entered')
-        logger.info("SWXBlock student_view() self={a}".format(a=self))
-        logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
-        logger.info("SWXBlock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
-        logger.info("SWXBlock student_view() self.variants_attempted={v}".format(v=self.variants_attempted))
+        logger.info('SWXblock student_view() entered')
+        logger.info("SWXblock student_view() self={a}".format(a=self))
+        logger.info("SWXblock student_view() self.runtime={a}".format(a=self.runtime))
+        logger.info("SWXblock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
+        logger.info("SWXblock student_view() len(self.variants_attempted)={l}, self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
 
         course = get_course_by_id(self.runtime.course_id)
-        logger.info("SWXBlock student_view() course={c}".format(c=course))
+        logger.info("SWXblock student_view() course={c}".format(c=course))
 
-        logger.info("SWXBlock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
+        logger.info("SWXblock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
         # NOTE: Can't set a self.q_* field here if an older imported swxblock doesn't define this field, since it defaults to None
-        # (read only?) so we'll use instance vars my_* to remember whether to use the course-wide setting or the per-question setting.
+        # (read only?) so we'll use a local var my_* to remember whether to use the course-wide setting or the per-question setting.
         # Similarly, some old courses may not define the stepwise advanced settings we want, so we create local variables for them.
 
         # For per-xblock settings
@@ -320,313 +298,607 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         def_course_stepwise_grade_min_steps_ded = 0.25
 
         # after application of course-wide settings
-        self.my_weight = -1
-        self.my_max_attempts = -1
-        self.my_option_showme = -1
-        self.my_option_hint = -1
-        self.my_grade_showme_ded = -1
-        self.my_grade_hints_count = -1
-        self.my_grade_hints_ded = -1
-        self.my_grade_errors_count = -1
-        self.my_grade_errors_ded = -1
-        self.my_grade_min_steps_count = -1
-        self.my_grade_min_steps_ded = -1
+        my_weight = -1
+        my_max_attempts = -1
+        my_option_showme = -1
+        my_option_hint = -1
+        my_grade_showme_ded = -1
+        my_grade_hints_count = -1
+        my_grade_hints_ded = -1
+        my_grade_errors_count = -1
+        my_grade_errors_ded = -1
+        my_grade_min_steps_count = -1
+        my_grade_min_steps_ded = -1
 
         # Fetch the xblock-specific settings if they exist, otherwise create a default
         try:
             temp_weight = self.q_weight
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() self.q_weight was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() self.q_weight was not defined in this instance: {e}'.format(e=e))
             temp_weight = -1
-        logger.info('SWXBlock student_view() temp_weight: {t}'.format(t=temp_weight))
+        logger.info('SWXblock student_view() temp_weight: {t}'.format(t=temp_weight))
 
         try:
             temp_max_attempts = self.q_max_attempts
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() self.q_max_attempts was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() self.q_max_attempts was not defined in this instance: {e}'.format(e=e))
             temp_max_attempts = -1
-        logger.info('SWXBlock student_view() temp_max_attempts: {t}'.format(t=temp_max_attempts))
+        logger.info('SWXblock student_view() temp_max_attempts: {t}'.format(t=temp_max_attempts))
 
         try:
             temp_option_hint = self.q_option_hint
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() self.option_hint was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() self.option_hint was not defined in this instance: {e}'.format(e=e))
             temp_option_hint = -1
-        logger.info('SWXBlock student_view() temp_option_hint: {t}'.format(t=temp_option_hint))
+        logger.info('SWXblock student_view() temp_option_hint: {t}'.format(t=temp_option_hint))
 
         try:
             temp_option_showme = self.q_option_showme
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() self.option_showme was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() self.option_showme was not defined in this instance: {e}'.format(e=e))
             temp_option_showme = -1
-        logger.info('SWXBlock student_view() temp_option_showme: {t}'.format(t=temp_option_showme))
+        logger.info('SWXblock student_view() temp_option_showme: {t}'.format(t=temp_option_showme))
 
         try:
             temp_grade_showme_ded = self.q_grade_showme_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() self.q_grade_showme_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() self.q_grade_showme_ded was not defined in this instance: {e}'.format(e=e))
             temp_grade_showme_ded = -1
-        logger.info('SWXBlock student_view() temp_grade_showme_ded: {t}'.format(t=temp_grade_showme_ded))
+        logger.info('SWXblock student_view() temp_grade_showme_ded: {t}'.format(t=temp_grade_showme_ded))
 
         try:
             temp_grade_hints_count = self.q_grade_hints_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() self.q_grade_hints_count was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() self.q_grade_hints_count was not defined in this instance: {e}'.format(e=e))
             temp_grade_hints_count = -1
-        logger.info('SWXBlock student_view() temp_grade_hints_count: {t}'.format(t=temp_grade_hints_count))
+        logger.info('SWXblock student_view() temp_grade_hints_count: {t}'.format(t=temp_grade_hints_count))
 
         try:
             temp_grade_hints_ded = self.q_grade_hints_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() self.q_grade_hints_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() self.q_grade_hints_ded was not defined in this instance: {e}'.format(e=e))
             temp_grade_hints_ded = -1
-        logger.info('SWXBlock student_view() temp_grade_hints_ded: {t}'.format(t=temp_grade_hints_ded))
+        logger.info('SWXblock student_view() temp_grade_hints_ded: {t}'.format(t=temp_grade_hints_ded))
 
         try:
             temp_grade_errors_count = self.q_grade_errors_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() self.q_grade_errors_count was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() self.q_grade_errors_count was not defined in this instance: {e}'.format(e=e))
             temp_grade_errors_count = -1
-        logger.info('SWXBlock student_view() temp_grade_errors_count: {t}'.format(t=temp_grade_errors_count))
+        logger.info('SWXblock student_view() temp_grade_errors_count: {t}'.format(t=temp_grade_errors_count))
 
         try:
             temp_grade_errors_ded = self.q_grade_errors_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() self.q_grade_errors_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() self.q_grade_errors_ded was not defined in this instance: {e}'.format(e=e))
             temp_grade_errors_ded = -1
-        logger.info('SWXBlock student_view() temp_grade_errors_ded: {t}'.format(t=temp_grade_errors_ded))
+        logger.info('SWXblock student_view() temp_grade_errors_ded: {t}'.format(t=temp_grade_errors_ded))
 
         try:
             temp_grade_min_steps_count = self.q_grade_min_steps_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() self.q_grade_min_steps_count was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() self.q_grade_min_steps_count was not defined in this instance: {e}'.format(e=e))
             temp_grade_min_steps_count = -1
-        logger.info('SWXBlock student_view() temp_grade_min_steps_count: {t}'.format(t=temp_grade_min_steps_count))
+        logger.info('SWXblock student_view() temp_grade_min_steps_count: {t}'.format(t=temp_grade_min_steps_count))
 
         try:
             temp_grade_min_steps_ded = self.q_grade_min_steps_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() self.q_grade_min_steps_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() self.q_grade_min_steps_ded was not defined in this instance: {e}'.format(e=e))
             temp_grade_min_steps_ded = -1
-        logger.info('SWXBlock student_view() temp_grade_min_steps_ded: {t}'.format(t=temp_grade_min_steps_ded))
+        logger.info('SWXblock student_view() temp_grade_min_steps_ded: {t}'.format(t=temp_grade_min_steps_ded))
 
         # Fetch the course-wide settings if they exist, otherwise create a default
 
         try:
             temp_course_stepwise_weight = course.stepwise_weight
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_weight was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() course.stepwise_weight was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_stepwise_weight = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_weight: {s}'.format(s=temp_course_stepwise_weight))
+        logger.info('SWXblock student_view() temp_course_stepwise_weight: {s}'.format(s=temp_course_stepwise_weight))
 
         try:
             temp_course_stepwise_max_attempts = course.stepwise_max_attempts
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_max_attempts was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() course.stepwise_max_attempts was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_stepwise_max_attempts = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_max_attempts: {s}'.format(s=temp_course_stepwise_max_attempts))
+        logger.info('SWXblock student_view() temp_course_stepwise_max_attempts: {s}'.format(s=temp_course_stepwise_max_attempts))
 
         try:
             temp_course_stepwise_option_showme = course.stepwise_option_showme
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_option_showme was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() course.stepwise_option_showme was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_option_showme = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_option_showme: {s}'.format(s=temp_course_stepwise_option_showme))
+        logger.info('SWXblock student_view() temp_course_stepwise_option_showme: {s}'.format(s=temp_course_stepwise_option_showme))
 
         try:
             temp_course_stepwise_option_hint = course.stepwise_option_hint
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_option_hint was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() course.stepwise_option_hint was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_option_hint = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_option_hint: {s}'.format(s=temp_course_stepwise_option_hint))
+        logger.info('SWXblock student_view() temp_course_stepwise_option_hint: {s}'.format(s=temp_course_stepwise_option_hint))
 
         try:
             temp_course_stepwise_grade_hints_count = course.stepwise_grade_hints_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_settings_grade_hints_count was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() course.stepwise_settings_grade_hints_count was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_hints_count = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_hints_count: {s}'.format(s=temp_course_stepwise_grade_hints_count))
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_hints_count: {s}'.format(s=temp_course_stepwise_grade_hints_count))
 
         try:
             temp_course_stepwise_grade_showme_ded = course.stepwise_grade_showme_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_grade_showme_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() course.stepwise_grade_showme_ded was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_showme_ded = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_showme_ded: {s}'.format(s=temp_course_stepwise_grade_showme_ded))
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_showme_ded: {s}'.format(s=temp_course_stepwise_grade_showme_ded))
 
         try:
             temp_course_stepwise_grade_hints_ded = course.stepwise_grade_hints_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_grade_hints_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() course.stepwise_grade_hints_ded was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_hints_ded = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_hints_ded: {s}'.format(s=temp_course_stepwise_grade_hints_ded))
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_hints_ded: {s}'.format(s=temp_course_stepwise_grade_hints_ded))
 
         try:
             temp_course_stepwise_grade_errors_count = course.stepwise_grade_errors_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_grade_errors_count was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() course.stepwise_grade_errors_count was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_errors_count = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_errors_count: {s}'.format(s=temp_course_stepwise_grade_errors_count))
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_errors_count: {s}'.format(s=temp_course_stepwise_grade_errors_count))
 
         try:
             temp_course_stepwise_grade_errors_ded = course.stepwise_grade_errors_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_grade_errors_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() course.stepwise_grade_errors_ded was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_errors_ded = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_errors_ded: {s}'.format(s=temp_course_stepwise_grade_errors_ded))
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_errors_ded: {s}'.format(s=temp_course_stepwise_grade_errors_ded))
 
         try:
             temp_course_stepwise_grade_min_steps_count = course.stepwise_grade_min_steps_count
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_grade_min_steps_count was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() course.stepwise_grade_min_steps_count was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_min_steps_count = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_min_steps_count: {s}'.format(s=temp_course_stepwise_grade_min_steps_count))
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_min_steps_count: {s}'.format(s=temp_course_stepwise_grade_min_steps_count))
 
         try:
             temp_course_stepwise_grade_min_steps_ded = course.stepwise_grade_min_steps_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_grade_min_steps_ded was not defined in this instance: {e}'.format(e=e))
+            logger.info('SWXblock student_view() course.stepwise_grade_min_steps_ded was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_min_steps_ded = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_min_steps_ded: {s}'.format(s=temp_course_stepwise_grade_min_steps_ded))
+        logger.info('SWXblock student_view() temp_course_stepwise_grade_min_steps_ded: {s}'.format(s=temp_course_stepwise_grade_min_steps_ded))
 
         # Enforce course-wide grading options here.
         # We prefer the per-question setting to the course setting.
         # If neither the question setting nor the course setting exist, use the course default.
 
         if (temp_weight != -1):
-            self.my_weight = temp_weight
+            my_weight = temp_weight
         elif (temp_course_stepwise_weight != -1):
-            self.my_weight = temp_course_stepwise_weight
+            my_weight = temp_course_stepwise_weight
         else:
-            self.my_weight = def_course_stepwise_weight
-        logger.info('SWXBlock student_view() self.my_weight={m}'.format(m=self.my_weight))
+            my_weight = def_course_stepwise_weight
+        logger.info('SWXblock student_view() my_weight={m}'.format(m=my_weight))
 
         # For max_attempts: If there is a per-question max_attempts setting, use that.
         # Otherwise, if there is a course-wide stepwise_max_attempts setting, use that.
         # Otherwise, use the course-wide max_attempts setting that is used for CAPA (non-StepWise) problems.
         if (temp_max_attempts != -1):
-            self.my_max_attempts = temp_max_attempts
+            my_max_attempts = temp_max_attempts
         elif (temp_course_stepwise_max_attempts != -1):
-            self.my_grade_max_attempts = temp_course_stepwise_max_attempts
-            logger.info('SWXBlock student_view() temp_course_stepwise_max_attempts={m}'.format(m=temp_course_stepwise_max_attempts))
+            my_grade_max_attempts = temp_course_stepwise_max_attempts
+            logger.info('SWXblock student_view() temp_course_stepwise_max_attempts={m}'.format(m=temp_course_stepwise_max_attempts))
         else:
-            logger.info('SWXBlock student_view() course.max_attempts={m}'.format(m=course.max_attempts))
-            self.my_grade_max_attempts = course.max_attempts
-        logger.info('SWXBlock student_view() self.my_max_attempts={m}'.format(m=self.my_max_attempts))
+            logger.info('SWXblock student_view() course.max_attempts={m}'.format(m=course.max_attempts))
+            my_grade_max_attempts = course.max_attempts
+        logger.info('SWXblock student_view() my_max_attempts={m}'.format(m=my_max_attempts))
 
         if (temp_option_hint != -1):
-            self.my_option_hint = temp_option_hint
+            my_option_hint = temp_option_hint
         elif (temp_course_stepwise_option_hint != -1):
-            self.my_option_hint = temp_course_stepwise_option_hint
+            my_option_hint = temp_course_stepwise_option_hint
         else:
-            self.my_option_hint = def_course_stepwise_option_hint
-        logger.info('SWXBlock student_view() self.my_option_hint={m}'.format(m=self.my_option_hint))
+            my_option_hint = def_course_stepwise_option_hint
+        logger.info('SWXblock student_view() my_option_hint={m}'.format(m=my_option_hint))
 
         if (temp_option_showme != -1):
-            self.my_option_showme = temp_option_showme
+            my_option_showme = temp_option_showme
         elif (temp_course_stepwise_option_showme != -1):
-            self.my_option_showme = temp_course_stepwise_option_showme
+            my_option_showme = temp_course_stepwise_option_showme
         else:
-            self.my_option_showme = def_course_stepwise_option_showme
-        logger.info('SWXBlock student_view() self.my_option_showme={m}'.format(m=self.my_option_showme))
+            my_option_showme = def_course_stepwise_option_showme
+        logger.info('SWXblock student_view() my_option_showme={m}'.format(m=my_option_showme))
 
         if (temp_grade_showme_ded != -1):
-            self.my_grade_showme_ded = temp_grade_showme_ded
+            my_grade_showme_ded = temp_grade_showme_ded
         elif (temp_course_stepwise_grade_showme_ded != -1):
-            self.my_grade_showme_ded = temp_course_stepwise_grade_showme_ded
+            my_grade_showme_ded = temp_course_stepwise_grade_showme_ded
         else:
-            self.my_grade_showme_ded = def_course_stepwise_grade_showme_ded
-        logger.info('SWXBlock student_view() self.my_grade_showme_ded={m}'.format(m=self.my_grade_showme_ded))
+            my_grade_showme_ded = def_course_stepwise_grade_showme_ded
+        logger.info('SWXblock student_view() my_grade_showme_ded={m}'.format(m=my_grade_showme_ded))
 
         if (temp_grade_hints_count != -1):
-            self.my_grade_hints_count = temp_grade_hints_count
+            my_grade_hints_count = temp_grade_hints_count
         elif (temp_course_stepwise_grade_hints_count != -1):
-            self.my_grade_hints_count = temp_course_stepwise_grade_hints_count
+            my_grade_hints_count = temp_course_stepwise_grade_hints_count
         else:
-            self.my_grade_hints_count = def_course_stepwise_grade_hints_count
-        logger.info('SWXBlock student_view() self.my_grade_hints_count={m}'.format(m=self.my_grade_hints_count))
+            my_grade_hints_count = def_course_stepwise_grade_hints_count
+        logger.info('SWXblock student_view() my_grade_hints_count={m}'.format(m=my_grade_hints_count))
 
         if (temp_grade_hints_ded != -1):
-            self.my_grade_hints_ded = temp_grade_hints_ded
+            my_grade_hints_ded = temp_grade_hints_ded
         elif (temp_course_stepwise_grade_hints_ded != -1):
-            self.my_grade_hints_ded = temp_course_stepwise_grade_hints_ded
+            my_grade_hints_ded = temp_course_stepwise_grade_hints_ded
         else:
-            self.my_grade_hints_ded = def_course_stepwise_grade_hints_ded
-        logger.info('SWXBlock student_view() self.my_grade_hints_ded={m}'.format(m=self.my_grade_hints_ded))
+            my_grade_hints_ded = def_course_stepwise_grade_hints_ded
+        logger.info('SWXblock student_view() my_grade_hints_ded={m}'.format(m=my_grade_hints_ded))
 
         if (temp_grade_errors_count != -1):
-            self.my_grade_errors_count = temp_grade_errors_count
+            my_grade_errors_count = temp_grade_errors_count
         elif (temp_course_stepwise_grade_errors_count != -1):
-            self.my_grade_errors_count = temp_course_stepwise_grade_errors_count
+            my_grade_errors_count = temp_course_stepwise_grade_errors_count
         else:
-            self.my_grade_errors_count = def_course_stepwise_grade_errors_count
-        logger.info('SWXBlock student_view() self.my_grade_errors_count={m}'.format(m=self.my_grade_errors_count))
+            my_grade_errors_count = def_course_stepwise_grade_errors_count
+        logger.info('SWXblock student_view() my_grade_errors_count={m}'.format(m=my_grade_errors_count))
 
         if (temp_grade_errors_ded != -1):
-            self.my_grade_errors_ded = temp_grade_errors_ded
+            my_grade_errors_ded = temp_grade_errors_ded
         elif (temp_course_stepwise_grade_errors_ded != -1):
-            self.my_grade_errors_ded = temp_course_stepwise_grade_errors_ded
+            my_grade_errors_ded = temp_course_stepwise_grade_errors_ded
         else:
-            self.my_grade_errors_ded = def_course_stepwise_grade_errors_ded
-        logger.info('SWXBlock student_view() self.my_grade_errors_ded={m}'.format(m=self.my_grade_errors_ded))
+            my_grade_errors_ded = def_course_stepwise_grade_errors_ded
+        logger.info('SWXblock student_view() my_grade_errors_ded={m}'.format(m=my_grade_errors_ded))
 
         if (temp_grade_min_steps_count != -1):
-            self.my_grade_min_steps_count = temp_grade_min_steps_count
+            my_grade_min_steps_count = temp_grade_min_steps_count
         elif (temp_course_stepwise_grade_min_steps_count != -1):
-            self.my_grade_min_steps_count = temp_course_stepwise_grade_min_steps_count
+            my_grade_min_steps_count = temp_course_stepwise_grade_min_steps_count
         else:
-            self.my_grade_min_steps_count = def_course_stepwise_grade_min_steps_count
-        logger.info('SWXBlock student_view() self.my_grade_min_steps_count={m}'.format(m=self.my_grade_min_steps_count))
+            my_grade_min_steps_count = def_course_stepwise_grade_min_steps_count
+        logger.info('SWXblock student_view() my_grade_min_steps_count={m}'.format(m=my_grade_min_steps_count))
 
         if (temp_grade_min_steps_ded != -1):
-            self.my_grade_min_steps_ded = temp_grade_min_steps_ded
+            my_grade_min_steps_ded = temp_grade_min_steps_ded
         elif (temp_course_stepwise_grade_min_steps_ded != -1):
-            self.my_grade_min_steps_ded = temp_course_stepwise_grade_min_steps_ded
+            my_grade_min_steps_ded = temp_course_stepwise_grade_min_steps_ded
         else:
-            self.my_grade_min_steps_ded = def_course_stepwise_grade_min_steps_ded
-        logger.info('SWXBlock student_view() self.my_grade_min_steps_ded={m}'.format(m=self.my_grade_min_steps_ded))
+            my_grade_min_steps_ded = def_course_stepwise_grade_min_steps_ded
+        logger.info('SWXblock student_view() my_grade_min_steps_ded={m}'.format(m=my_grade_min_steps_ded))
 
 
         # Save an identifier for the user
 
         user_service = self.runtime.service( self, 'user')
         xb_user = user_service.get_current_user()
-        self.xb_user_email = xb_user.emails[0]
 
         # Determine which stepwise variant to use
 
-        self.variants_count = 0
+        variants_count = 0
 
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0  and len(self.q9_definition)>0:
-            self.variants_count = 10
+            variants_count = 10
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0:
-            self.variants_count = 9
+            variants_count = 9
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0:
-            self.variants_count = 8
+            variants_count = 8
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0:
-            self.variants_count = 7
+            variants_count = 7
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0:
-            self.variants_count = 6
+            variants_count = 6
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0:
-            self.variants_count = 5
+            variants_count = 5
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0:
-            self.variants_count = 4
+            variants_count = 4
         elif len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0:
-            self.variants_count = 3
+            variants_count = 3
         elif len(self.q_definition)>0 and len(self.q1_definition)>0:
-            self.variants_count = 2
+            variants_count = 2
         else:
-            self.variants_count = 1
+            variants_count = 1
 
-        logger.info("SWXBlock student_view() self.variants_count={c}".format(c=self.variants_count))
+        logger.info("SWXblock student_view() variants_count={c}".format(c=variants_count))
         # Pick a variant at random, and make sure that it is one we haven't attempted before.
 
-        self.question = self.pick_variant()
+        if len(self.variants_attempted) >= variants_count:
+            logger.warn("SWXblock student_view() seen all variants, clearing variants_attempted len={l}".format(l=len(self.variants_attempted)))
+            self.variants_attempted.clear()		# We have not yet attempted any variants
 
-        question = self.question
-        q_index = question['q_index']
+        tries = 0					# Make sure we dont try forever to find a new variant
+        max_tries = 100
+        while tries<max_tries:
+            tries=tries+1
+            q_randint = random.randint(0, ((variants_count*100)-1))	# 0..999 for 10 variants, 0..100 for 1 variant, etc.
+    
+            if q_randint>=0 and q_randint<100:
+                q_index=0
+            elif q_randint>=100 and q_randint<200:
+                q_index=1
+            elif q_randint>=200 and q_randint<300:
+                q_index=2
+            elif q_randint>=300 and q_randint<400:
+                q_index=3
+            elif q_randint>=400 and q_randint<500:
+                q_index=4
+            elif q_randint>=500 and q_randint<600:
+                q_index=5
+            elif q_randint>=600 and q_randint<700:
+                q_index=6
+            elif q_randint>=700 and q_randint<800:
+                q_index=7
+            elif q_randint>=800 and q_randint<900:
+                q_index=8
+            else:
+                q_index=9
+    
+            if q_index not in self.variants_attempted:
+                logger.info("try {t}: found unattempted variant {q}".format(t=tries,q=q_index))
+                break
+            else:
+                logger.info("try {t}: variant {q} has already been attempted set is len {l} of {c}".format(t=tries,q=q_index,l=len(self.variants_attempted),c=variants_count))
+                if len(self.variants_attempted) >= variants_count:
+                    logger.info("try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=variants_count))
+                    q_index = 0		# Default
+                    self.variants_attempted.clear()
+                    break
 
-        logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=question))
+        if tries>=max_tries:
+            logger.error("could not find an unattempted variant of {i} {l} in {m} tries! clearing self.variants_attempted.".format(i=self.q_id,l=self.q_label,m=max_tries))
+            q_index = 0		# Default
+            self.variants_attempted.clear()
+
+        logger.info("Selected variant {v}".format(v=q_index))
+
+        # Note: we won't set self.variants_attempted for this variant until they actually begin work on it (see start_attempt() below)
+
+        if q_index==0:
+            question = {
+                "q_id" : self.q_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 0,
+                "q_label" : self.q_label,
+                "q_stimulus" : self.q_stimulus,
+                "q_definition" : self.q_definition,
+                "q_type" :  self.q_type,
+                "q_display_math" :  self.q_display_math,
+                "q_hint1" :  self.q_hint1,
+                "q_hint2" :  self.q_hint2,
+                "q_hint3" :  self.q_hint3,
+                "q_weight" :  my_weight,
+                "q_max_attempts" : my_max_attempts,
+                "q_option_hint" : my_option_hint,
+                "q_option_showme" : my_option_showme,
+                "q_grade_showme_ded" : my_grade_showme_ded,
+                "q_grade_hints_count" : my_grade_hints_count,
+                "q_grade_hints_ded" : my_grade_hints_ded,
+                "q_grade_errors_count" : my_grade_errors_count,
+                "q_grade_errors_ded" : my_grade_errors_ded,
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
+            }
+        elif q_index==1:
+            question = {
+                "q_id" : self.q1_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 1,
+                "q_label" : self.q1_label,
+                "q_stimulus" : self.q1_stimulus,
+                "q_definition" : self.q1_definition,
+                "q_type" :  self.q1_type,
+                "q_display_math" :  self.q1_display_math,
+                "q_hint1" :  self.q1_hint1,
+                "q_hint2" :  self.q1_hint2,
+                "q_hint3" :  self.q1_hint3,
+                "q_weight" :  my_weight,
+                "q_max_attempts" : my_max_attempts,
+                "q_option_hint" : my_option_hint,
+                "q_option_showme" : my_option_showme,
+                "q_grade_showme_ded" : my_grade_showme_ded,
+                "q_grade_hints_count" : my_grade_hints_count,
+                "q_grade_hints_ded" : my_grade_hints_ded,
+                "q_grade_errors_count" : my_grade_errors_count,
+                "q_grade_errors_ded" : my_grade_errors_ded,
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
+            }
+        elif q_index==2:
+            question = {
+                "q_id" : self.q2_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 2,
+                "q_label" : self.q2_label,
+                "q_stimulus" : self.q2_stimulus,
+                "q_definition" : self.q2_definition,
+                "q_type" :  self.q2_type,
+                "q_display_math" :  self.q2_display_math,
+                "q_hint1" :  self.q2_hint1,
+                "q_hint2" :  self.q2_hint2,
+                "q_hint3" :  self.q2_hint3,
+                "q_weight" :  my_weight,
+                "q_max_attempts" : my_max_attempts,
+                "q_option_hint" : my_option_hint,
+                "q_option_showme" : my_option_showme,
+                "q_grade_showme_ded" : my_grade_showme_ded,
+                "q_grade_hints_count" : my_grade_hints_count,
+                "q_grade_hints_ded" : my_grade_hints_ded,
+                "q_grade_errors_count" : my_grade_errors_count,
+                "q_grade_errors_ded" : my_grade_errors_ded,
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
+            }
+        elif q_index==3:
+            question = {
+                "q_id" : self.q3_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 3,
+                "q_label" : self.q3_label,
+                "q_stimulus" : self.q3_stimulus,
+                "q_definition" : self.q3_definition,
+                "q_type" :  self.q3_type,
+                "q_display_math" :  self.q3_display_math,
+                "q_hint1" :  self.q3_hint1,
+                "q_hint2" :  self.q3_hint2,
+                "q_hint3" :  self.q3_hint3,
+                "q_weight" :  my_weight,
+                "q_max_attempts" : my_max_attempts,
+                "q_option_hint" : my_option_hint,
+                "q_option_showme" : my_option_showme,
+                "q_grade_showme_ded" : my_grade_showme_ded,
+                "q_grade_hints_count" : my_grade_hints_count,
+                "q_grade_hints_ded" : my_grade_hints_ded,
+                "q_grade_errors_count" : my_grade_errors_count,
+                "q_grade_errors_ded" : my_grade_errors_ded,
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
+            }
+        elif q_index==4:
+            question = {
+                "q_id" : self.q4_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 4,
+                "q_label" : self.q4_label,
+                "q_stimulus" : self.q4_stimulus,
+                "q_definition" : self.q4_definition,
+                "q_type" :  self.q4_type,
+                "q_display_math" :  self.q4_display_math,
+                "q_hint1" :  self.q4_hint1,
+                "q_hint2" :  self.q4_hint2,
+                "q_hint3" :  self.q4_hint3,
+                "q_weight" :  my_weight,
+                "q_max_attempts" : my_max_attempts,
+                "q_option_hint" : my_option_hint,
+                "q_option_showme" : my_option_showme,
+                "q_grade_showme_ded" : my_grade_showme_ded,
+                "q_grade_hints_count" : my_grade_hints_count,
+                "q_grade_hints_ded" : my_grade_hints_ded,
+                "q_grade_errors_count" : my_grade_errors_count,
+                "q_grade_errors_ded" : my_grade_errors_ded,
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
+            }
+        elif q_index==5:
+            question = {
+                "q_id" : self.q5_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 5,
+                "q_label" : self.q5_label,
+                "q_stimulus" : self.q5_stimulus,
+                "q_definition" : self.q5_definition,
+                "q_type" :  self.q5_type,
+                "q_display_math" :  self.q5_display_math,
+                "q_hint1" :  self.q5_hint1,
+                "q_hint2" :  self.q5_hint2,
+                "q_hint3" :  self.q5_hint3,
+                "q_weight" :  my_weight,
+                "q_max_attempts" : my_max_attempts,
+                "q_option_hint" : my_option_hint,
+                "q_option_showme" : my_option_showme,
+                "q_grade_showme_ded" : my_grade_showme_ded,
+                "q_grade_hints_count" : my_grade_hints_count,
+                "q_grade_hints_ded" : my_grade_hints_ded,
+                "q_grade_errors_count" : my_grade_errors_count,
+                "q_grade_errors_ded" : my_grade_errors_ded,
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
+            }
+        elif q_index==6:
+            question = {
+                "q_id" : self.q6_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 6,
+                "q_label" : self.q6_label,
+                "q_stimulus" : self.q6_stimulus,
+                "q_definition" : self.q6_definition,
+                "q_type" :  self.q6_type,
+                "q_display_math" :  self.q6_display_math,
+                "q_hint1" :  self.q6_hint1,
+                "q_hint2" :  self.q6_hint2,
+                "q_hint3" :  self.q6_hint3,
+                "q_weight" :  my_weight,
+                "q_max_attempts" : my_max_attempts,
+                "q_option_hint" : my_option_hint,
+                "q_option_showme" : my_option_showme,
+                "q_grade_showme_ded" : my_grade_showme_ded,
+                "q_grade_hints_count" : my_grade_hints_count,
+                "q_grade_hints_ded" : my_grade_hints_ded,
+                "q_grade_errors_count" : my_grade_errors_count,
+                "q_grade_errors_ded" : my_grade_errors_ded,
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
+            }
+        elif q_index==7:
+            question = {
+                "q_id" : self.q7_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 7,
+                "q_label" : self.q7_label,
+                "q_stimulus" : self.q7_stimulus,
+                "q_definition" : self.q7_definition,
+                "q_type" :  self.q7_type,
+                "q_display_math" :  self.q7_display_math,
+                "q_hint1" :  self.q7_hint1,
+                "q_hint2" :  self.q7_hint2,
+                "q_hint3" :  self.q7_hint3,
+                "q_weight" :  my_weight,
+                "q_max_attempts" : my_max_attempts,
+                "q_option_hint" : my_option_hint,
+                "q_option_showme" : my_option_showme,
+                "q_grade_showme_ded" : my_grade_showme_ded,
+                "q_grade_hints_count" : my_grade_hints_count,
+                "q_grade_hints_ded" : my_grade_hints_ded,
+                "q_grade_errors_count" : my_grade_errors_count,
+                "q_grade_errors_ded" : my_grade_errors_ded,
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
+            }
+        elif q_index==8:
+            question = {
+                "q_id" : self.q8_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 8,
+                "q_label" : self.q8_label,
+                "q_stimulus" : self.q8_stimulus,
+                "q_definition" : self.q8_definition,
+                "q_type" :  self.q8_type,
+                "q_display_math" :  self.q8_display_math,
+                "q_hint1" :  self.q8_hint1,
+                "q_hint2" :  self.q8_hint2,
+                "q_hint3" :  self.q8_hint3,
+                "q_weight" :  my_weight,
+                "q_max_attempts" : my_max_attempts,
+                "q_option_hint" : my_option_hint,
+                "q_option_showme" : my_option_showme,
+                "q_grade_showme_ded" : my_grade_showme_ded,
+                "q_grade_hints_count" : my_grade_hints_count,
+                "q_grade_hints_ded" : my_grade_hints_ded,
+                "q_grade_errors_count" : my_grade_errors_count,
+                "q_grade_errors_ded" : my_grade_errors_ded,
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
+            }
+        else:
+            question = {
+                "q_id" : self.q9_id,
+                "q_user" : xb_user.emails[0],
+                "q_index" : 9,
+                "q_label" : self.q9_label,
+                "q_stimulus" : self.q9_stimulus,
+                "q_definition" : self.q9_definition,
+                "q_type" :  self.q9_type,
+                "q_display_math" :  self.q9_display_math,
+                "q_hint1" :  self.q9_hint1,
+                "q_hint2" :  self.q9_hint2,
+                "q_hint3" :  self.q9_hint3,
+                "q_weight" :  my_weight,
+                "q_max_attempts" : my_max_attempts,
+                "q_option_hint" : my_option_hint,
+                "q_option_showme" : my_option_showme,
+                "q_grade_showme_ded" : my_grade_showme_ded,
+                "q_grade_hints_count" : my_grade_hints_count,
+                "q_grade_hints_ded" : my_grade_hints_ded,
+                "q_grade_errors_count" : my_grade_errors_count,
+                "q_grade_errors_ded" : my_grade_errors_ded,
+                "q_grade_min_steps_count" : my_grade_min_steps_count,
+                "q_grade_min_steps_ded" : my_grade_min_steps_ded
+            }
 
         data = {
             "question" : question,
@@ -653,83 +925,82 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
-        frag.initialize_js('swxblock SWXStudent', data)
+        frag.initialize_js('SWXStudent', data)
         return frag
-
 
     # SAVE GRADE
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
-        logger.info('SWXBlock save_grade() entered')
+        logger.info('SWXblock save_grade() entered')
         logger.info("SWXBlock save_grade() self.max_attempts={a}".format(a=self.max_attempts))
 
         # Check for missing grading attributes
 
-        logger.info("SWXBlock save_grade() initial self={a}".format(a=self))
-        logger.info("SWXBlock save_grade() initial data={a}".format(a=data))
+        logger.info("SWXblock save_grade() initial self={a}".format(a=self))
+        logger.info("SWXblock save_grade() initial data={a}".format(a=data))
 
         try: q_weight = self.q_weight
         except (NameError,AttributeError) as e:
-             logger.info('SWXBlock save_grade() self.q_weight was not defined: {e}'.format(e=e))
+             logger.info('SWXblock save_grade() self.q_weight was not defined: {e}'.format(e=e))
              q_weight = 1.0
 
         try: q_grade_showme_ded = self.q_grade_showme_ded
         except (NameError,AtrributeError) as e:
-             logger.info('SWXBlock save_grade() self.q_grade_showme_dev was not defined: {e}'.format(e=e))
+             logger.info('SWXblock save_grade() self.q_grade_showme_dev was not defined: {e}'.format(e=e))
              q_grade_showme_ded = -1
 
         try: q_grade_hints_count = self.q_grade_hints_count
         except (NameError,AtrributeError) as e:
-             logger.info('SWXBlock save_grade() self.q_grade_hints_count was not defined: {e}',format(e=e))
+             logger.info('SWXblock save_grade() self.q_grade_hints_count was not defined: {e}',format(e=e))
              q_grade_hints_count = -1
 
         try: q_grade_hints_ded = self.q_grade_hints_ded
         except (NameError,AtrributeError) as e:
-             logger.info('SWXBlock save_grade() self.q_grade_hints_ded was not defined: {e}'.format(e=e))
+             logger.info('SWXblock save_grade() self.q_grade_hints_ded was not defined: {e}'.format(e=e))
              q_grade_hints_ded = -1
 
         try: q_grade_errors_count = self.q_grade_errors_count
         except (NameError,AtrributeError) as e:
-             logger.info('SWXBlock save_grade() self.q_grade_errors_count was not defined: {e}'.format(e=e))
+             logger.info('SWXblock save_grade() self.q_grade_errors_count was not defined: {e}'.format(e=e))
              q_grade_errors_count = -1
 
         try: q_grade_errors_ded = self.q_grade_errors_ded
         except (NameError,AtrributeError) as e:
-             logger.info('SWXBlock save_grade() self.q_grade_errors_ded was not defined: {e}'.format(e=e))
+             logger.info('SWXblock save_grade() self.q_grade_errors_ded was not defined: {e}'.format(e=e))
              q_grade_errors_ded = -1
 
         try: q_grade_min_steps_count = self.q_grade_min_steps_count
         except (NameError,AtrributeError) as e:
-             logger.info('SWXBlock save_grade() self.q_grade_min_steps_count was not defined: {e}'.format(e=e))
+             logger.info('SWXblock save_grade() self.q_grade_min_steps_count was not defined: {e}'.format(e=e))
              q_grade_min_steps_count = -1
 
         try: q_grade_min_steps_ded = self.q_grade_min_steps_ded
         except (NameError,AtrributeError) as e:
-             logger.info('SWXBlock save_grade() self.q_grade_min_steps_ded was not defined: {e}'.format(e=e))
+             logger.info('SWXblock save_grade() self.q_grade_min_steps_ded was not defined: {e}'.format(e=e))
              q_grade_min_steps_ded = -1
 
         # Apply grading defaults
 
         if q_weight == -1:
-            logger.info('SWXBlock save_grade() weight set to 1.0')
+            logger.info('SWXblock save_grade() weight set to 1.0')
             q_weight = 1.0
         if q_grade_showme_ded == -1:
-            logger.info('SWXBlock save_grade() showme default set to 3.0')
+            logger.info('SWXblock save_grade() showme default set to 3.0')
             q_grade_showme_ded = 3.0
         if q_grade_hints_count == -1:
-            logger.info('SWXBlock save_grade() hints_count default set to 2')
+            logger.info('SWXblock save_grade() hints_count default set to 2')
             q_grade_hints_count = 2
         if q_grade_hints_ded == -1:
-            logger.info('SWXBlock save_grade() hints_ded default set to 1.0')
+            logger.info('SWXblock save_grade() hints_ded default set to 1.0')
             q_grade_hints_ded = 1.0
         if q_grade_errors_count == -1:
-            logger.info('SWXBlock save_grade() errors_count default set to 3')
+            logger.info('SWXblock save_grade() errors_count default set to 3')
             q_grade_errors_count = 3
         if q_grade_errors_ded == -1:
-            logger.info('SWXBlock save_grade() errors_ded default set to 1.0')
+            logger.info('SWXblock save_grade() errors_ded default set to 1.0')
             q_grade_errors_ded = 1.0
         if q_grade_min_steps_ded == -1:
-            logger.info('SWXBlock save_grade() min_steps_ded default set to 0.25')
+            logger.info('SWXblock save_grade() min_steps_ded default set to 0.25')
             q_grade_min_steps_ded = 0.25
 
         """
@@ -738,57 +1009,57 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         valid_steps = 0;
 
-        logger.info("SWXBlock save_grade() count valid_steps data={d}".format(d=data))
+        logger.info("SWXblock save_grade() count valid_steps data={d}".format(d=data))
         step_details = data['stepDetails']
-        logger.info("SWXBlock save_grade() count valid_steps step_details={d}".format(d=step_details))
-        logger.info("SWXBlock save_grade() count valid_steps len(step_details)={l}".format(l=len(step_details)))
+        logger.info("SWXblock save_grade() count valid_steps step_details={d}".format(d=step_details))
+        logger.info("SWXblock save_grade() count valid_steps len(step_details)={l}".format(l=len(step_details)))
         for c in range(len(step_details)):
-            logger.info("SWXBlock save_grade() count valid_steps begin examine step c={c} step_details[c]={d}".format(c=c,d=step_details[c]))
+            logger.info("SWXblock save_grade() count valid_steps begin examine step c={c} step_details[c]={d}".format(c=c,d=step_details[c]))
             for i in range (len(step_details[c]['info'])):
-                logger.info("SWXBlock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info']={s}".format(c=c,i=i,s=step_details[c]['info']))
-                logger.info("SWXBlock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info'][i]={s}".format(c=c,i=i,s=step_details[c]['info'][i]))
+                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info']={s}".format(c=c,i=i,s=step_details[c]['info']))
+                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info'][i]={s}".format(c=c,i=i,s=step_details[c]['info'][i]))
                 step_status = step_details[c]['info'][i]['status']
                 if (step_status == 0):       # victory
                     valid_steps += 1
-                    logger.info("SWXBlock save_grade() count valid_steps c={c} i={i} victory step found".format(c=c,i=i))
+                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} victory step found".format(c=c,i=i))
                 elif (step_status == 1):     # valid step
                     valid_steps += 1
-                    logger.info("SWXBlock save_grade() count valid_steps c={c} i={i} valid step found".format(c=c,i=i))
+                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} valid step found".format(c=c,i=i))
                 elif (step_status == 3):     # invalid step
                     valid_steps += 0         # don't count invalid steps
                 else:
-                    logger.info("SWXBlock save_grade() count valid_steps c={c} i={i} ignoring step_status={s}".format(c=c,i=i,s=step_status))
-                logger.info("SWXBlock save_grade() count valid_steps examine step c={c} i={i} step_status={s} valid_steps={v}".format(c=c,i=i,s=step_status,v=valid_steps))
-        logger.info("SWXBlock save_grade() final valid_steps={v}".format(v=valid_steps))
+                    logger.info("SWXblock save_grade() count valid_steps c={c} i={i} ignoring step_status={s}".format(c=c,i=i,s=step_status))
+                logger.info("SWXblock save_grade() count valid_steps examine step c={c} i={i} step_status={s} valid_steps={v}".format(c=c,i=i,s=step_status,v=valid_steps))
+        logger.info("SWXblock save_grade() final valid_steps={v}".format(v=valid_steps))
 
         grade=3.0
         max_grade=grade
 
-        logger.info('SWXBlock save_grade() initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f} min_steps={g} valid_steps={h}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe'],g=q_grade_min_steps_count,h=valid_steps))
+        logger.info('SWXblock save_grade() initial grade={a} errors={b} errors_count={c} hints={d} hints_count={e} showme={f} min_steps={g} valid_steps={h}'.format(a=grade,b=data['errors'],c=q_grade_errors_count,d=data['hints'],e=q_grade_hints_count,f=data['usedShowMe'],g=q_grade_min_steps_count,h=valid_steps))
         if data['errors']>q_grade_errors_count:
             grade=grade-q_grade_errors_ded
-            logger.info('SWXBlock save_grade() errors test errors_ded={a} grade={b}'.format(a=q_grade_errors_ded,b=grade))
+            logger.info('SWXblock save_grade() errors test errors_ded={a} grade={b}'.format(a=q_grade_errors_ded,b=grade))
         if data['hints']>q_grade_hints_count:
             grade=grade-q_grade_hints_ded
-            logger.info('SWXBlock save_grade() hints test hints_ded={a} grade={b}'.format(a=q_grade_hints_ded,b=grade))
+            logger.info('SWXblock save_grade() hints test hints_ded={a} grade={b}'.format(a=q_grade_hints_ded,b=grade))
         if data['usedShowMe']:
             grade=grade-q_grade_showme_ded
-            logger.info('SWXBlock save_grade() showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
+            logger.info('SWXblock save_grade() showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
         
         # Don't subtract min_steps points on a MatchSpec problem
-        self.my_q_definition = data['answered_question']['q_definition']
-        logger.info('SWXBlock save_grade() check on min_steps deduction grade={g} max_grade={m} q_grade_min_steps_count={c} q_grade_min_steps_ded={d} self.my_q_definition={q}'.format(g=grade,m=max_grade,c=q_grade_min_steps_count,d=q_grade_min_steps_ded,q=self.my_q_definition))
-        if (grade >= max_grade and valid_steps < q_grade_min_steps_count and self.my_q_definition.count('MatchSpec') == 0 ):
+        my_q_definition = data['answered_question']['q_definition']
+        logger.info('SWXblock save_grade() check on min_steps deduction grade={g} max_grade={m} q_grade_min_steps_count={c} q_grade_min_steps_ded={d} my_q_definition={q}'.format(g=grade,m=max_grade,c=q_grade_min_steps_count,d=q_grade_min_steps_ded,q=my_q_definition))
+        if (grade >= max_grade and valid_steps < q_grade_min_steps_count and my_q_definition.count('MatchSpec') == 0 ):
             grade=grade-q_grade_min_steps_ded
-            logger.info('SWXBlock save_grade() took min_steps deduction after grade={g}'.format(g=grade))
+            logger.info('SWXblock save_grade() took min_steps deduction after grade={g}'.format(g=grade))
         else:
-            logger.info('SWXBlock save_grade() did not take min_steps deduction after grade={g}'.format(g=grade))
+            logger.info('SWXblock save_grade() did not take min_steps deduction after grade={g}'.format(g=grade))
 
         if grade<0.0:
-            logger.info('SWXBlock save_grade() zero negative grade')
+            logger.info('SWXblock save_grade() zero negative grade')
             grade=0.0
 
-        logger.info("SWXBlock save_grade() final grade={a} q_weight={b}".format(a=grade,b=q_weight))
+        logger.info("SWXblock save_grade() final grade={a} q_weight={b}".format(a=grade,b=q_weight))
 
         self.runtime.publish(self, 'grade',
             {   'value': (grade/3.0)*q_weight,
@@ -801,52 +1072,35 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # a question, not when they finish.  Otherwise people can start the question as many times
         # as they want as long as they don't finish it, then reload the page.
         # self.count_attempts += 1
-        logger.info("SWXBlock save_grade() final self={a}".format(a=self))
-        logger.info("SWXBlock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
-        logger.info("SWXBlock save_grade() final self.solution={a}".format(a=self.solution))
-        logger.info("SWXBlock save_grade() final self.grade={a}".format(a=self.grade))
-        logger.info("SWXBlock save_grade() final self.variants_attempted={v}".format(v=self.variants_attempted))
+        logger.info("SWXblock save_grade() final self={a}".format(a=self))
+        logger.info("SWXblock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
+        logger.info("SWXblock save_grade() final self.solution={a}".format(a=self.solution))
+        logger.info("SWXblock save_grade() final self.grade={a}".format(a=self.grade))
+        logger.info("SWXblock save_grade() final len(self.variants_attempted)={l}, self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
 
 
     # START ATTEMPT
     @XBlock.json_handler
     def start_attempt(self, data, suffix=''):
-        logger.info("SWXBlock start_attempt() entered")
-        logger.info("SWXBlock start_attempt() data={d}".format(d=data))
-        logger.info("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
-        logger.info("SWXBlock start_attempt() self.variants_attempted={v}".format(v=self.variants_attempted))
-        # logger.info("SWXBlock start_attempt() action={d} sessionId={s} timeMark={t}".format(d=data['status']['action'],s=data['status']['sessionId'],t=data['status']['timeMark']))
-        logger.info("SWXBlock start_attempt() passed q_index={q}".format(q=data['q_index']))
+        logger.info("SWXblock start_attempt() entered")
+        logger.info("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m} len(self.variants_attempted)={l}".format(c=self.count_attempts,m=self.max_attempts,l=len(self.variants_attempted)))
+        logger.info("SWXBlock start_attempt() len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
+        logger.info("SWXBlock start_attempt() action={d} sessionId={s} timeMark={t}".format(d=data['status']['action'],s=data['status']['sessionId'],t=data['status']['timeMark']))
         self.count_attempts += 1
-        logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
-        variant = data['q_index']
-        logger.info("variant is {v}".format(v=variant))
-        if self.bit_is_set(self.variants_attempted,variant):
-            logger.info("variant {v} has already been attempted!".format(v=variant))
+        if data['q_index'] in self.variants_attempted:
+            logger.info("variant {v} has already been attempted!".format(v=data['q_index']))
         else:
-            self.bit_is_set(self.variants_attempted,variant)
-            logger.info("adding variant {v} to self.variants_attempted={s}".format(v=variant,s=self.variants_attempted))
+            self.variants_attempted.add(data['q_index'])
+            logger.info("adding variant {v} to self.variants_attempted len={l}".format(v=data['q_index'],l=len(self.variants_attempted)))
+        logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
+        logger.info("SWXBlock start_attempt() updated len(self.variants_attempted)={l} self.variants_attempted={v}".format(l=len(self.variants_attempted),v=self.variants_attempted))
         logger.info("SWXBlock start_attempt() done")
-        return None
-
-
-    # RESET: PICK A NEW VARIANT
-    @XBlock.json_handler
-    def reset(self, suffix=''):
-        logger.info("SWXBlock reset() entered")
-        logger.info("SWXBlock reset() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
-        logger.info("SWXBlock reset() self.variants_attempted={v}".format(v=self.variants_attempted))
-        logger.info("SWXBlock reset() pre-pick_question q_index={i}".format(v=self.question['q_index']))
-        self.question = pick_variant()
-        logger.info("SWXBlock reset() post-pick returning q_index={i} self.question={q}".format(i=self.question['q_index'],q=self.question))
-        return self.question
-
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.
     @staticmethod
     def workbench_scenarios():
-        logger.info('SWXBlock workbench_scenarios() entered')
+        logger.info('SWXblock workbench_scenarios() entered')
         """A canned scenario for display in the workbench."""
         return [
             ("SWXBlock",
@@ -863,7 +1117,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
 
     def studio_view(self, context=None):
-        logger.info('SWXBlock studio_view() entered')
+        logger.info('SWXblock studio_view() entered')
         """
         The STUDIO view of the SWXBlock, shown to instructors
         when authoring courses.
@@ -873,12 +1127,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_css(self.resource_string("static/css/swxstudio.css"))
         frag.add_javascript(self.resource_string("static/js/src/swxstudio.js"))
 
-        frag.initialize_js('swxblock SWXStudio')
+        frag.initialize_js('SWxStudio')
         return frag
 
-
     def author_view(self, context=None):
-        logger.info('SWXBlock author_view() entered')
+        logger.info('SWXblock author_view() entered')
         """
         The AUTHOR view of the SWXBlock, shown to instructors
         when previewing courses.
@@ -889,10 +1142,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript(self.resource_string("static/js/src/swxauthor.js"))
 
-        logger.info("SWXBlock SWXAuthor author_view v={a}".format(a=self.q_definition))
-        logger.info("SWXBlock SWXAuthor author_view v1={a} v2={b} v3={c}".format(a=self.q1_definition,b=self.q2_definition,c=self.q3_definition))
-        logger.info("SWXBlock SWXAuthor author_view v4={a} v5={b} v6={c}".format(a=self.q4_definition,b=self.q5_definition,c=self.q6_definition))
-        logger.info("SWXBlock SWXAuthor author_view v7={a} v8={b} v9={c}".format(a=self.q7_definition,b=self.q8_definition,c=self.q9_definition))
+        logger.info("swxblock SwXAuthor author_view v={a}".format(a=self.q_definition))
+        logger.info("swxblock SwXAuthor author_view v1={a} v2={b} v3={c}".format(a=self.q1_definition,b=self.q2_definition,c=self.q3_definition))
+        logger.info("swxblock SwXAuthor author_view v4={a} v5={b} v6={c}".format(a=self.q4_definition,b=self.q5_definition,c=self.q6_definition))
+        logger.info("swxblock SwXAuthor author_view v7={a} v8={b} v9={c}".format(a=self.q7_definition,b=self.q8_definition,c=self.q9_definition))
 
         # tell author_view how many variants are defined
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0 and len(self.q9_definition)>0:
@@ -916,16 +1169,15 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             variants = 1
 
-        logger.info("SWXBlock SWXAuthor author_view variants={a}".format(a=variants))
+        logger.info("swxblock SwXAuthor author_view variants={a}".format(a=variants))
 
-        frag.initialize_js('swxblock SWXAuthor', variants)
+        frag.initialize_js('SWxAuthor', variants)
         return frag
-
 
     # SAVE QUESTION
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
-        logger.info('SWXBlock save_question() entered')
+        logger.info('SWXblock save_question() entered')
         self.q_max_attempts = int(data['q_max_attempts'])
         self.q_weight = float(data['q_weight'])
         if data['q_option_showme'].lower() == u'true':
@@ -1087,29 +1339,26 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         print(self.display_name)
         return {'result': 'success'}
 
-
     # Do necessary overrides from ScorableXBlockMixin
     def has_submitted_answer(self):
-        logger.info('SWXBlock has_submitted_answer() entered')
+        logger.info('SWXblock has_submitted_answer() entered')
         """
         Returns True if the problem has been answered by the runtime user.
         """
-        logger.info("SWXBlock has_submitted_answer() {a}".format(a=self.is_answered))
+        logger.info("SWXblock has_submitted_answer() {a}".format(a=self.is_answered))
         return self.is_answered
 
-
     def get_score(self):
-        logger.info('SWXBlock get_score() entered')
+        logger.info('SWXblock get_score() entered')
         """
         Return a raw score already persisted on the XBlock.  Should not
         perform new calculations.
         Returns:
             Score(raw_earned=float, raw_possible=float)
         """
-        logger.info("SWXBlock get_score() earned {e}".format(e=self.raw_earned))
-        logger.info("SWXBlock get_score() max {m}".format(m=self.max_score()))
+        logger.info("SWXblock get_score() earned {e}".format(e=self.raw_earned))
+        logger.info("SWXblock get_score() max {m}".format(m=self.max_score()))
         return Score(float(self.raw_earned), float(self.max_score()))
-
 
     def set_score(self, score):
         """
@@ -1122,9 +1371,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Returns:
             None
         """
-        logger.info("SWXBlock set_score() earned {e}".format(e=score.raw_earned))
+        logger.info("SWXblock set_score() earned {e}".format(e=score.raw_earned))
         self.raw_earned = score.raw_earned
-
 
     def calculate_score(self):
         """
@@ -1133,10 +1381,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Returns:
             Score(raw_earned=float, raw_possible=float)
         """
-        logger.info("SWXBlock calculate_score() grade {g}".format(g=self.grade))
-        logger.info("SWXBlock calculate_score() max {m}".format(m=self.max_score))
+        logger.info("SWXblock calculate_score() grade {g}".format(g=self.grade))
+        logger.info("SWXblock calculate_score() max {m}".format(m=self.max_score))
         return Score(float(self.grade), float(self.max_score()))
-
 
     def allows_rescore(self):
         """
@@ -1144,9 +1391,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Subtypes may wish to override this if they need conditional support for
         rescoring.
         """
-        logger.info("SWXBlock allows_rescore() False")
+        logger.info("SWXblock allows_rescore() False")
         return False
-
 
     def max_score(self):
         """
@@ -1157,362 +1403,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # Want the normalized, unweighted score here (1), not the points possible (3)
         return 1
 
-
     def weighted_grade(self):
         """
         Returns the block's current saved grade multiplied by the block's
         weight- the number of points earned by the learner.
         """
-        logger.info("SWXBlock weighted_grade() earned {e}".format(e=self.raw_earned))
-        logger.info("SWXBlock weighted_grade() weight {w}".format(w=self.q_weight))
+        logger.info("SWXblock weighted_grade() earned {e}".format(e=self.raw_earned))
+        logger.info("SWXblock weighted_grade() weight {w}".format(w=self.q_weight))
         return self.raw_earned * self.q_weight
-
-
-    def bit_count_ones(self,var):
-        """
-        Returns the count of one bits in an integer variable
-        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
-        """
-        logger.info("SWXBlock bit_count_ones var={v}".format(v=var))
-        count=0
-        bits = var
-        for b in range(32):
-            lsb = (bits >> b) & 1;
-            count = count + lsb;
-        logger.info("SWXBlock bit_count_ones result={c}".format(c=count))
-        return count
-
-
-    def bit_set_one(self,var,bitnum):
-        """
-        var = var with bit 'bitnum' set
-        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
-        """
-        logger.info("SWXBlock bit_set_one var={v} bitnum={b}".format(v=var,b=bitnum))
-        var = var | (1 << bitnum)
-        logger.info("SWXBlock bit_set_one result={v}".format(v=var))
-        return var
-
-
-    def bit_is_set(self,var,bitnum):
-        """
-        return True if bit bitnum is set in var
-        Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
-        """
-        logger.info("SWXBlock bit_is_set var={v} bitnum={b}".format(v=var,b=bitnum))
-        result = var & (1 << bitnum)
-        logger.info("SWXBlock bit_is_set result={v} b={b}".format(v=result,b=bool(result)))
-        return bool(result)
-
-
-    def pick_variant(self):
-       # pick_variant() selects one of the available question variants that we have not yet attempted. If we've attempted all variants,
-       # we clear the list of attempted variants and pick again.  Returns the question structure for the one we will use this time.
-
-        logger.info("SWXBlock pick_variant() started")
-
-        if self.bit_count_ones(self.variants_attempted) >= self.variants_count:
-            logger.warn("SWXBlock pick_variant() seen all variants, clearing variants_attempted")
-            self.variants_attempted = 0			# We have not yet attempted any variants
-
-        tries = 0					# Make sure we dont try forever to find a new variant
-        max_tries = 100
-        while tries<max_tries:
-            tries=tries+1
-            q_randint = random.randint(0, ((self.variants_count*100)-1))	# 0..999 for 10 variants, 0..100 for 1 variant, etc.
- 
-            if q_randint>=0 and q_randint<100:
-                q_index=0
-            elif q_randint>=100 and q_randint<200:
-                q_index=1
-            elif q_randint>=200 and q_randint<300:
-                q_index=2
-            elif q_randint>=300 and q_randint<400:
-                q_index=3
-            elif q_randint>=400 and q_randint<500:
-                q_index=4
-            elif q_randint>=500 and q_randint<600:
-                q_index=5
-            elif q_randint>=600 and q_randint<700:
-                q_index=6
-            elif q_randint>=700 and q_randint<800:
-                q_index=7
-            elif q_randint>=800 and q_randint<900:
-                q_index=8
-            else:
-                q_index=9
-
-            if not self.bit_is_set(self.variants_attempted,q_index):
-                logger.info("SWXBlock pick_variant() try {t}: found unattempted variant {q}".format(t=tries,q=q_index))
-                break
-            else:
-                logger.info("pick_variant() try {t}: variant {q} has already been attempted".format(t=tries,q=q_index))
-                if self.bit_count_ones(self.variants_attempted) >= self.variants_count:
-                    logger.info("pick_variant() try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=self.bit_count_ones(self.variants_attempted)))
-                    q_index = 0		# Default
-                    self.variants_attempted = 0;
-                    break
-
-        if tries>=max_tries:
-            logger.error("pick_variant() could not find an unattempted variant of {i} {l} in {m} tries! clearing self.variants_attempted.".format(i=self.q_id,l=self.q_label,m=max_tries))
-            q_index = 0		# Default
-            self.variants_attempted = 0;
-
-        logger.info("pick_variant() Selected variant {v}".format(v=q_index))
-
-        # Note: we won't set self.variants_attempted for this variant until they actually begin work on it (see start_attempt() below)
-
-        if q_index==0:
-            question = {
-                "q_id" : self.q_id,
-                "q_user" : self.xb_user_email,
-                "q_index" : 0,
-                "q_label" : self.q_label,
-                "q_stimulus" : self.q_stimulus,
-                "q_definition" : self.q_definition,
-                "q_type" :  self.q_type,
-                "q_display_math" :  self.q_display_math,
-                "q_hint1" :  self.q_hint1,
-                "q_hint2" :  self.q_hint2,
-                "q_hint3" :  self.q_hint3,
-                "q_weight" :  self.my_weight,
-                "q_max_attempts" : self.my_max_attempts,
-                "q_option_hint" : self.my_option_hint,
-                "q_option_showme" : self.my_option_showme,
-                "q_grade_showme_ded" : self.my_grade_showme_ded,
-                "q_grade_hints_count" : self.my_grade_hints_count,
-                "q_grade_hints_ded" : self.my_grade_hints_ded,
-                "q_grade_errors_count" : self.my_grade_errors_count,
-                "q_grade_errors_ded" : self.my_grade_errors_ded,
-                "q_grade_min_steps_count" : self.my_grade_min_steps_count,
-                "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
-            }
-        elif q_index==1:
-            question = {
-                "q_id" : self.q1_id,
-                "q_user" : self.xb_user_email,
-                "q_index" : 1,
-                "q_label" : self.q1_label,
-                "q_stimulus" : self.q1_stimulus,
-                "q_definition" : self.q1_definition,
-                "q_type" :  self.q1_type,
-                "q_display_math" :  self.q1_display_math,
-                "q_hint1" :  self.q1_hint1,
-                "q_hint2" :  self.q1_hint2,
-                "q_hint3" :  self.q1_hint3,
-                "q_weight" :  self.my_weight,
-                "q_max_attempts" : self.my_max_attempts,
-                "q_option_hint" : self.my_option_hint,
-                "q_option_showme" : self.my_option_showme,
-                "q_grade_showme_ded" : self.my_grade_showme_ded,
-                "q_grade_hints_count" : self.my_grade_hints_count,
-                "q_grade_hints_ded" : self.my_grade_hints_ded,
-                "q_grade_errors_count" : self.my_grade_errors_count,
-                "q_grade_errors_ded" : self.my_grade_errors_ded,
-                "q_grade_min_steps_count" : self.my_grade_min_steps_count,
-                "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
-            }
-        elif q_index==2:
-            question = {
-                "q_id" : self.q2_id,
-                "q_user" : self.xb_user_email,
-                "q_index" : 2,
-                "q_label" : self.q2_label,
-                "q_stimulus" : self.q2_stimulus,
-                "q_definition" : self.q2_definition,
-                "q_type" :  self.q2_type,
-                "q_display_math" :  self.q2_display_math,
-                "q_hint1" :  self.q2_hint1,
-                "q_hint2" :  self.q2_hint2,
-                "q_hint3" :  self.q2_hint3,
-                "q_weight" :  self.my_weight,
-                "q_max_attempts" : self.my_max_attempts,
-                "q_option_hint" : self.my_option_hint,
-                "q_option_showme" : self.my_option_showme,
-                "q_grade_showme_ded" : self.my_grade_showme_ded,
-                "q_grade_hints_count" : self.my_grade_hints_count,
-                "q_grade_hints_ded" : self.my_grade_hints_ded,
-                "q_grade_errors_count" : self.my_grade_errors_count,
-                "q_grade_errors_ded" : self.my_grade_errors_ded,
-                "q_grade_min_steps_count" : self.my_grade_min_steps_count,
-                "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
-            }
-        elif q_index==3:
-            question = {
-                "q_id" : self.q3_id,
-                "q_user" : self.xb_user_email,
-                "q_index" : 3,
-                "q_label" : self.q3_label,
-                "q_stimulus" : self.q3_stimulus,
-                "q_definition" : self.q3_definition,
-                "q_type" :  self.q3_type,
-                "q_display_math" :  self.q3_display_math,
-                "q_hint1" :  self.q3_hint1,
-                "q_hint2" :  self.q3_hint2,
-                "q_hint3" :  self.q3_hint3,
-                "q_weight" :  self.my_weight,
-                "q_max_attempts" : self.my_max_attempts,
-                "q_option_hint" : self.my_option_hint,
-                "q_option_showme" : self.my_option_showme,
-                "q_grade_showme_ded" : self.my_grade_showme_ded,
-                "q_grade_hints_count" : self.my_grade_hints_count,
-                "q_grade_hints_ded" : self.my_grade_hints_ded,
-                "q_grade_errors_count" : self.my_grade_errors_count,
-                "q_grade_errors_ded" : self.my_grade_errors_ded,
-                "q_grade_min_steps_count" : self.my_grade_min_steps_count,
-                "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
-            }
-        elif q_index==4:
-            question = {
-                "q_id" : self.q4_id,
-                "q_user" : self.xb_user_email,
-                "q_index" : 4,
-                "q_label" : self.q4_label,
-                "q_stimulus" : self.q4_stimulus,
-                "q_definition" : self.q4_definition,
-                "q_type" :  self.q4_type,
-                "q_display_math" :  self.q4_display_math,
-                "q_hint1" :  self.q4_hint1,
-                "q_hint2" :  self.q4_hint2,
-                "q_hint3" :  self.q4_hint3,
-                "q_weight" :  self.my_weight,
-                "q_max_attempts" : self.my_max_attempts,
-                "q_option_hint" : self.my_option_hint,
-                "q_option_showme" : self.my_option_showme,
-                "q_grade_showme_ded" : self.my_grade_showme_ded,
-                "q_grade_hints_count" : self.my_grade_hints_count,
-                "q_grade_hints_ded" : self.my_grade_hints_ded,
-                "q_grade_errors_count" : self.my_grade_errors_count,
-                "q_grade_errors_ded" : self.my_grade_errors_ded,
-                "q_grade_min_steps_count" : self.my_grade_min_steps_count,
-                "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
-            }
-        elif q_index==5:
-            question = {
-                "q_id" : self.q5_id,
-                "q_user" : self.xb_user_email,
-                "q_index" : 5,
-                "q_label" : self.q5_label,
-                "q_stimulus" : self.q5_stimulus,
-                "q_definition" : self.q5_definition,
-                "q_type" :  self.q5_type,
-                "q_display_math" :  self.q5_display_math,
-                "q_hint1" :  self.q5_hint1,
-                "q_hint2" :  self.q5_hint2,
-                "q_hint3" :  self.q5_hint3,
-                "q_weight" :  self.my_weight,
-                "q_max_attempts" : self.my_max_attempts,
-                "q_option_hint" : self.my_option_hint,
-                "q_option_showme" : self.my_option_showme,
-                "q_grade_showme_ded" : self.my_grade_showme_ded,
-                "q_grade_hints_count" : self.my_grade_hints_count,
-                "q_grade_hints_ded" : self.my_grade_hints_ded,
-                "q_grade_errors_count" : self.my_grade_errors_count,
-                "q_grade_errors_ded" : self.my_grade_errors_ded,
-                "q_grade_min_steps_count" : self.my_grade_min_steps_count,
-                "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
-            }
-        elif q_index==6:
-            question = {
-                "q_id" : self.q6_id,
-                "q_user" : self.xb_user_email,
-                "q_index" : 6,
-                "q_label" : self.q6_label,
-                "q_stimulus" : self.q6_stimulus,
-                "q_definition" : self.q6_definition,
-                "q_type" :  self.q6_type,
-                "q_display_math" :  self.q6_display_math,
-                "q_hint1" :  self.q6_hint1,
-                "q_hint2" :  self.q6_hint2,
-                "q_hint3" :  self.q6_hint3,
-                "q_weight" :  self.my_weight,
-                "q_max_attempts" : self.my_max_attempts,
-                "q_option_hint" : self.my_option_hint,
-                "q_option_showme" : self.my_option_showme,
-                "q_grade_showme_ded" : self.my_grade_showme_ded,
-                "q_grade_hints_count" : self.my_grade_hints_count,
-                "q_grade_hints_ded" : self.my_grade_hints_ded,
-                "q_grade_errors_count" : self.my_grade_errors_count,
-                "q_grade_errors_ded" : self.my_grade_errors_ded,
-                "q_grade_min_steps_count" : self.my_grade_min_steps_count,
-                "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
-            }
-        elif q_index==7:
-            question = {
-                "q_id" : self.q7_id,
-                "q_user" : self.xb_user_email,
-                "q_index" : 7,
-                "q_label" : self.q7_label,
-                "q_stimulus" : self.q7_stimulus,
-                "q_definition" : self.q7_definition,
-                "q_type" :  self.q7_type,
-                "q_display_math" :  self.q7_display_math,
-                "q_hint1" :  self.q7_hint1,
-                "q_hint2" :  self.q7_hint2,
-                "q_hint3" :  self.q7_hint3,
-                "q_weight" :  self.my_weight,
-                "q_max_attempts" : self.my_max_attempts,
-                "q_option_hint" : self.my_option_hint,
-                "q_option_showme" : self.my_option_showme,
-                "q_grade_showme_ded" : self.my_grade_showme_ded,
-                "q_grade_hints_count" : self.my_grade_hints_count,
-                "q_grade_hints_ded" : self.my_grade_hints_ded,
-                "q_grade_errors_count" : self.my_grade_errors_count,
-                "q_grade_errors_ded" : self.my_grade_errors_ded,
-                "q_grade_min_steps_count" : self.my_grade_min_steps_count,
-                "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
-            }
-        elif q_index==8:
-            question = {
-                "q_id" : self.q8_id,
-                "q_user" : self.xb_user_email,
-                "q_index" : 8,
-                "q_label" : self.q8_label,
-                "q_stimulus" : self.q8_stimulus,
-                "q_definition" : self.q8_definition,
-                "q_type" :  self.q8_type,
-                "q_display_math" :  self.q8_display_math,
-                "q_hint1" :  self.q8_hint1,
-                "q_hint2" :  self.q8_hint2,
-                "q_hint3" :  self.q8_hint3,
-                "q_weight" :  self.my_weight,
-                "q_max_attempts" : self.my_max_attempts,
-                "q_option_hint" : self.my_option_hint,
-                "q_option_showme" : self.my_option_showme,
-                "q_grade_showme_ded" : self.my_grade_showme_ded,
-                "q_grade_hints_count" : self.my_grade_hints_count,
-                "q_grade_hints_ded" : self.my_grade_hints_ded,
-                "q_grade_errors_count" : self.my_grade_errors_count,
-                "q_grade_errors_ded" : self.my_grade_errors_ded,
-                "q_grade_min_steps_count" : self.my_grade_min_steps_count,
-                "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
-            }
-        else:
-            question = {
-                "q_id" : self.q9_id,
-                "q_user" : self.xb_user_email,
-                "q_index" : 9,
-                "q_label" : self.q9_label,
-                "q_stimulus" : self.q9_stimulus,
-                "q_definition" : self.q9_definition,
-                "q_type" :  self.q9_type,
-                "q_display_math" :  self.q9_display_math,
-                "q_hint1" :  self.q9_hint1,
-                "q_hint2" :  self.q9_hint2,
-                "q_hint3" :  self.q9_hint3,
-                "q_weight" :  self.my_weight,
-                "q_max_attempts" : self.my_max_attempts,
-                "q_option_hint" : self.my_option_hint,
-                "q_option_showme" : self.my_option_showme,
-                "q_grade_showme_ded" : self.my_grade_showme_ded,
-                "q_grade_hints_count" : self.my_grade_hints_count,
-                "q_grade_hints_ded" : self.my_grade_hints_ded,
-                "q_grade_errors_count" : self.my_grade_errors_count,
-                "q_grade_errors_ded" : self.my_grade_errors_ded,
-                "q_grade_min_steps_count" : self.my_grade_min_steps_count,
-                "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
-            }
-
-        logger.info("SWXBlock pick_variant() returned question q_index={i} question={q}".format(i=question['q_index'],q=question))
-        return question
-
