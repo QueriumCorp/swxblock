@@ -278,6 +278,8 @@ function SWXStudent(runtime, element, data) {
                 q_index: question.q_index
             }
 
+            console.info("start_attempt JSON data",JSON.stringify(start_attempt_data));
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             $.ajax({
                 type: "POST",
