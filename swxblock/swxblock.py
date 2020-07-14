@@ -1,5 +1,5 @@
 """This Xblock manages problems for Step-Wise Virtual Tutor(tm) from Querium Corp."""
-THIS IS COMMIT ee07cc43163c5752834f6a49d9a4f8ef0f2a425a
+"""THIS IS COMMIT ee07cc43163c5752834f6a49d9a4f8ef0f2a425a"""
 """
 StepWise xblock questions can contain up to 10 variants.  The xblock remembers which variants the student has attempted and if the student
 requests a new variant, we will try to assign one that has not yet been attempted. Once the student has attempted all available variants,
