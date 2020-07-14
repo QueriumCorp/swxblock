@@ -641,7 +641,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXblock student_view() variants_count={c}".format(c=variants_count))
         # Pick a variant at random, and make sure that it is one we haven't attempted before.
 
-        if count_ones(self.variants_attempted) >= variants_count:
+        if self.count_ones(self.variants_attempted) >= variants_count:
             logger.warn("SWXblock student_view() seen all variants, clearing variants_attempted")
             self.variants_attempted = 0			# We have not yet attempted any variants
 
@@ -672,13 +672,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             else:
                 q_index=9
     
-            if not is_set(self.variants_attempted,q_index):
+            if not self.is_set(self.variants_attempted,q_index):
                 logger.info("try {t}: found unattempted variant {q}".format(t=tries,q=q_index))
                 break
             else:
                 logger.info("try {t}: variant {q} has already been attempted".format(t=tries,q=q_index))
-                if count_ones(self.variants_attempted) >= variants_count:
-                    logger.info("try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=count_ones(variants_count)))
+                if self.count_ones(self.variants_attempted) >= variants_count:
+                    logger.info("try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=self.count_ones(variants_count)))
                     q_index = 0		# Default
                     self.variants_attempted = 0;
                     break
@@ -1135,10 +1135,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
         variant = data['q_index']
         logger.info("variant is {v}".format(v=variant))
-        if is_set(self.variants_attempted,variant):
+        if self.is_set(self.variants_attempted,variant):
             logger.info("variant {v} has already been attempted!".format(v=variant))
         else:
-            set_one(self.variants_attempted,variant)
+            self.set_one(self.variants_attempted,variant)
             logger.info("adding variant {v} to self.variants_attempted={s}".format(v=variant,s=self.variants_attempted))
         logger.info("SWXBlock start_attempt() done")
         return None
