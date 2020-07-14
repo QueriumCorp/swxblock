@@ -446,4 +446,3 @@ function SWXStudent(runtime, element, data) {
     angular.bootstrap($(element), ['querium-stepwise']);
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
-
