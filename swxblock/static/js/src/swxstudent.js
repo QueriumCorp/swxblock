@@ -108,8 +108,8 @@ function SWXStudent(runtime, element, data) {
     // Get Top Element Handles
     var made_attempts = $('.made-attempts', swxblock_block)[0];
     // var click_to_begin = $('.click-to-begin', swxblock_block)[0];
-    var question_info = $('.question-info', swxblock_block)[0];
-    var too_many_attempts = $('.too-many-attempts', swxblock_block)[0];
+    // var question_info = $('.question-info', swxblock_block)[0];
+    // var too_many_attempts = $('.too-many-attempts', swxblock_block)[0];
 
     // Get Solution Element Handles
     var solution_element = $('.solution', element)[0];
@@ -150,10 +150,10 @@ function SWXStudent(runtime, element, data) {
     if (max_attempts == -1 || count_attempts < max_attempts) {
         $('.click-to-begin').show();
         $('.click-to-begin').onclick = null;
-        question_info.onclick = null;
+        $('.question-info').onclick = null;
         $('.xblock-student_view').onclick = null;		// Can't click on the UI
-        too_many_attempts.hide();
-        too_many_attempts.onclick = null;
+        $('.too-many-attempts').hide();
+        $('.too-many-attempts').onclick = null;
         // Show the active question preview
         preview_element.classList.remove("preview_hidden");
         preview_element.onclick = previewClicked;
@@ -161,9 +161,9 @@ function SWXStudent(runtime, element, data) {
     } else {
         $('.click-to-begin').hide();
         $('.click-to-begin').onclick = null;
-        question_info.onclick = null;
-        too_many_attempts.show();
-        too_many_attempts.onclick = null;
+        $('.question-info').onclick = null;
+        $('.too-many-attempts').show();
+        $('.too-many-attempts').onclick = null;
         preview_element.classList.add("preview_hidden");	// Don't show another preview
         preview_element.onclick = null;				// Don't let them click again
         reset_button.prop('disabled', true);			// Don't let them click Reset
@@ -192,8 +192,8 @@ function SWXStudent(runtime, element, data) {
             console.info("SWXstudent previewClicked() too many attempts");
             $('.click-to-begin').hide();
             $('.click-to-begin').onclick = null;
-            too_many_attempts.show();
-            too_many_attempts.onclick = null;
+            $('.too-many-attempts').show();
+            $('.too-many-attempts').onclick = null;
             return;
         };
         count_attempts++;  // need to do this hear, since the Python code does update this
