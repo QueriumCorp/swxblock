@@ -841,9 +841,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock reset() self.variants_attempted={v}".format(v=self.variants_attempted))
         # logger.info("SWXBlock reset() pre-pick_question q_index={i}".format(v=self.question['q_index']))
         self.question = self.pick_variant()
-        # logger.info("SWXBlock reset() post-pick returning q_index={i} self.question={q}".format(i=self.question['q_index'],q=self.question))
-        logger.info("SWXBlock reset() post-pick returning self.question={q}".format(q=self.question))
-        return self.question
+
+        return_data = {
+            "question" : self.question,
+        }
+
+        logger.info("SWXBlock reset() post-pick returning self.question={q} return_data={r}".format(q=self.question,r=return_data))
+        return return_data
 
 
     # TO-DO: change this to create the scenarios you'd like to see in the
