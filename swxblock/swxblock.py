@@ -58,9 +58,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     This xblock provides up to 10 variants of a question for delivery using the StepWise UI.
     """
-    logger.debug('SWXBlock instantiated')
-
-    return Null		# Bail out
 
     has_author_view = True # tells the xblock to not ignore the AuthorView
     has_score = True       # tells the xblock to not ignore the grade event
@@ -269,6 +266,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         the javascript StepWise client.
         """
         logger.info('SWXBlock student_view() entered')
+
+        return Null		# Bail out
+
         logger.info("SWXBlock student_view() self={a}".format(a=self))
         logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
         logger.info("SWXBlock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
