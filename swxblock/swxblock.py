@@ -29,6 +29,7 @@ logic there.
 
 import pkg_resources
 import random
+import json
 
 from xblock.core import XBlock
 from xblock.fields import Integer, String, Scope, Dict, Float, Boolean
@@ -847,7 +848,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         }
 
         logger.info("SWXBlock reset() post-pick returning self.question={q} return_data={r}".format(q=self.question,r=return_data))
-        return return_data
+        json_data = json.dumps(return_data)
+        return json_data
 
 
     # TO-DO: change this to create the scenarios you'd like to see in the
