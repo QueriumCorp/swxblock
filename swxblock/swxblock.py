@@ -1222,8 +1222,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
        # If we've attempted all variants, we clear the list of attempted variants and pick again.
        #  Returns the question structure for the one we will use this time.
 
-        logger.info("SWXBlock pick_variant() started self={s}".format(s=self))
-        logger.info("SWXBlock pick_variant() started replacing q_index={i}".format(i=self.question['q_index']))
+        try:
+            prev_index = self.q_index
+        except (NameError,AttributeError) as e:
+            prev_index = -1
+
+        logger.info("SWXBlock pick_variant() started replacing prev_index={p}".format(p=prev_index))
 
         if self.bit_count_ones(self.variants_attempted) >= self.variants_count:
             logger.warn("SWXBlock pick_variant() seen all variants, clearing variants_attempted")
@@ -1231,7 +1235,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         tries = 0					# Make sure we dont try forever to find a new variant
         max_tries = 100
-        prev_index = self.q_index
 
         while tries<max_tries:
             tries=tries+1
