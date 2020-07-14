@@ -165,6 +165,17 @@ function SWXStudent(runtime, element, data) {
         // $('.reset').onclick = resetClicked;
         $('.reset').click(function() {
           console.info('reset button clicked');
+          $.ajax({
+              type: "POST",
+              url: handlerUrlReset,
+              // data: JSON.stringify(),
+              success: function (data,msg) {
+                  console.info("SWXstudent reset POST success");
+                  console.info("SWXstudent reset POST data",data);
+                  console.info("SWXstudent reset POST msg",msg);
+              }
+          });
+          console.info("reset button click ended");
         });
         console.info('enabled reset button');
     } else {
@@ -181,6 +192,17 @@ function SWXStudent(runtime, element, data) {
         // $('.reset').onclick = resetClicked;
         $('.reset').click(function() {
           console.info('reset button clicked');
+          $.ajax({
+              type: "POST",
+              url: handlerUrlReset,
+              // data: JSON.stringify(),
+              success: function (data,msg) {
+                  console.info("SWXstudent reset POST success");
+                  console.info("SWXstudent reset POST data",data);
+                  console.info("SWXstudent reset POST msg",msg);
+              }
+          });
+          console.info("reset button click ended");
         });
         console.info('disabled reset button');
     }
