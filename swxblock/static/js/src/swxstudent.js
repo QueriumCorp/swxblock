@@ -175,7 +175,10 @@ function SWXStudent(runtime, element, data) {
     function set_preview_element() {
 
         console.log('set_preview_element hide old preview_element preview_element=',preview_element);
-        preview_element.classList.add("preview_hidden");
+
+        if (typeof preview_element !== 'undefined') {
+             preview_element.classList.add("preview_hidden");	// Hide old element if it exists
+        };
 
         // Hide old display_math
         // display_math = $('.display-math', preview_element)[0];
