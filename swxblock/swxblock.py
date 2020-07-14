@@ -207,18 +207,14 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.user_state)
     raw_possible = Float(help="Number of possible points", default=3,scope=Scope.user_state)
 
-    # Remember the set of variant q_index values the student has already attempted
-    # Can't add a Set to Scope.user_state, or get get runtime errors:
+    # variant_attempted: Remembers the set of variant q_index values the student has already attempted.
+    # We can't add a Set to Scope.user_state, or we get get runtime errors whenever we update this field:
     #      variants_attempted = Set(scope=Scope.user_state)
     #      TypeError: Object of type set is not JSON serializable
-    # so we'll leave it in an Int() and fiddle the bits ourself :-(
-    # We define our own bitwise utility functions below:
-    #    count_ones()
-    #    set_one()
-    #    is_set()
-    # so we don't have to mess with Fields.Set().
+    # so we'll leave it in an Integer field and fiddle the bits ourselves :-(
+    # We define our own bitwise utility functions below: count_ones() set_one() is_set()
 
-    variants_attempted = Int(help="Variant attempted bitmap", default=0,scope=Scope.user_state)
+    variants_attempted = Integer(help="Bitmap of attempted variants", default=0,scope=Scope.user_state)
 
     # FIELDS FOR THE ScorableXBlockMixin
 
