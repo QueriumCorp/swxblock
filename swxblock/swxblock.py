@@ -1222,6 +1222,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
        # If we've attempted all variants, we clear the list of attempted variants and pick again.
        #  Returns the question structure for the one we will use this time.
 
+        logger.info("SWXBlock pick_variant() started self={s}".format(s=self))
         logger.info("SWXBlock pick_variant() started replacing q_index={i}".format(i=self.question['q_index']))
 
         if self.bit_count_ones(self.variants_attempted) >= self.variants_count:
