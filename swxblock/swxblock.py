@@ -624,7 +624,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         self.question = self.pick_variant()
 
         question = self.question
-        q_index = question.q_index
+        q_index = question['q_index']
 
         logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=question))
 
@@ -836,9 +836,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock reset() entered")
         logger.info("SWXBlock reset() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
         logger.info("SWXBlock reset() self.variants_attempted={v}".format(v=self.variants_attempted))
-        logger.info("SWXBlock reset() pre-pick_question self.question.q_index={i}".format(v=self.question.q_index))
+        logger.info("SWXBlock reset() pre-pick_question q_index={i}".format(v=self.question['q_index']))
         self.question = pick_variant()
-        logger.info("SWXBlock reset() post-pick returning self.question.q_index={i} self.question={q}".format(i=self.question.q_index,q=self.question))
+        logger.info("SWXBlock reset() post-pick returning q_index={i} self.question={q}".format(i=self.question['q_index'],q=self.question))
         return self.question
 
 
@@ -1513,6 +1513,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
             }
 
-        logger.info("SWXBlock pick_variant() returned question q_index={i} question={q}".format(i=question.q_index,q=question))
+        logger.info("SWXBlock pick_variant() returned question q_index={i} question={q}".format(i=question['q_index'],q=question))
         return question
 
