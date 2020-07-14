@@ -115,7 +115,7 @@ function SWXStudent(runtime, element, data) {
     var solution_element = $('.solution', element)[0];
 
     // Get Reset Button Handles
-    my reset_button = $('.stepwise-reset', swxblock_block)[0];
+    var reset_button = $('.stepwise-reset', swxblock_block)[0];
 
     // Overall StepWise UI Handles
     var xblock_student_view = $('.xblock-student_view', swxblock_block)[0];
