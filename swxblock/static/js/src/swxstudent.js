@@ -346,6 +346,7 @@ function SWXStudent(runtime, element, data) {
     function resetClicked(){
         console.info("SWXstudent resetClicked() started");
         console.info("SWXstudent resetClicked() ended");
+    }
 
     function updateStats(){
         console.info('updateStats:', grade)
