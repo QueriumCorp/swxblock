@@ -115,7 +115,7 @@ function SWXStudent(runtime, element, data) {
     var solution_element = $('.solution', element)[0];
 
     // Get Reset Button Handles
-    var reset_button = $('.stepwise-reset', swxblock_block)[0];
+    // var reset_button = $('.stepwise-reset', swxblock_block)[0];
 
     // Overall StepWise UI Handles
     // var xblock_student_view = $('.xblock-student_view', swxblock_block)[0];
@@ -157,7 +157,7 @@ function SWXStudent(runtime, element, data) {
         // Show the active question preview
         preview_element.classList.remove("preview_hidden");
         preview_element.onclick = previewClicked;
-        reset_button.prop('disabled', false);			// Let them click Reset
+        $('.stepwise-reset').prop('disabled', false);			// Let them click Reset
     } else {
         $('.click-to-begin').hide();
         $('.click-to-begin').onclick = null;
@@ -166,7 +166,7 @@ function SWXStudent(runtime, element, data) {
         $('.too-many-attempts').onclick = null;
         preview_element.classList.add("preview_hidden");	// Don't show another preview
         preview_element.onclick = null;				// Don't let them click again
-        reset_button.prop('disabled', true);			// Don't let them click Reset
+        $('.stepwise-reset').prop('disabled', true);			// Don't let them click Reset
     }
 
     // Init preview mode
