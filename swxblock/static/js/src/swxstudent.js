@@ -154,7 +154,7 @@ function SWXStudent(runtime, element, data) {
         q_index: question.q_index
     }
 
-    console.info("reset JSON data",JSON.stringify(start_attempt_data));
+    console.info("reset JSON data",JSON.stringify(reset_data));
 
     if (max_attempts == -1 || count_attempts < max_attempts) {
         $('.click-to-begin').show();
