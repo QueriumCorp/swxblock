@@ -31,7 +31,7 @@ import pkg_resources
 import random
 
 from xblock.core import XBlock
-from xblock.fields import Integer, String, Scope, Dict, Float, Boolean, Set
+from xblock.fields import Integer, String, Scope, Dict, Float, Boolean
 from web_fragments.fragment import Fragment
 # McDaniel apr-2019: this is deprecated.
 #from xblock.fragment import Fragment
@@ -275,8 +275,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         logger.info("SWXblock is_set var={v} bitnum={b}".format(v=var,b=bitnum))
         result = var & (1 << bitnum)
-        logger.info("SWXblock set_one result={v} b={b}".format(v=result,b=Bool(result)))
-        return Bool(result)
+        logger.info("SWXblock set_one result={v} b={b}".format(v=result,b=bool(result)))
+        return bool(result)
 
 
     # STUDENT_VIEW
