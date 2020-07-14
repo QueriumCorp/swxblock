@@ -159,8 +159,8 @@ function SWXStudent(runtime, element, data) {
         // Show the active question preview
         preview_element.classList.remove("preview_hidden");
         preview_element.onclick = previewClicked;
-        $('.reset').prop('disabled', false);			// Let them click Reset
-        $('.reset').onclick = resetClicked;
+        $('.reset', element)[0].prop('disabled', false);	// Let them click Reset
+        $('.reset', element)[0].onclick = resetClicked;
         console.info('enabled reset button');
     } else {
         $('.click-to-begin').hide();
@@ -170,8 +170,8 @@ function SWXStudent(runtime, element, data) {
         $('.too-many-attempts').onclick = null;
         preview_element.classList.add("preview_hidden");	// Don't show another preview
         preview_element.onclick = null;				// Don't let them click again
-        $('.reset').prop('disabled', true);			// Don't let them click Reset
-        $('.reset').onclick = null;
+        $('.reset', element)[0].prop('disabled', true);		// Don't let them click Reset
+        $('.reset', element)[0].onclick = null;
         console.info('disabled reset button');
     }
 
@@ -350,11 +350,13 @@ function SWXStudent(runtime, element, data) {
         $.ajax({
             type: "POST",
             url: handlerUrlReset,
-            data: JSON.stringify(stats),
-            success: resetSuccess
-        }).done(function() {
-            console.info( "resetClicked done function called" );
-        })
+            // data: JSON.stringify(),
+            success: function (data,msg) {
+                console.info("SWXstudent reset POST success");
+                console.info("SWXstudent reset POST data",data);
+                console.info("SWXstudent reset POST msg",msg);
+            }
+        });
         console.info("SWXstudent resetClicked() ended");
     }
 
