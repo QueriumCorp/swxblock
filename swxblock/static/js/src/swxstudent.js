@@ -107,18 +107,18 @@ function SWXStudent(runtime, element, data) {
 
     // Get Top Element Handles
     var made_attempts = $('.made-attempts', swxblock_block)[0];
-    var click_to_begin = $('.click-to-begin', swxblock_block[0]);
-    var question_info = $('.question-info', swxblock_block[0]);
-    var too_many_attempts = $('.too-many-attempts', swxblock_block[0]);
+    var click_to_begin = $('.click-to-begin', swxblock_block)[0];
+    var question_info = $('.question-info', swxblock_block)[0];
+    var too_many_attempts = $('.too-many-attempts', swxblock_block)[0];
 
     // Get Solution Element Handles
     var solution_element = $('.solution', element)[0];
 
     // Get Reset Button Handles
-    my reset_button = $('.stepwise-reset', swxblock_block[0]);
+    my reset_button = $('.stepwise-reset', swxblock_block)[0];
 
     // Overall StepWise UI Handles
-    var xblock_student_view = $('.xblock-student_view', swxblock_block[0]);
+    var xblock_student_view = $('.xblock-student_view', swxblock_block)[0];
 
     // Update question top info
 
