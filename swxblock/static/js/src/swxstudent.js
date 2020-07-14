@@ -159,8 +159,13 @@ function SWXStudent(runtime, element, data) {
         // Show the active question preview
         preview_element.classList.remove("preview_hidden");
         preview_element.onclick = previewClicked;
+        console.info('preview_element',preview_element);
+        console.info('setting reset click function');
         $('.reset').prop('disabled', false);			// Let them click Reset
-        $('.reset').onclick = resetClicked;
+        // $('.reset').onclick = resetClicked;
+        $('.reset').click(function() {
+          console.info('reset button clicked');
+        });
         console.info('enabled reset button');
     } else {
         $('.click-to-begin').hide();
@@ -170,8 +175,13 @@ function SWXStudent(runtime, element, data) {
         $('.too-many-attempts').onclick = null;
         preview_element.classList.add("preview_hidden");	// Don't show another preview
         preview_element.onclick = null;				// Don't let them click again
+        console.info('preview_element',preview_element);
+        console.info('setting reset click function');
         $('.reset').prop('disabled', true);			// Don't let them click Reset
-        $('.reset').onclick = resetClicked;
+        // $('.reset').onclick = resetClicked;
+        $('.reset').click(function() {
+          console.info('reset button clicked');
+        });
         console.info('disabled reset button');
     }
 
