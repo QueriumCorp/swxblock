@@ -804,10 +804,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # a question, not when they finish.  Otherwise people can start the question as many times
         # as they want as long as they don't finish it, then reload the page.
         # self.count_attempts += 1
-        # make sure we've recorded this atttempt:
+        # make sure we've recorded this atttempt, but it should have been done in start_attempt():
         try:
             if self.q_index != -1:
-                set.bit_set_one(self.variants_attempted,self.q_index)
+                self.variants_attempted = set.bit_set_one(self.variants_attempted,self.q_index)
                 logger.info("SWXBlock save_grade() record variants_attempted for variant {a}".format(v=self.q_index))
             else:
                 logger.error("SWXBlock save_grade record variants_attempted for variant -1")
@@ -837,8 +837,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         if self.bit_is_set(self.variants_attempted,variant):
             logger.info("variant {v} has already been attempted!".format(v=variant))
         else:
-            self.bit_set_one(self.variants_attempted,variant)
             logger.info("adding variant {v} to self.variants_attempted={s}".format(v=variant,s=self.variants_attempted))
+            self.variants_attempted = self.bit_set_one(self.variants_attempted,variant)
             logger.info("checking bit_is_set {v}={b}".format(v=variant,b=self.bit_is_set(self.variants_attempted,variant)))
         logger.info("SWXBlock start_attempt() done")
         return None
@@ -1206,7 +1206,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     def bit_set_one(self,var,bitnum):
         """
-        var = var with bit 'bitnum' set
+        return var = var with bit 'bitnum' set
         Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
         """
         logger.info("SWXBlock bit_set_one var={v} bitnum={b}".format(v=var,b=bitnum))
