@@ -82,37 +82,8 @@ function SWXStudent(runtime, element, data) {
     // Overall StepWise UI Handles
     // var xblock_student_view = $('.xblock-student_view', swxblock_block)[0];
 
-    // Update question top info
 
-    // Show question points/weight
-    // console.info('initial grade_val',grade_val);
-    if (grade == -1) {
-        grade_string = '(0.00/'+weight.toFixed(2)+' point';
-    } else {
-        grade_string = '('+((grade/3.0)*weight).toFixed(2)+'/'+weight.toFixed(2)+' point';
-    }
-    if (weight > 1.0) {
-        grade_string = grade_string + 's)';
-    } else {
-        grade_string = grade_string + ')';
-    }
-    grade_val.innerText = grade_string;
-
-    // Show attempts and no attempts message
-
-    var attempts_string;
-    attempts_string = count_attempts;
-    attempts_string += ' of ';
-    if( max_attempts == -1) {
-               attempts_string += 'unlimited';
-    }else{
-               attempts_string += max_attempts;
-    }
-    attempts_string += ' attempts';
-    console.info('initial attempts_string',attempts_string);
-    console.info('and initial made_attempts',made_attempts);
-    made_attempts.innerText = attempts_string;
-
+    updateTopInfo();	// Update header info about score and attempts
 
     retry_data = {
         q_index: question.q_index
@@ -424,6 +395,8 @@ function SWXStudent(runtime, element, data) {
                 console.info("SWXstudent retry POST success");
                 console.info("SWXstudent retry POST data",data);
                 console.info("SWXstudent retry POST msg",msg);
+                console.info("SWXstudent retry POST updating top info");
+                updateTopInfo();		// Update header info about score and attempts
             }
         });
         console.info("SWXstudent retryClicked() ended");
@@ -630,6 +603,40 @@ function SWXStudent(runtime, element, data) {
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
+
+    // Update question top info
+
+    function updateTopInfo() {
+
+        // Show question points/weight
+        if (grade == -1) {
+            grade_string = '(0.00/'+weight.toFixed(2)+' point';
+        } else {
+            grade_string = '('+((grade/3.0)*weight).toFixed(2)+'/'+weight.toFixed(2)+' point';
+        }
+        if (weight > 1.0) {
+            grade_string = grade_string + 's)';
+        } else {
+            grade_string = grade_string + ')';
+        }
+        grade_val.innerText = grade_string;
+
+        // Show attempts and no attempts message
+
+        var attempts_string;
+        attempts_string = count_attempts;
+        attempts_string += ' of ';
+        if( max_attempts == -1) {
+                   attempts_string += 'unlimited';
+        }else{
+                   attempts_string += max_attempts;
+        }
+        attempts_string += ' attempts';
+        console.info('initial attempts_string',attempts_string);
+        console.info('and initial made_attempts',made_attempts);
+        made_attempts.innerText = attempts_string;
+    }
+
 
     // StepWise hints can contain bath <mspace> tags and badly escaped > at the end of mathml tags
     function badMathmlFix( s ) {
