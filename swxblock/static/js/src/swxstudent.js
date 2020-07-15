@@ -643,7 +643,7 @@ function SWXStudent(runtime, element, data) {
         made_attempts.innerText = attempts_string;
 
         // Show total variants below the Retry button
-        var variants_string = '(;
+        var variants_string = '(';
         variants_string += variants_count;
         variants_string += ' variant'
         if (variants_count > 1) {
