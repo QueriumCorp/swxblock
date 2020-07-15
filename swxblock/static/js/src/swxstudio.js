@@ -1,5 +1,5 @@
-/* Javascript for SWxStudio. */
-function SWxStudio(runtime, element, question) {
+/* Javascript for SWXStudio. */
+function SWXStudio(runtime, element, question) {
     // Stub notify so xblock doesnt crash in dev
     if( typeof runtime.notify === "undefined" ){
         runtime.notify = function(){ console.info(arguments); }
