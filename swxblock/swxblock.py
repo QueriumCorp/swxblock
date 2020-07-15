@@ -635,7 +635,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             "question" : question,
             "grade" :self.grade,
             "solution" : self.solution,
-            "count_attempts" : self.count_attempts
+            "count_attempts" : self.count_attempts,
             "variants_count" : self.variants_count
         }
 
