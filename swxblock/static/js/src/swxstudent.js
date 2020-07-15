@@ -91,6 +91,7 @@ function SWXStudent(runtime, element, data) {
     console.info("retry JSON data",JSON.stringify(retry_data));
 
     $('.click-to-begin').onclick = null;      // Don't click on this text, do what it says and click the box below.
+    $('.click-to-begin-box').onclick = null;      // Don't click on this text, do what it says and click the box below.
 
     if (max_attempts == -1 || count_attempts < max_attempts) {
         $('.click-to-begin').show();
