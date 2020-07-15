@@ -8,6 +8,7 @@ function SWXStudent(runtime, element, data) {
     var grade = data.grade;
     var solution = data.solution;
     var count_attempts = data.count_attempts;
+    var variants_count = data.variants_count;
     var enable_showme = question.q_option_showme;
     var enable_hint = question.q_option_hint;
     var max_attempts = question.q_max_attempts;
@@ -20,6 +21,7 @@ function SWXStudent(runtime, element, data) {
     // console.info("SWXStudent enable_hint",enable_hint);
     console.info("SWXStudent solution",solution);
     console.info("SWXStudent count_attempts",count_attempts);
+    console.info("SWXStudent variants_counnt",variants_count);
     console.info("SWXStudent max_attempts",max_attempts);
     console.info("SWXStudent weight ",weight);
     console.info("SWXStudent min steps",min_steps);
@@ -79,6 +81,7 @@ function SWXStudent(runtime, element, data) {
 
     // Get Retry Button Handles
     // var retry_button = $('.stepwise-retry', swxblock_block)[0];
+    var retry_button_variants = $('.stepwise-retry-variants', swxblock_block)[0];
 
     // Overall StepWise UI Handles
     // var xblock_student_view = $('.xblock-student_view', swxblock_block)[0];
@@ -639,20 +642,16 @@ function SWXStudent(runtime, element, data) {
         console.info('and initial made_attempts',made_attempts);
         made_attempts.innerText = attempts_string;
 
-        // Show variants left
-        // NOTE: We don't support this yet. We don't pass this info from Python to Javascript in the launch or in the callback responses.
-        //       Also not sure we want the student to know this number.
-        //
-        // var variants_string = '(;
-        // variants_string = count_attempts;
-        // variants_string += ' of ';
-        // if( variants_string == -1) {
-        //           variants_string += 'unlimited';
-        // }else{
-        //           variants_string += max_attempts;
-        // }
-        // variants_string += ' variants)';
-        // variants_left.innerText = variants_string;
+        // Show total variants below the Retry button
+        var variants_string = '(;
+        variants_string += variants_count;
+        variants_string += ' variant'
+        if (variants_count > 1) {
+           variants_string += 's)';
+        } else {
+           variants_string += ')';
+        };
+        retry_button_variants.innerText = variants_string;
     }
 
 

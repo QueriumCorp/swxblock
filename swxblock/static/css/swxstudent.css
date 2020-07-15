@@ -9,6 +9,7 @@
 .block_working {
     min-height: 95vh;
 }
+
 .block_worked {
     min-height: 100px;
 }
@@ -309,4 +310,8 @@ div#practice-page {
   padding-top: 10px;
   padding-left: 5px;
   float: right;	/* places it to the right of the stepwise stats */
+}
+
+.stepwise-retry-variants p {
+    font-size: 10px;
 }
