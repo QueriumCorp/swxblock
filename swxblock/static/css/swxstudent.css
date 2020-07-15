@@ -277,7 +277,7 @@ p.click-to-begin {
     margin: 5px;
 }
 
-.reset button {
+.retry button {
     padding: 25px;
     border: 1px solid forestgreen;
     background-color: lighten(forestgreen, 25%);
@@ -294,7 +294,7 @@ p.click-to-begin {
 
 .fa-refresh:before{content:"\f021"}
 
-.stepwise-reset {
+.stepwise-retry {
   padding-top: 10px;
   padding-left: 5px;
   float: right;	/* places it to the right of the stepwise stats */

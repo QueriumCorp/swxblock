@@ -39,8 +39,8 @@ function SWXStudent(runtime, element, data) {
     console.info("SWXStudent handlerUrl",handlerUrl);
     var handlerUrlStart = runtime.handlerUrl(element, 'start_attempt');
     console.info("SWXStudent handlerUrlStart",handlerUrlStart);
-    var handlerUrlReset = runtime.handlerUrl(element, 'retry');
-    console.info("SWXStudent handlerUrlReset",handlerUrlReset);
+    var handlerUrlRetry = runtime.handlerUrl(element, 'retry');
+    console.info("SWXStudent handlerUrlRetry",handlerUrlRetry);
 
     // Get Primary Element Handles
     var swxblock_block = $('.swxblock_block', element)[0];
@@ -76,7 +76,7 @@ function SWXStudent(runtime, element, data) {
     // Get Solution Element Handles
     var solution_element = $('.solution', element)[0];
 
-    // Get Reset Button Handles
+    // Get Retry Button Handles
     // var retry_button = $('.stepwise-retry', swxblock_block)[0];
 
     // Overall StepWise UI Handles
@@ -132,14 +132,14 @@ function SWXStudent(runtime, element, data) {
         preview_element.onclick = previewClicked;
         console.info('preview_element',preview_element);
         console.info('setting retry click function');
-        $('.retry').prop('disabled', false);			// Let them click Reset
+        $('.retry').prop('disabled', false);			// Let them click Retry
         // $('.retry').onclick = retryClicked;
         $('.retry').click(function() {
           console.info('retry button clicked');
           console.info("retry JSON data",JSON.stringify(retry_data));
           $.ajax({
               type: "POST",
-              url: handlerUrlReset,
+              url: handlerUrlRetry,
               data: JSON.stringify(retry_data),
               success: function (data,msg) {
                   console.info("SWXstudent retry POST success");
@@ -165,7 +165,7 @@ function SWXStudent(runtime, element, data) {
         preview_element.onclick = null;				// Don't let them click again
         console.info('preview_element',preview_element);
         console.info('setting retry click function');
-        $('.retry').prop('disabled', true);			// Don't let them click Reset
+        $('.retry').prop('disabled', true);			// Don't let them click Retry
         // $('.retry').onclick = retryClicked;
         $('.retry').click(function() {
           console.info('empty eset button clicked');
@@ -418,7 +418,7 @@ function SWXStudent(runtime, element, data) {
         console.info("SWXstudent retryClicked() started");
         $.ajax({
             type: "POST",
-            url: handlerUrlReset,
+            url: handlerUrlRetry,
             // data: JSON.stringify(),
             success: function (data,msg) {
                 console.info("SWXstudent retry POST success");
