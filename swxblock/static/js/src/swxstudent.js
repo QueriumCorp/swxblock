@@ -83,8 +83,6 @@ function SWXStudent(runtime, element, data) {
     // var xblock_student_view = $('.xblock-student_view', swxblock_block)[0];
 
 
-    updateTopInfo();	// Update header info about score and attempts
-
     retry_data = {
         q_index: question.q_index
     }
@@ -147,6 +145,7 @@ function SWXStudent(runtime, element, data) {
     // Init preview mode
     updateStats();
     updateSolution();
+    updateTopInfo();
     
     function set_preview_element() {
 
@@ -311,6 +310,7 @@ function SWXStudent(runtime, element, data) {
 
             updateStats();
             updateSolution();
+            updateTopInfo();
 
             preview_element.classList.remove("preview_hidden");
             stepwise_element.style.display = 'none';
@@ -395,8 +395,6 @@ function SWXStudent(runtime, element, data) {
                 console.info("SWXstudent retry POST success");
                 console.info("SWXstudent retry POST data",data);
                 console.info("SWXstudent retry POST msg",msg);
-                console.info("SWXstudent retry POST updating top info");
-                updateTopInfo();		// Update header info about score and attempts
             }
         });
         console.info("SWXstudent retryClicked() ended");
