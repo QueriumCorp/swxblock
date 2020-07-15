@@ -87,7 +87,7 @@ function SWXStudent(runtime, element, data) {
     // Show question points/weight
     // console.info('initial grade_val',grade_val);
     if (grade == -1) {
-        grade_string = '('+0.toFixed(2)+'/'+weight.toFixed(2)+' point';
+        grade_string = '(0.00/'+weight.toFixed(2)+' point';
     } else {
         grade_string = '('+((grade/3.0)*weight).toFixed(2)+'/'+weight.toFixed(2)+' point';
     }
