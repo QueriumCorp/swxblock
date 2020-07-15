@@ -301,6 +301,8 @@ function SWXStudent(runtime, element, data) {
             console.log('question.q_definition=',question.q_definition);
             console.log('question.q_grade_min_steps_count=',question.q_grade_min_steps_count,' question.q_grade_min_steps_ded=',question.q_grade_min_steps_ded);
 
+            console.log('question.q_definition=',question.q_definition);
+            console.log('question.q_definition.indexOf("MatchSpec")=',question.q_definition.indexOf('MatchSpec'));
             if (grade >= 3.0 && valid_step_count < question.q_grade_min_steps_count && question.q_definition.indexOf('MatchSpec') > -1 ) {
                 grade=grade-question.q_grade_min_steps_ded;
                 console.log('took min_steps deduction after grade=',grade);
