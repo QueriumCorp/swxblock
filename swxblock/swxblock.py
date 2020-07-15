@@ -839,7 +839,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             self.bit_set_one(self.variants_attempted,variant)
             logger.info("adding variant {v} to self.variants_attempted={s}".format(v=variant,s=self.variants_attempted))
-            logger.info("checking bit_is_set {v}=".format(v=variant,s=self.bit_is_set(self.variants_attempted,variant)))
+            logger.info("checking bit_is_set {v}={b}".format(v=variant,b=self.bit_is_set(self.variants_attempted,variant)))
         logger.info("SWXBlock start_attempt() done")
         return None
 
