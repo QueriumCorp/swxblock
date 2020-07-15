@@ -69,6 +69,7 @@ function SWXStudent(runtime, element, data) {
 
     // Get Top Element Handles
     var made_attempts = $('.made-attempts', swxblock_block)[0];
+    // var variants_left = $('.variants-left', swxblock_block)[0];
     // var click_to_begin = $('.click-to-begin', swxblock_block)[0];
     // var question_info = $('.question-info', swxblock_block)[0];
     // var too_many_attempts = $('.too-many-attempts', swxblock_block)[0];
@@ -89,9 +90,10 @@ function SWXStudent(runtime, element, data) {
 
     console.info("retry JSON data",JSON.stringify(retry_data));
 
+    $('.click-to-begin').onclick = null;      // Don't click on this text, do what it says and click the box below.
+
     if (max_attempts == -1 || count_attempts < max_attempts) {
         $('.click-to-begin').show();
-        $('.click-to-begin').onclick = null;
         $('.question-info').onclick = null;
         $('.xblock-student_view').onclick = null;		// Can't click on the UI
         $('.too-many-attempts').hide();
@@ -126,7 +128,6 @@ function SWXStudent(runtime, element, data) {
         console.info('enabled retry button');
     } else {
         $('.click-to-begin').hide();
-        $('.click-to-begin').onclick = null;
         $('.question-info').onclick = null;
         $('.too-many-attempts').show();
         $('.too-many-attempts').onclick = null;
@@ -236,7 +237,6 @@ function SWXStudent(runtime, element, data) {
         if (max_attempts != -1 && count_attempts >= max_attempts) {
             console.info("SWXstudent previewClicked() too many attempts");
             $('.click-to-begin').hide();
-            $('.click-to-begin').onclick = null;
             $('.too-many-attempts').show();
             $('.too-many-attempts').onclick = null;
             $('.retry').hide();
@@ -635,6 +635,21 @@ function SWXStudent(runtime, element, data) {
         console.info('initial attempts_string',attempts_string);
         console.info('and initial made_attempts',made_attempts);
         made_attempts.innerText = attempts_string;
+
+        // Show variants left
+        // NOTE: We don't support this yet. We don't pass this info from Python to Javascript in the launch or in the callback responses.
+        //       Also not sure we want the student to know this number.
+        //
+        // var variants_string = '(;
+        // variants_string = count_attempts;
+        // variants_string += ' of ';
+        // if( variants_string == -1) {
+        //           variants_string += 'unlimited';
+        // }else{
+        //           variants_string += max_attempts;
+        // }
+        // variants_string += ' variants)';
+        // variants_left.innerText = variants_string;
     }
 
 
