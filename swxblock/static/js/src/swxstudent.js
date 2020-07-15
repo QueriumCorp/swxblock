@@ -85,7 +85,10 @@ function SWXStudent(runtime, element, data) {
     // Update question top info
 
     // Show question points/weight
-    console.info('initial grade_val',grade_val);
+    // console.info('initial grade_val',grade_val);
+    if (grade == -1) {
+        grade = 0.0;     // No grade yet
+    }
     grade_string = '('+((grade/3.0)*weight).toFixed(2)+'/'+weight.toFixed(2)+' point';
     if (weight > 1.0) {
         grade_string = grade_string + 's)';
