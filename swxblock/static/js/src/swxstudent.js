@@ -93,7 +93,7 @@ function SWXStudent(runtime, element, data) {
     if (weight > 1.0) {
         grade_string = grade_string + 's)';
     } else {
-        grade_string = ')';
+        grade_string = grade_string + ')';
     }
     grade_val.innerText = grade_string;
 
