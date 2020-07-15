@@ -268,13 +268,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         """
         logger.info('SWXBlock student_view() entered')
 
-        logger.info("SWXBlock student_view() self={a}".format(a=self))
-        logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
+        # logger.info("SWXBlock student_view() self={a}".format(a=self))
+        # logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
         logger.info("SWXBlock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
         logger.info("SWXBlock student_view() self.variants_attempted={v}".format(v=self.variants_attempted))
 
         course = get_course_by_id(self.runtime.course_id)
-        logger.info("SWXBlock student_view() course={c}".format(c=course))
+        # logger.info("SWXBlock student_view() course={c}".format(c=course))
 
         logger.info("SWXBlock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
@@ -839,7 +839,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             self.bit_set_one(self.variants_attempted,variant)
             logger.info("adding variant {v} to self.variants_attempted={s}".format(v=variant,s=self.variants_attempted))
-            logger.info("checking is_bit_set {v}=".format(v=variant,s=self.is_bit_set(self.variants_attempted,variant)))
+            logger.info("checking bit_is_set {v}=".format(v=variant,s=self.bit_is_set(self.variants_attempted,variant)))
         logger.info("SWXBlock start_attempt() done")
         return None
 
