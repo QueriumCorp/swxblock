@@ -90,9 +90,15 @@ function SWXStudent(runtime, element, data) {
 
     console.info("retry JSON data",JSON.stringify(retry_data));
 
+    // Don't allow clicks on the info at the top above the question stimulus
+    $('.question-info').onclick = null;
+    $('.click-to-begin').onclick = null;
+    $('.click-to-begin-box').onclick = null;
+    $('.click-to-begin').prop('disabled', true);
+    $('.click-to-begin-box').prop('disabled', true);
+
     if (max_attempts == -1 || count_attempts < max_attempts) {
         $('.click-to-begin').show();
-        $('.question-info').onclick = null;
         $('.xblock-student_view').onclick = null;		// Can't click on the UI
         $('.too-many-attempts').hide();
         $('.too-many-attempts').onclick = null;
@@ -126,7 +132,6 @@ function SWXStudent(runtime, element, data) {
         console.info('enabled retry button');
     } else {
         $('.click-to-begin').hide();
-        $('.question-info').onclick = null;
         $('.too-many-attempts').show();
         $('.too-many-attempts').onclick = null;
         preview_element.classList.add("preview_hidden");	// Don't show another preview
