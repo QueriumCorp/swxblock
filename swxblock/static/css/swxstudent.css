@@ -246,12 +246,16 @@ div#practice-page {
 .too-many-attempts p {
     color: red;
     margin-bottom: 0px!important;
+    cursor: pointer;
+    pointer-events: none;
 }
 
-p.click-to-begin {
+.click-to-begin p {
     font-size: 14px;
     margin-bottom: 0px!important;
     margin-left: 10px;
+    cursor: pointer;
+    pointer-events: none;
 }
 
 .used-showme {
