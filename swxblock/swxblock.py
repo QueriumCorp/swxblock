@@ -845,19 +845,19 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     # RESET: PICK A NEW VARIANT
     @XBlock.json_handler
-    def reset(self, data, suffix=''):
-        logger.info("SWXBlock reset() entered")
-        logger.info("SWXBlock reset() data={d}".format(d=data))
-        logger.info("SWXBlock reset() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
-        logger.info("SWXBlock reset() self.variants_attempted={v}".format(v=self.variants_attempted))
-        # logger.info("SWXBlock reset() pre-pick_question q_index={i}".format(v=self.question['q_index']))
+    def retry(self, data, suffix=''):
+        logger.info("SWXBlock retry() entered")
+        logger.info("SWXBlock retry() data={d}".format(d=data))
+        logger.info("SWXBlock retry() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
+        logger.info("SWXBlock retry() self.variants_attempted={v}".format(v=self.variants_attempted))
+        # logger.info("SWXBlock retry() pre-pick_question q_index={i}".format(v=self.question['q_index']))
         self.question = self.pick_variant()
 
         return_data = {
             "question" : self.question,
         }
 
-        logger.info("SWXBlock reset() post-pick returning self.question={q} return_data={r}".format(q=self.question,r=return_data))
+        logger.info("SWXBlock retry() post-pick returning self.question={q} return_data={r}".format(q=self.question,r=return_data))
         json_data = json.dumps(return_data)
         return json_data
 

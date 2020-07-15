@@ -39,7 +39,7 @@ function SWXStudent(runtime, element, data) {
     console.info("SWXStudent handlerUrl",handlerUrl);
     var handlerUrlStart = runtime.handlerUrl(element, 'start_attempt');
     console.info("SWXStudent handlerUrlStart",handlerUrlStart);
-    var handlerUrlReset = runtime.handlerUrl(element, 'reset');
+    var handlerUrlReset = runtime.handlerUrl(element, 'retry');
     console.info("SWXStudent handlerUrlReset",handlerUrlReset);
 
     // Get Primary Element Handles
@@ -77,7 +77,7 @@ function SWXStudent(runtime, element, data) {
     var solution_element = $('.solution', element)[0];
 
     // Get Reset Button Handles
-    // var reset_button = $('.stepwise-reset', swxblock_block)[0];
+    // var retry_button = $('.stepwise-retry', swxblock_block)[0];
 
     // Overall StepWise UI Handles
     // var xblock_student_view = $('.xblock-student_view', swxblock_block)[0];
@@ -110,11 +110,11 @@ function SWXStudent(runtime, element, data) {
     made_attempts.innerText = attempts_string;
 
 
-    reset_data = {
+    retry_data = {
         q_index: question.q_index
     }
 
-    console.info("reset JSON data",JSON.stringify(reset_data));
+    console.info("retry JSON data",JSON.stringify(retry_data));
 
     if (max_attempts == -1 || count_attempts < max_attempts) {
         $('.click-to-begin').show();
@@ -127,30 +127,30 @@ function SWXStudent(runtime, element, data) {
         preview_element.classList.remove("preview_hidden");
         preview_element.onclick = previewClicked;
         console.info('preview_element',preview_element);
-        console.info('setting reset click function');
-        $('.reset').prop('disabled', false);			// Let them click Reset
-        // $('.reset').onclick = resetClicked;
-        $('.reset').click(function() {
-          console.info('reset button clicked');
-          console.info("reset JSON data",JSON.stringify(reset_data));
+        console.info('setting retry click function');
+        $('.retry').prop('disabled', false);			// Let them click Reset
+        // $('.retry').onclick = retryClicked;
+        $('.retry').click(function() {
+          console.info('retry button clicked');
+          console.info("retry JSON data",JSON.stringify(retry_data));
           $.ajax({
               type: "POST",
               url: handlerUrlReset,
-              data: JSON.stringify(reset_data),
+              data: JSON.stringify(retry_data),
               success: function (data,msg) {
-                  console.info("SWXstudent reset POST success");
-                  console.info("SWXstudent reset POST data",data);
-                  console.info("SWXstudent reset POST msg",msg);
+                  console.info("SWXstudent retry POST success");
+                  console.info("SWXstudent retry POST data",data);
+                  console.info("SWXstudent retry POST msg",msg);
                   question_obj = JSON.parse(data);
                   question = question_obj.question;
-                  console.info("SWXstudent reset POST response question",question);
+                  console.info("SWXstudent retry POST response question",question);
                   preview_element = set_preview_element();
-                  console.info("SWXstudent reset POST new preview_element",preview_element);
+                  console.info("SWXstudent retry POST new preview_element",preview_element);
               }
           });
-          console.info("reset button click ended");
+          console.info("retry button click ended");
         });
-        console.info('enabled reset button');
+        console.info('enabled retry button');
     } else {
         $('.click-to-begin').hide();
         $('.click-to-begin').onclick = null;
@@ -160,13 +160,13 @@ function SWXStudent(runtime, element, data) {
         preview_element.classList.add("preview_hidden");	// Don't show another preview
         preview_element.onclick = null;				// Don't let them click again
         console.info('preview_element',preview_element);
-        console.info('setting reset click function');
-        $('.reset').prop('disabled', true);			// Don't let them click Reset
-        // $('.reset').onclick = resetClicked;
-        $('.reset').click(function() {
-          console.info('empty reset button clicked');
+        console.info('setting retry click function');
+        $('.retry').prop('disabled', true);			// Don't let them click Reset
+        // $('.retry').onclick = retryClicked;
+        $('.retry').click(function() {
+          console.info('empty eset button clicked');
         });
-        console.info('disabled reset button');
+        console.info('disabled eset button');
     }
 
     // Init preview mode
@@ -265,8 +265,8 @@ function SWXStudent(runtime, element, data) {
             $('.click-to-begin').onclick = null;
             $('.too-many-attempts').show();
             $('.too-many-attempts').onclick = null;
-            $('.reset').hide();
-            $('.reset').onclick = null;
+            $('.retry').hide();
+            $('.retry').onclick = null;
             return;
         };
         count_attempts++;  // need to do this hear, since the Python code does update this
@@ -410,28 +410,29 @@ function SWXStudent(runtime, element, data) {
         querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
     }   
 
-    function resetClicked(){
-        console.info("SWXstudent resetClicked() started");
+    function retryClicked(){
+        console.info("SWXstudent retryClicked() started");
         $.ajax({
             type: "POST",
             url: handlerUrlReset,
             // data: JSON.stringify(),
             success: function (data,msg) {
-                console.info("SWXstudent reset POST success");
-                console.info("SWXstudent reset POST data",data);
-                console.info("SWXstudent reset POST msg",msg);
+                console.info("SWXstudent retry POST success");
+                console.info("SWXstudent retry POST data",data);
+                console.info("SWXstudent retry POST msg",msg);
             }
         });
-        console.info("SWXstudent resetClicked() ended");
+        console.info("SWXstudent retryClicked() ended");
     }
 
+    // NOT USED AT PRESENT
     //success Type: Function( PlainObject data, String textStatus, jqXHR jqXHR )
-    function resetSuccess(data, textstatus, jqXHR) {
-        console.info("SWXstudent resetSuccess() started");
-        console.info("SWXstudent resetSuccess() data",data);
-        console.info("SWXstudent resetSuccess() textStatus",textStatus);
-        console.info("SWXstudent resetSuccess() jqXHR",jqXHR);
-        console.info("SWXstudent resetSuccess() ended");
+    function retrySuccess(data, textstatus, jqXHR) {
+        console.info("SWXstudent retrySuccess() started");
+        console.info("SWXstudent retrySuccess() data",data);
+        console.info("SWXstudent retrySuccess() textStatus",textStatus);
+        console.info("SWXstudent retrySuccess() jqXHR",jqXHR);
+        console.info("SWXstudent retrySuccess() ended");
     }
 
     function updateStats(){
