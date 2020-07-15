@@ -229,6 +229,13 @@ div#practice-page {
     align-items: center;
 }
 
+.variants-left-box {
+    min-width: 48px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+}
+
 .too-many-attempts-box {
     min-width: 48px;
     min-height: 48px;
