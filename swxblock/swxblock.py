@@ -231,6 +231,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
     variants_attempted = Integer(help="Bitmap of attempted variants", default=0,scope=Scope.user_state)
     variants_count = Integer(help="Count of available variants", default=0,scope=Scope.user_state)
+    previous_variant = Integer(help="Index (q_index) of the last variant used", default=-1,scope=Scope.user_state)
 
     # FIELDS FOR THE ScorableXBlockMixin
 
@@ -272,6 +273,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
         logger.info("SWXBlock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
         logger.info("SWXBlock student_view() self.variants_attempted={v}".format(v=self.variants_attempted))
+        logger.info("SWXBlock student_view() self.previous_variant={v}".format(v=self.previous_variant))
 
         course = get_course_by_id(self.runtime.course_id)
         # logger.info("SWXBlock student_view() course={c}".format(c=course))
@@ -810,6 +812,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             if self.q_index != -1:
                 self.variants_attempted = set.bit_set_one(self.variants_attempted,self.q_index)
                 logger.info("SWXBlock save_grade() record variants_attempted for variant {a}".format(v=self.q_index))
+                self.previous_variant = q_index
+                logger.info("SWXBlock save_grade() record previous_variant for variant {a}".format(v=self.previous_variant))
             else:
                 logger.error("SWXBlock save_grade record variants_attempted for variant -1")
         except (NameError,AttributeError) as e:
@@ -820,6 +824,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock save_grade() final self.solution={a}".format(a=self.solution))
         logger.info("SWXBlock save_grade() final self.grade={a}".format(a=self.grade))
         logger.info("SWXBlock save_grade() final self.variants_attempted={v}".format(v=self.variants_attempted))
+        logger.info("SWXBlock save_grade() final self.previous_variant={v}".format(v=self.previous_variant))
 
 
     # START ATTEMPT
@@ -829,6 +834,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock start_attempt() data={d}".format(d=data))
         logger.info("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
         logger.info("SWXBlock start_attempt() self.variants_attempted={v}".format(v=self.variants_attempted))
+        logger.info("SWXBlock start_attempt() self.previous_variant={v}".format(v=self.previous_variant))
         # logger.info("SWXBlock start_attempt() action={d} sessionId={s} timeMark={t}".format(d=data['status']['action'],s=data['status']['sessionId'],t=data['status']['timeMark']))
         logger.info("SWXBlock start_attempt() passed q_index={q}".format(q=data['q_index']))
         self.count_attempts += 1
@@ -841,6 +847,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             logger.info("adding variant {v} to self.variants_attempted={s}".format(v=variant,s=self.variants_attempted))
             self.variants_attempted = self.bit_set_one(self.variants_attempted,variant)
             logger.info("checking bit_is_set {v}={b}".format(v=variant,b=self.bit_is_set(self.variants_attempted,variant)))
+            self.previous_variant = variant
+            logger.info("setting previous_variant to {v}".format(v=variant))
+            
         logger.info("SWXBlock start_attempt() done")
         return None
 
@@ -1240,6 +1249,17 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             prev_index = -1
 
         logger.info("SWXBlock pick_variant() started replacing prev_index={p}".format(p=prev_index))
+
+        # If there's no self.q_index, then this is our first look at this question in this session, so
+        # use self.previous_variant if we can.  This won't restore all previous attempts, but makes sure we
+        # don't use the variant that is displayed in the student's last attempt data.
+        if (prev_index == -1):
+            try:         # use try block in case attribute wasn't saved in previous student work
+                prev_index = self.previous_variant
+                logger.info("SWXBlock pick_variant() using previous_variant for prev_index={p}".format(p=prev_index))
+	    except (NameError,AttributeError) as e:
+	        logger.info("SWXBlock pick_variant() self.previous_variant does not exist. Using -1: {e}".format(e=e))
+                prev_index = -1
 
         if self.bit_count_ones(self.variants_attempted) >= self.variants_count:
             logger.warn("SWXBlock pick_variant() seen all variants, clearing variants_attempted")
