@@ -228,16 +228,17 @@ function SWXStudent(runtime, element, data) {
 
     function previewClicked(){ 
         var options = {
-            hideMenu: true,
+            // hideMenu: true,
             showMe: enable_showme,
-            assessing: false,
-            scribbles: false
+            hint: enable_hint
+            // assessing: false,
+            // scribbles: false
         };
-    
-        // console.info("SWXstudent previewClicked() started");
+
+        console.info("SWXstudent previewClicked() started");
         console.info("SWXstudent previewClicked() count_attempts ",count_attempts);
         console.info("SWXstudent previewClicked() max_attempts ",max_attempts);
-        console.info("SWXstudent previewClicked() weight ",weight);
+        // console.info("SWXstudent previewClicked() weight ",weight);
         // console.info("SWXstudent previewClicked() min_steps ",min_steps);
         // console.info("SWXstudent previewClicked() min_steps_ded ",min_steps_ded);
         // Don't let student launch question if they've exceeded the limit on question attempts
@@ -250,8 +251,7 @@ function SWXStudent(runtime, element, data) {
             $('.retry').onclick = null;
             return;
         };
-        count_attempts++;  // need to do this hear, since the Python code does update this
-        console.info("SWXstudent previewClicked() continues");
+        // count_attempts++;  // no need to do this here, since the Python code does update this
 
         function celebrate(stats) {
             swxblock_block.classList.remove("block_working");
@@ -384,14 +384,10 @@ function SWXStudent(runtime, element, data) {
         setTimeout( function(){
             swxblock_block.scrollIntoView({ behavior:"smooth"});
         }, 250);
-        // console.info("SWXblock previewClicked() count_attempts ",count_attempts);
-        // data.count_attempts += 1;
-        // count_attempts = data.count_attempts;
-        // console.info("SWXStudent incremented count_attempts ",count_attempts);
-        // console.info("SWXblock previewClicked() max_attempts ",max_attempts);
-        // console.info("SWXblock previewClicked() weight ",weight);
-        // console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
-        querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    
+
+        console.info("SWXblock previewClicked() calling querium.startQuestion with options ",options);
+        querium.startQuestion( 'OpenStaxHomework', sId, qDef, callbacks, options, stepwise_element );    // launch!
+
     }   
 
     function retryClicked(){
