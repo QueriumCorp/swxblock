@@ -292,13 +292,11 @@ div#practice-page {
 .retry button {
     padding: 25px;
     border: 1px solid forestgreen;
-    background-color: lighten(forestgreen, 25%);
     border-radius: 3px;
     font-size: 1em;
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
 
 .fa-refresh {
     font-family: "FontAwesome";
@@ -312,7 +310,7 @@ div#practice-page {
   float: right;	/* places it to the right of the stepwise stats */
 }
 
-.stepwise-retry-variants-box p {
+.stepwise-retry-variants {
     font-size: 12px;
     text-align: center;
     cursor: pointer;
