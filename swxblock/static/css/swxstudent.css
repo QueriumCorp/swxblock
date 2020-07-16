@@ -312,8 +312,9 @@ div#practice-page {
   float: right;	/* places it to the right of the stepwise stats */
 }
 
-.stepwise-retry-variants p {
-    font-size: 10px;
+.stepwise-retry-variants-box p {
+    font-size: 12px;
+    text-align: center;
     cursor: pointer;
     pointer-events: none;
 }
