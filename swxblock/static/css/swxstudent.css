@@ -314,4 +314,6 @@ div#practice-page {
 
 .stepwise-retry-variants p {
     font-size: 10px;
+    cursor: pointer;
+    pointer-events: none;
 }
