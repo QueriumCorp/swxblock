@@ -231,6 +231,7 @@ function SWXStudent(runtime, element, data) {
             // hideMenu: true,
             showMe: enable_showme,
             hint: enable_hint
+            policies: "NONE",		// So client js won't change the showMe and hints settings
             // assessing: false,
             // scribbles: false
         };
