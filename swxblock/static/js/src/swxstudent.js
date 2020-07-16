@@ -1,5 +1,6 @@
 /* Javascript for SWXBlock.
  * TODO:  Enforce assignment due date for not starting another attempt.
+ *        Disble Hint and ShowMe buttons if options are set.
  */
 function SWXStudent(runtime, element, data) {
     console.info("SWXStudent data",data);
