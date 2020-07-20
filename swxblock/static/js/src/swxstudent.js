@@ -231,7 +231,7 @@ function SWXStudent(runtime, element, data) {
             // hideMenu: true,
             showMe: enable_showme,
             hint: enable_hint,
-            policies: "NONE"		// So client js won't change the showMe and hints settings
+            policies: 'NONE'		// We set this later
             // assessing: false
             // scribbles: false
         };
@@ -253,6 +253,17 @@ function SWXStudent(runtime, element, data) {
             return;
         };
         // count_attempts++;  // no need to do this here, since the Python code does update this
+
+        if ($enable_showme == true && $enable_hints == true) {
+            options.policies = '$A1$';
+        } else if ($enable_showme == true && $enable_hints == false) {
+            options.policies = '$A2$';
+        } else if ($enable_showme == false && $enable_hints == true) {
+            options.policies = '{$A1$, Hold[clearPolicy[showMeAvailable]] }';   // There is no standard name for this
+        } else {  // false and false
+            options.policies = '$A5$';
+        };
+        console.info("SWXstudent previewClicked() options.policies set to",options.policies);
 
         function celebrate(stats) {
             swxblock_block.classList.remove("block_working");
@@ -307,6 +318,7 @@ function SWXStudent(runtime, element, data) {
             }
             console.log('valid_step_count=',valid_step_count);
             console.log('question.q_definition=',question.q_definition);
+            console.log('question.q_grade_min_steps_count=',question.q_grade_min_steps_count,' question.q_grade_min_steps_ded=',question.q_grade_min_steps_ded);
             console.log('question.q_grade_min_steps_count=',question.q_grade_min_steps_count,' question.q_grade_min_steps_ded=',question.q_grade_min_steps_ded);
 
             // console.log('question.q_definition=',question.q_definition);
