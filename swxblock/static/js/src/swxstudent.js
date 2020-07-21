@@ -257,9 +257,9 @@ function SWXStudent(runtime, element, data) {
         if (enable_showme == true && enable_hint == true) {
             options.policies = '$A1$';
         } else if (enable_showme == true && enable_hint == false) {
-            options.policies = '$A2$';
-        } else if (enable_showme == false && enable_hint == true) {
             options.policies = '{$A1$, Hold[clearPolicy[showMeAvailable]] }';   // There is no standard name for this
+        } else if (enable_showme == false && enable_hint == true) {
+            options.policies = '$A2$';
         } else {  // false and false
             options.policies = '$A5$';
         };
