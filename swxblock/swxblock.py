@@ -39,6 +39,7 @@ from web_fragments.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from lms.djangoapps.courseware.courses import get_course_by_id
+from datetime import datetime
 from logging import getLogger
 logger = getLogger(__name__)
 
