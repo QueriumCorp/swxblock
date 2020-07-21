@@ -640,7 +640,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             "solution" : self.solution,
             "count_attempts" : self.count_attempts,
             "variants_count" : self.variants_count,
-            "due" : self.due
+            "due" : (self.due - datetime.datetime(1970,1,1)).total_seconds()	# Convert to epoch time
         }
 
         html = self.resource_string("static/html/swxstudent.html")
