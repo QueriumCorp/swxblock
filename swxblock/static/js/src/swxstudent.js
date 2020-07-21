@@ -8,6 +8,7 @@ function SWXStudent(runtime, element, data) {
     var question = data.question;
     var grade = data.grade;
     var solution = data.solution;
+    var due = data.due;
     var count_attempts = data.count_attempts;
     var variants_count = data.variants_count;
     var enable_showme = question.q_option_showme;
@@ -28,6 +29,7 @@ function SWXStudent(runtime, element, data) {
     console.info("SWXStudent min steps",min_steps);
     console.info("SWXStudent min steps dec",min_steps_ded);
     console.info("SWXStudent grade",grade);
+    console.info("SWXStudent due",due);
 
     if (typeof enable_showme === 'undefined') {
         // console.info("enable_showme is undefined");
@@ -101,7 +103,9 @@ function SWXStudent(runtime, element, data) {
     $('.click-to-begin').prop('disabled', true);
     $('.click-to-begin-box').prop('disabled', true);
 
-    if (max_attempts == -1 || count_attempts < max_attempts) {
+    // Have to check the due date and the number of attempts
+    console.info('SWXStudent due=',due,' Date.now()=',Date.now());
+    if ((due < Date.now()) && (max_attempts == -1 || count_attempts < max_attempts)) {
         $('.click-to-begin').show();
         $('.xblock-student_view').onclick = null;		// Can't click on the UI
         $('.too-many-attempts').hide();

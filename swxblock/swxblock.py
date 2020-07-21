@@ -270,6 +270,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info('SWXBlock student_view() entered')
 
         logger.info("SWXBlock student_view() self={a}".format(a=self))
+        logger.info("SWXBlock student_view() self.due={a}".format(a=self.due))
         # logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
         logger.info("SWXBlock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
         logger.info("SWXBlock student_view() self.variants_attempted={v}".format(v=self.variants_attempted))
@@ -638,7 +639,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             "grade" :self.grade,
             "solution" : self.solution,
             "count_attempts" : self.count_attempts,
-            "variants_count" : self.variants_count
+            "variants_count" : self.variants_count,
+            "due" : self.due
         }
 
         html = self.resource_string("static/html/swxstudent.html")
