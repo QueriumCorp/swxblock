@@ -254,11 +254,11 @@ function SWXStudent(runtime, element, data) {
         };
         // count_attempts++;  // no need to do this here, since the Python code does update this
 
-        if ($enable_showme == true && $enable_hints == true) {
+        if (enable_showme == true && enable_hints == true) {
             options.policies = '$A1$';
-        } else if ($enable_showme == true && $enable_hints == false) {
+        } else if (enable_showme == true && enable_hints == false) {
             options.policies = '$A2$';
-        } else if ($enable_showme == false && $enable_hints == true) {
+        } else if (enable_showme == false && enable_hints == true) {
             options.policies = '{$A1$, Hold[clearPolicy[showMeAvailable]] }';   // There is no standard name for this
         } else {  // false and false
             options.policies = '$A5$';
