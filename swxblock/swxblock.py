@@ -39,10 +39,27 @@ from web_fragments.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from lms.djangoapps.courseware.courses import get_course_by_id
-import datetime
-# from datetime import datetime,timedelta
+from datetime import datetime,timedelta,tzinfo
 from logging import getLogger
 logger = getLogger(__name__)
+
+ZERO = timedelta(0)
+
+# A UTC class.
+
+class UTC(tzinfo):
+    """UTC"""
+
+    def utcoffset(self, dt):
+        return ZERO
+
+    def tzname(self, dt):
+        return "UTC"
+
+    def dst(self, dt):
+        return ZERO
+
+utc = UTC()
 
 """
 The general idea is that we'll determine which question parameters to pass to the StepWise client before invoking it,
@@ -642,7 +659,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             "solution" : self.solution,
             "count_attempts" : self.count_attempts,
             "variants_count" : self.variants_count,
-            "due" : (self.due - datetime.datetime(1970,1,1)).total_seconds()	# Convert to epoch time
+            "due" : (self.due - datetime.datetime(1970,1,1,tzinfo=utc)).total_seconds()	# Convert to epoch time
         }
 
         html = self.resource_string("static/html/swxstudent.html")
