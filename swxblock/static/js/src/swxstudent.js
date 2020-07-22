@@ -344,7 +344,16 @@ function SWXStudent(runtime, element, data) {
                 type: "POST",
                 url: handlerUrl,
                 data: JSON.stringify(stats),
-                success: null
+                success: function (data,msg) {    // We want a new variant after posting scores back to Python
+                  console.info("SWXstudent celebrate POST success");
+                  console.info("SWXstudent celebrate POST data",data);
+                  console.info("SWXstudent celebrate POST msg",msg);
+                  question_obj = JSON.parse(data);
+                  question = question_obj.question;
+                  console.info("SWXstudent celebrate POST response question",question);
+                  preview_element = set_preview_element();
+                  console.info("SWXstudent celebrate POST new preview_element",preview_element);
+              }
             });
         }
             

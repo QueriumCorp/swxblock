@@ -826,6 +826,20 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         logger.info("SWXBlock save_grade() final self.variants_attempted={v}".format(v=self.variants_attempted))
         logger.info("SWXBlock save_grade() final self.previous_variant={v}".format(v=self.previous_variant))
 
+        # We want to pick a different variant to display after the students completes this one for a score,
+        # to discourage them from re-attempting the same variant over and over again.
+        # It's not impossible to prevent this because they could in theory attempt all of the other variants,
+        # after which we'd reset and let them pick from all variants.
+        logger.info("SWXBlock save_grade() final picking a new variant")
+        self.question = self.pick_variant()
+        return_data = {
+            "question" : self.question,
+        }
+
+        logger.info("SWXBlock save_grade() post-pick returning self.question={q} return_data={r}".format(q=self.question,r=return_data))
+        json_data = json.dumps(return_data)
+        return json_data
+
 
     # START ATTEMPT
     @XBlock.json_handler
