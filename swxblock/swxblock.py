@@ -1257,8 +1257,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             try:         # use try block in case attribute wasn't saved in previous student work
                 prev_index = self.previous_variant
                 logger.info("SWXBlock pick_variant() using previous_variant for prev_index={p}".format(p=prev_index))
-	    except (NameError,AttributeError) as e:
-	        logger.info("SWXBlock pick_variant() self.previous_variant does not exist. Using -1: {e}".format(e=e))
+            except (NameError,AttributeError) as e:
+                logger.info("SWXBlock pick_variant() self.previous_variant does not exist. Using -1: {e}".format(e=e))
                 prev_index = -1
 
         if self.bit_count_ones(self.variants_attempted) >= self.variants_count:
