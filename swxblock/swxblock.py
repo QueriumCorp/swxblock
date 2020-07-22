@@ -43,24 +43,6 @@ from datetime import datetime #,timedelta,tzinfo
 from logging import getLogger
 logger = getLogger(__name__)
 
-ZERO = timedelta(0)
-
-# A UTC class.
-
-class UTC(tzinfo):
-    """UTC"""
-
-    def utcoffset(self, dt):
-        return ZERO
-
-    def tzname(self, dt):
-        return "UTC"
-
-    def dst(self, dt):
-        return ZERO
-
-utc = UTC()
-
 """
 The general idea is that we'll determine which question parameters to pass to the StepWise client before invoking it,
 making use of course-wide StepWise defaults if set.
