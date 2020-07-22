@@ -105,7 +105,7 @@ function SWXStudent(runtime, element, data) {
 
     // Have to check the due date and the number of attempts
     console.info('SWXStudent due=',due,' Date.now()=',Date.now());
-    if ((due < Date.now()) && (max_attempts == -1 || count_attempts < max_attempts)) {
+    if ((due > Date.now()) && (max_attempts == -1 || count_attempts < max_attempts)) {
         $('.click-to-begin').show();
         $('.xblock-student_view').onclick = null;		// Can't click on the UI
         $('.too-many-attempts').hide();
@@ -139,6 +139,7 @@ function SWXStudent(runtime, element, data) {
         });
         console.info('enabled retry button');
     } else {
+        // Either past the due date or too many attempts
         $('.click-to-begin').hide();
         $('.too-many-attempts').show();
         $('.too-many-attempts').onclick = null;
@@ -219,9 +220,9 @@ function SWXStudent(runtime, element, data) {
             display_math.classList.add("preview_hidden");
         }
 
-        // Enable clicks on the new variant if we have attempts left
+        // Enable clicks on the new variant if we have attempts left and time left
 	console.log('set_preview_element count_attempts=',count_attempts,' max_attempts=',max_attempts);
-        if (max_attempts == -1 || count_attempts < max_attempts) {
+        if ((due > Date.now()) && (max_attempts == -1 || count_attempts < max_attempts) {
             preview_element.onclick = previewClicked;
         } else {
             preview_element.onclick = null
@@ -246,9 +247,9 @@ function SWXStudent(runtime, element, data) {
         // console.info("SWXstudent previewClicked() weight ",weight);
         // console.info("SWXstudent previewClicked() min_steps ",min_steps);
         // console.info("SWXstudent previewClicked() min_steps_ded ",min_steps_ded);
-        // Don't let student launch question if they've exceeded the limit on question attempts
-        if (max_attempts != -1 && count_attempts >= max_attempts) {
-            console.info("SWXstudent previewClicked() too many attempts");
+        // Don't let student launch question if they've exceeded the limit on question attempts or the time limit
+        if ((due < Date.now()) || (max_attempts != -1 && count_attempts >= max_attempts)) {
+            console.info("SWXstudent previewClicked() too many attempts or past time limit");
             $('.click-to-begin').hide();
             $('.too-many-attempts').show();
             $('.too-many-attempts').onclick = null;
