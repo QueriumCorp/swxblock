@@ -39,7 +39,7 @@ from web_fragments.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from lms.djangoapps.courseware.courses import get_course_by_id
-from datetime import datetime,timedelta,tzinfo
+from datetime import datetime #,timedelta,tzinfo
 from logging import getLogger
 logger = getLogger(__name__)
 
@@ -659,7 +659,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             "solution" : self.solution,
             "count_attempts" : self.count_attempts,
             "variants_count" : self.variants_count,
-            "due" : (self.due.replace(tzinfo=None) - datetime(1970,1,1).replace(tzinfo=None)).total_seconds()	# Convert to epoch time
+            "due" : ((self.due.replace(tzinfo=None) - datetime(1970,1,1).replace(tzinfo=None)).total_seconds()) * 1000  # Convert to epoch time (with milliseconds) for javascript
         }
 
         html = self.resource_string("static/html/swxstudent.html")
