@@ -1,6 +1,30 @@
 <div class="swxblock_block" data-ng-strict-di>
     <div class='stepwise_container'>
 
+        <div class='question-info'>
+             <div class="grade-box">
+                 <span class="grade-val">(3.00/3.00 points)</span>
+            </div>
+
+            <div class="made-attempts-box">
+                <div class="made-attempts">
+                    <div>3 of 3 attempts</div>
+                </div>
+            </div>
+
+            <div class="too-many-attempts-box">
+                <div class="too-many-attempts">
+                     <p class="too-many-attempts">You&apos;ve used all your attempts on this question.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class='click-to-begin-box'>
+            <div class="click-to-begin">
+                <p class="click-to-begin">Click the problem text below to solve this step-by-step question:</p>
+            </div>
+        </div>
+
         <querium style='display: none;'></querium>
 
         <div class='qq_preview0 preview_hidden'>
@@ -74,6 +98,18 @@
             </div>
         </div>
 
+        <div class='stepwise-retry'>
+           <button type="button" class="retry problem-action-btn btn-default btn-small" data-value="Retry">
+              <span class="icon fa fa-refresh" aria-hidden="false">
+                 <!-- :before css adds fontawsome icon -->
+              </span>
+              <span aria-hidden="false">Retry</span>
+           </button>
+           <div class='stepwise-retry-variants-box'>
+              <p class='stepwise-retry-variants'>(3 variants)</p>
+           </div>
+        </div>
+
         <div class='question-stats preview_hidden'>
             <div class="star-box preview_hidden">
                 <span class="star1 star-icon">☆</span>
@@ -99,12 +135,6 @@
             <div class="used-showme">
                 <div>Used Show Solution</div>
             </div>   
-
-            <!--
-            <div class="made-attempts">
-                <div>3 of 3 attempts</div>
-            </div>
-            -->
         </div>
 
         <div class="solution preview_hidden">
