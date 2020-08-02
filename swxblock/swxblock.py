@@ -42,6 +42,8 @@ from lms.djangoapps.courseware.courses import get_course_by_id
 from logging import getLogger
 logger = getLogger(__name__)
 
+# logger.setLevel(logging.DEBUG)	# Uncomment if you want debug output
+
 """
 The general idea is that we'll determine which question parameters to pass to the StepWise client before invoking it,
 making use of course-wide StepWise defaults if set.
@@ -267,18 +269,15 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         when viewing courses.  We set up the question parameters (referring to course-wide settings), then launch
         the javascript StepWise client.
         """
-        logger.info('SWXBlock student_view() entered')
+        logger.debug('SWXBlock student_view() entered')
 
-        # logger.info("SWXBlock student_view() self={a}".format(a=self))
-        # logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
-        logger.info("SWXBlock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
-        logger.info("SWXBlock student_view() self.variants_attempted={v}".format(v=self.variants_attempted))
-        logger.info("SWXBlock student_view() self.previous_variant={v}".format(v=self.previous_variant))
+        logger.debug("SWXBlock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
+        logger.debug("SWXBlock student_view() self.variants_attempted={v}".format(v=self.variants_attempted))
+        logger.debug("SWXBlock student_view() self.previous_variant={v}".format(v=self.previous_variant))
 
         course = get_course_by_id(self.runtime.course_id)
-        # logger.info("SWXBlock student_view() course={c}".format(c=course))
 
-        logger.info("SWXBlock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
+        logger.debug("SWXBlock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
         # NOTE: Can't set a self.q_* field here if an older imported swxblock doesn't define this field, since it defaults to None
         # (read only?) so we'll use instance vars my_* to remember whether to use the course-wide setting or the per-question setting.
@@ -342,77 +341,77 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() self.q_weight was not defined in this instance: {e}'.format(e=e))
             temp_weight = -1
-        logger.info('SWXBlock student_view() temp_weight: {t}'.format(t=temp_weight))
+        logger.debug('SWXBlock student_view() temp_weight: {t}'.format(t=temp_weight))
 
         try:
             temp_max_attempts = self.q_max_attempts
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() self.q_max_attempts was not defined in this instance: {e}'.format(e=e))
             temp_max_attempts = -1
-        logger.info('SWXBlock student_view() temp_max_attempts: {t}'.format(t=temp_max_attempts))
+        logger.debug('SWXBlock student_view() temp_max_attempts: {t}'.format(t=temp_max_attempts))
 
         try:
             temp_option_hint = self.q_option_hint
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() self.option_hint was not defined in this instance: {e}'.format(e=e))
             temp_option_hint = -1
-        logger.info('SWXBlock student_view() temp_option_hint: {t}'.format(t=temp_option_hint))
+        logger.debug('SWXBlock student_view() temp_option_hint: {t}'.format(t=temp_option_hint))
 
         try:
             temp_option_showme = self.q_option_showme
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() self.option_showme was not defined in this instance: {e}'.format(e=e))
             temp_option_showme = -1
-        logger.info('SWXBlock student_view() temp_option_showme: {t}'.format(t=temp_option_showme))
+        logger.debug('SWXBlock student_view() temp_option_showme: {t}'.format(t=temp_option_showme))
 
         try:
             temp_grade_showme_ded = self.q_grade_showme_ded
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() self.q_grade_showme_ded was not defined in this instance: {e}'.format(e=e))
             temp_grade_showme_ded = -1
-        logger.info('SWXBlock student_view() temp_grade_showme_ded: {t}'.format(t=temp_grade_showme_ded))
+        logger.debug('SWXBlock student_view() temp_grade_showme_ded: {t}'.format(t=temp_grade_showme_ded))
 
         try:
             temp_grade_hints_count = self.q_grade_hints_count
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() self.q_grade_hints_count was not defined in this instance: {e}'.format(e=e))
             temp_grade_hints_count = -1
-        logger.info('SWXBlock student_view() temp_grade_hints_count: {t}'.format(t=temp_grade_hints_count))
+        logger.debug('SWXBlock student_view() temp_grade_hints_count: {t}'.format(t=temp_grade_hints_count))
 
         try:
             temp_grade_hints_ded = self.q_grade_hints_ded
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() self.q_grade_hints_ded was not defined in this instance: {e}'.format(e=e))
             temp_grade_hints_ded = -1
-        logger.info('SWXBlock student_view() temp_grade_hints_ded: {t}'.format(t=temp_grade_hints_ded))
+        logger.debug('SWXBlock student_view() temp_grade_hints_ded: {t}'.format(t=temp_grade_hints_ded))
 
         try:
             temp_grade_errors_count = self.q_grade_errors_count
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() self.q_grade_errors_count was not defined in this instance: {e}'.format(e=e))
             temp_grade_errors_count = -1
-        logger.info('SWXBlock student_view() temp_grade_errors_count: {t}'.format(t=temp_grade_errors_count))
+        logger.debug('SWXBlock student_view() temp_grade_errors_count: {t}'.format(t=temp_grade_errors_count))
 
         try:
             temp_grade_errors_ded = self.q_grade_errors_ded
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() self.q_grade_errors_ded was not defined in this instance: {e}'.format(e=e))
             temp_grade_errors_ded = -1
-        logger.info('SWXBlock student_view() temp_grade_errors_ded: {t}'.format(t=temp_grade_errors_ded))
+        logger.debug('SWXBlock student_view() temp_grade_errors_ded: {t}'.format(t=temp_grade_errors_ded))
 
         try:
             temp_grade_min_steps_count = self.q_grade_min_steps_count
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() self.q_grade_min_steps_count was not defined in this instance: {e}'.format(e=e))
             temp_grade_min_steps_count = -1
-        logger.info('SWXBlock student_view() temp_grade_min_steps_count: {t}'.format(t=temp_grade_min_steps_count))
+        logger.debug('SWXBlock student_view() temp_grade_min_steps_count: {t}'.format(t=temp_grade_min_steps_count))
 
         try:
             temp_grade_min_steps_ded = self.q_grade_min_steps_ded
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() self.q_grade_min_steps_ded was not defined in this instance: {e}'.format(e=e))
             temp_grade_min_steps_ded = -1
-        logger.info('SWXBlock student_view() temp_grade_min_steps_ded: {t}'.format(t=temp_grade_min_steps_ded))
+        logger.debug('SWXBlock student_view() temp_grade_min_steps_ded: {t}'.format(t=temp_grade_min_steps_ded))
 
         # Fetch the course-wide settings if they exist, otherwise create a default
 
@@ -421,12 +420,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() course.stepwise_weight was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_stepwise_weight = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_weight: {s}'.format(s=temp_course_stepwise_weight))
+        logger.debug('SWXBlock student_view() temp_course_stepwise_weight: {s}'.format(s=temp_course_stepwise_weight))
 
         try:
             temp_course_stepwise_max_attempts = course.stepwise_max_attempts
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_max_attempts was not defined in this instance: {e}'.format(e=e))
+            logger.debug('SWXBlock student_view() course.stepwise_max_attempts was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_stepwise_max_attempts = -1
         logger.info('SWXBlock student_view() temp_course_stepwise_max_attempts: {s}'.format(s=temp_course_stepwise_max_attempts))
 
@@ -435,26 +434,26 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() course.stepwise_option_showme was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_option_showme = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_option_showme: {s}'.format(s=temp_course_stepwise_option_showme))
+        logger.debug('SWXBlock student_view() temp_course_stepwise_option_showme: {s}'.format(s=temp_course_stepwise_option_showme))
 
         try:
             temp_course_stepwise_option_hint = course.stepwise_option_hint
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() course.stepwise_option_hint was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_option_hint = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_option_hint: {s}'.format(s=temp_course_stepwise_option_hint))
+        logger.debug('SWXBlock student_view() temp_course_stepwise_option_hint: {s}'.format(s=temp_course_stepwise_option_hint))
 
         try:
             temp_course_stepwise_grade_hints_count = course.stepwise_grade_hints_count
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() course.stepwise_settings_grade_hints_count was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_hints_count = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_hints_count: {s}'.format(s=temp_course_stepwise_grade_hints_count))
+        logger.debug('SWXBlock student_view() temp_course_stepwise_grade_hints_count: {s}'.format(s=temp_course_stepwise_grade_hints_count))
 
         try:
             temp_course_stepwise_grade_showme_ded = course.stepwise_grade_showme_ded
         except (NameError,AttributeError) as e:
-            logger.info('SWXBlock student_view() course.stepwise_grade_showme_ded was not defined in this instance: {e}'.format(e=e))
+            logger.debug('SWXBlock student_view() course.stepwise_grade_showme_ded was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_showme_ded = -1
         logger.info('SWXBlock student_view() temp_course_stepwise_grade_showme_ded: {s}'.format(s=temp_course_stepwise_grade_showme_ded))
 
@@ -463,35 +462,35 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() course.stepwise_grade_hints_ded was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_hints_ded = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_hints_ded: {s}'.format(s=temp_course_stepwise_grade_hints_ded))
+        logger.debug('SWXBlock student_view() temp_course_stepwise_grade_hints_ded: {s}'.format(s=temp_course_stepwise_grade_hints_ded))
 
         try:
             temp_course_stepwise_grade_errors_count = course.stepwise_grade_errors_count
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() course.stepwise_grade_errors_count was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_errors_count = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_errors_count: {s}'.format(s=temp_course_stepwise_grade_errors_count))
+        logger.debug('SWXBlock student_view() temp_course_stepwise_grade_errors_count: {s}'.format(s=temp_course_stepwise_grade_errors_count))
 
         try:
             temp_course_stepwise_grade_errors_ded = course.stepwise_grade_errors_ded
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() course.stepwise_grade_errors_ded was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_errors_ded = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_errors_ded: {s}'.format(s=temp_course_stepwise_grade_errors_ded))
+        logger.debug('SWXBlock student_view() temp_course_stepwise_grade_errors_ded: {s}'.format(s=temp_course_stepwise_grade_errors_ded))
 
         try:
             temp_course_stepwise_grade_min_steps_count = course.stepwise_grade_min_steps_count
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() course.stepwise_grade_min_steps_count was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_min_steps_count = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_min_steps_count: {s}'.format(s=temp_course_stepwise_grade_min_steps_count))
+        logger.debug('SWXBlock student_view() temp_course_stepwise_grade_min_steps_count: {s}'.format(s=temp_course_stepwise_grade_min_steps_count))
 
         try:
             temp_course_stepwise_grade_min_steps_ded = course.stepwise_grade_min_steps_ded
         except (NameError,AttributeError) as e:
             logger.info('SWXBlock student_view() course.stepwise_grade_min_steps_ded was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_grade_min_steps_ded = -1
-        logger.info('SWXBlock student_view() temp_course_stepwise_grade_min_steps_ded: {s}'.format(s=temp_course_stepwise_grade_min_steps_ded))
+        logger.debug('SWXBlock student_view() temp_course_stepwise_grade_min_steps_ded: {s}'.format(s=temp_course_stepwise_grade_min_steps_ded))
 
         # Enforce course-wide grading options here.
         # We prefer the per-question setting to the course setting.
@@ -503,7 +502,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.my_weight = temp_course_stepwise_weight
         else:
             self.my_weight = def_course_stepwise_weight
-        logger.info('SWXBlock student_view() self.my_weight={m}'.format(m=self.my_weight))
+        logger.debug('SWXBlock student_view() self.my_weight={m}'.format(m=self.my_weight))
 
         # For max_attempts: If there is a per-question max_attempts setting, use that.
         # Otherwise, if there is a course-wide stepwise_max_attempts setting, use that.
@@ -512,11 +511,11 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.my_max_attempts = temp_max_attempts
         elif (temp_course_stepwise_max_attempts != -1):
             self.my_grade_max_attempts = temp_course_stepwise_max_attempts
-            logger.info('SWXBlock student_view() temp_course_stepwise_max_attempts={m}'.format(m=temp_course_stepwise_max_attempts))
+            logger.debug('SWXBlock student_view() temp_course_stepwise_max_attempts={m}'.format(m=temp_course_stepwise_max_attempts))
         else:
-            logger.info('SWXBlock student_view() course.max_attempts={m}'.format(m=course.max_attempts))
+            logger.debug('SWXBlock student_view() course.max_attempts={m}'.format(m=course.max_attempts))
             self.my_grade_max_attempts = course.max_attempts
-        logger.info('SWXBlock student_view() self.my_max_attempts={m}'.format(m=self.my_max_attempts))
+        logger.debug('SWXBlock student_view() self.my_max_attempts={m}'.format(m=self.my_max_attempts))
 
         if (temp_option_hint != -1):
             self.my_option_hint = temp_option_hint
@@ -524,7 +523,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.my_option_hint = temp_course_stepwise_option_hint
         else:
             self.my_option_hint = def_course_stepwise_option_hint
-        logger.info('SWXBlock student_view() self.my_option_hint={m}'.format(m=self.my_option_hint))
+        logger.debug('SWXBlock student_view() self.my_option_hint={m}'.format(m=self.my_option_hint))
 
         if (temp_option_showme != -1):
             self.my_option_showme = temp_option_showme
@@ -532,7 +531,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.my_option_showme = temp_course_stepwise_option_showme
         else:
             self.my_option_showme = def_course_stepwise_option_showme
-        logger.info('SWXBlock student_view() self.my_option_showme={m}'.format(m=self.my_option_showme))
+        logger.debug('SWXBlock student_view() self.my_option_showme={m}'.format(m=self.my_option_showme))
 
         if (temp_grade_showme_ded != -1):
             self.my_grade_showme_ded = temp_grade_showme_ded
@@ -540,7 +539,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.my_grade_showme_ded = temp_course_stepwise_grade_showme_ded
         else:
             self.my_grade_showme_ded = def_course_stepwise_grade_showme_ded
-        logger.info('SWXBlock student_view() self.my_grade_showme_ded={m}'.format(m=self.my_grade_showme_ded))
+        logger.debug('SWXBlock student_view() self.my_grade_showme_ded={m}'.format(m=self.my_grade_showme_ded))
 
         if (temp_grade_hints_count != -1):
             self.my_grade_hints_count = temp_grade_hints_count
@@ -548,7 +547,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.my_grade_hints_count = temp_course_stepwise_grade_hints_count
         else:
             self.my_grade_hints_count = def_course_stepwise_grade_hints_count
-        logger.info('SWXBlock student_view() self.my_grade_hints_count={m}'.format(m=self.my_grade_hints_count))
+        logger.debug('SWXBlock student_view() self.my_grade_hints_count={m}'.format(m=self.my_grade_hints_count))
 
         if (temp_grade_hints_ded != -1):
             self.my_grade_hints_ded = temp_grade_hints_ded
@@ -556,7 +555,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.my_grade_hints_ded = temp_course_stepwise_grade_hints_ded
         else:
             self.my_grade_hints_ded = def_course_stepwise_grade_hints_ded
-        logger.info('SWXBlock student_view() self.my_grade_hints_ded={m}'.format(m=self.my_grade_hints_ded))
+        logger.debug('SWXBlock student_view() self.my_grade_hints_ded={m}'.format(m=self.my_grade_hints_ded))
 
         if (temp_grade_errors_count != -1):
             self.my_grade_errors_count = temp_grade_errors_count
@@ -564,7 +563,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.my_grade_errors_count = temp_course_stepwise_grade_errors_count
         else:
             self.my_grade_errors_count = def_course_stepwise_grade_errors_count
-        logger.info('SWXBlock student_view() self.my_grade_errors_count={m}'.format(m=self.my_grade_errors_count))
+        logger.debug('SWXBlock student_view() self.my_grade_errors_count={m}'.format(m=self.my_grade_errors_count))
 
         if (temp_grade_errors_ded != -1):
             self.my_grade_errors_ded = temp_grade_errors_ded
@@ -572,7 +571,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.my_grade_errors_ded = temp_course_stepwise_grade_errors_ded
         else:
             self.my_grade_errors_ded = def_course_stepwise_grade_errors_ded
-        logger.info('SWXBlock student_view() self.my_grade_errors_ded={m}'.format(m=self.my_grade_errors_ded))
+        logger.debug('SWXBlock student_view() self.my_grade_errors_ded={m}'.format(m=self.my_grade_errors_ded))
 
         if (temp_grade_min_steps_count != -1):
             self.my_grade_min_steps_count = temp_grade_min_steps_count
@@ -580,7 +579,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.my_grade_min_steps_count = temp_course_stepwise_grade_min_steps_count
         else:
             self.my_grade_min_steps_count = def_course_stepwise_grade_min_steps_count
-        logger.info('SWXBlock student_view() self.my_grade_min_steps_count={m}'.format(m=self.my_grade_min_steps_count))
+        logger.debug('SWXBlock student_view() self.my_grade_min_steps_count={m}'.format(m=self.my_grade_min_steps_count))
 
         if (temp_grade_min_steps_ded != -1):
             self.my_grade_min_steps_ded = temp_grade_min_steps_ded
@@ -588,7 +587,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             self.my_grade_min_steps_ded = temp_course_stepwise_grade_min_steps_ded
         else:
             self.my_grade_min_steps_ded = def_course_stepwise_grade_min_steps_ded
-        logger.info('SWXBlock student_view() self.my_grade_min_steps_ded={m}'.format(m=self.my_grade_min_steps_ded))
+        logger.debug('SWXBlock student_view() self.my_grade_min_steps_ded={m}'.format(m=self.my_grade_min_steps_ded))
 
 
         # Save an identifier for the user
@@ -622,7 +621,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             self.variants_count = 1
 
-        logger.info("SWXBlock student_view() self.variants_count={c}".format(c=self.variants_count))
+        logger.debug("SWXBlock student_view() self.variants_count={c}".format(c=self.variants_count))
         # Pick a variant at random, and make sure that it is one we haven't attempted before.
 
         random.seed()				# Use the clock to seed the random number generator for picking variants
@@ -631,7 +630,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         question = self.question
         q_index = question['q_index']
 
-        logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=question))
+        logger.debug("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=question))
 
         data = {
             "question" : question,
@@ -667,12 +666,12 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
         logger.info('SWXBlock save_grade() entered')
-        logger.info("SWXBlock save_grade() self.max_attempts={a}".format(a=self.max_attempts))
+        logger.debug("SWXBlock save_grade() self.max_attempts={a}".format(a=self.max_attempts))
 
         # Check for missing grading attributes
 
-        logger.info("SWXBlock save_grade() initial self={a}".format(a=self))
-        logger.info("SWXBlock save_grade() initial data={a}".format(a=data))
+        logger.debug("SWXBlock save_grade() initial self={a}".format(a=self))
+        logger.debug("SWXBlock save_grade() initial data={a}".format(a=data))
 
         try: q_weight = self.q_weight
         except (NameError,AttributeError) as e:
@@ -717,10 +716,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         # Apply grading defaults
 
         if q_weight == -1:
-            logger.info('SWXBlock save_grade() weight set to 1.0')
+            logger.debug('SWXBlock save_grade() weight set to 1.0')
             q_weight = 1.0
         if q_grade_showme_ded == -1:
-            logger.info('SWXBlock save_grade() showme default set to 3.0')
+            logger.debug('SWXBlock save_grade() showme default set to 3.0')
             q_grade_showme_ded = 3.0
         if q_grade_hints_count == -1:
             logger.info('SWXBlock save_grade() hints_count default set to 2')
@@ -819,34 +818,33 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         except (NameError,AttributeError) as e:
             logger.error('SWXBlock save_grade() self.q_index was not defined: {e}'.format(e=e))
 
-        # logger.info("SWXBlock save_grade() final self={a}".format(a=self))
-        logger.info("SWXBlock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
-        logger.info("SWXBlock save_grade() final self.solution={a}".format(a=self.solution))
-        logger.info("SWXBlock save_grade() final self.grade={a}".format(a=self.grade))
-        logger.info("SWXBlock save_grade() final self.variants_attempted={v}".format(v=self.variants_attempted))
-        logger.info("SWXBlock save_grade() final self.previous_variant={v}".format(v=self.previous_variant))
+        logger.debug("SWXBlock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
+        logger.debug("SWXBlock save_grade() final self.solution={a}".format(a=self.solution))
+        logger.debug("SWXBlock save_grade() final self.grade={a}".format(a=self.grade))
+        logger.debug("SWXBlock save_grade() final self.variants_attempted={v}".format(v=self.variants_attempted))
+        logger.debug("SWXBlock save_grade() final self.previous_variant={v}".format(v=self.previous_variant))
 
 
     # START ATTEMPT
     @XBlock.json_handler
     def start_attempt(self, data, suffix=''):
         logger.info("SWXBlock start_attempt() entered")
-        logger.info("SWXBlock start_attempt() data={d}".format(d=data))
-        logger.info("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
-        logger.info("SWXBlock start_attempt() self.variants_attempted={v}".format(v=self.variants_attempted))
-        logger.info("SWXBlock start_attempt() self.previous_variant={v}".format(v=self.previous_variant))
+        logger.debug("SWXBlock start_attempt() data={d}".format(d=data))
+        logger.debug("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
+        logger.debug("SWXBlock start_attempt() self.variants_attempted={v}".format(v=self.variants_attempted))
+        logger.debug("SWXBlock start_attempt() self.previous_variant={v}".format(v=self.previous_variant))
         # logger.info("SWXBlock start_attempt() action={d} sessionId={s} timeMark={t}".format(d=data['status']['action'],s=data['status']['sessionId'],t=data['status']['timeMark']))
-        logger.info("SWXBlock start_attempt() passed q_index={q}".format(q=data['q_index']))
+        logger.debug("SWXBlock start_attempt() passed q_index={q}".format(q=data['q_index']))
         self.count_attempts += 1
-        logger.info("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
+        logger.debug("SWXBlock start_attempt() updated self.count_attempts={c}".format(c=self.count_attempts))
         variant = data['q_index']
         logger.info("variant is {v}".format(v=variant))
         if self.bit_is_set(self.variants_attempted,variant):
-            logger.info("variant {v} has already been attempted!".format(v=variant))
+            logger.debug("variant {v} has already been attempted!".format(v=variant))
         else:
-            logger.info("adding variant {v} to self.variants_attempted={s}".format(v=variant,s=self.variants_attempted))
+            logger.debug("adding variant {v} to self.variants_attempted={s}".format(v=variant,s=self.variants_attempted))
             self.variants_attempted = self.bit_set_one(self.variants_attempted,variant)
-            logger.info("checking bit_is_set {v}={b}".format(v=variant,b=self.bit_is_set(self.variants_attempted,variant)))
+            logger.debug("checking bit_is_set {v}={b}".format(v=variant,b=self.bit_is_set(self.variants_attempted,variant)))
             self.previous_variant = variant
             logger.info("setting previous_variant to {v}".format(v=variant))
             
@@ -858,18 +856,18 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
     @XBlock.json_handler
     def retry(self, data, suffix=''):
         logger.info("SWXBlock retry() entered")
-        logger.info("SWXBlock retry() data={d}".format(d=data))
-        logger.info("SWXBlock retry() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
-        logger.info("SWXBlock retry() self.variants_attempted={v}".format(v=self.variants_attempted))
-        # logger.info("SWXBlock retry() pre-pick_question q_index={i}".format(v=self.question['q_index']))
+        logger.debug("SWXBlock retry() data={d}".format(d=data))
+        logger.debug("SWXBlock retry() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
+        logger.debug("SWXBlock retry() self.variants_attempted={v}".format(v=self.variants_attempted))
         self.question = self.pick_variant()
 
         return_data = {
             "question" : self.question,
         }
 
-        logger.info("SWXBlock retry() post-pick returning self.question={q} return_data={r}".format(q=self.question,r=return_data))
+        logger.debug("SWXBlock retry() post-pick returning self.question={q} return_data={r}".format(q=self.question,r=return_data))
         json_data = json.dumps(return_data)
+        logger.info("SWXBlock retry() done")
         return json_data
 
 
@@ -905,6 +903,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript(self.resource_string("static/js/src/swxstudio.js"))
 
         frag.initialize_js('SWXStudio')
+        logger.info('SWXBlock studio_view() done')
         return frag
 
 
@@ -920,10 +919,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript(self.resource_string("static/js/src/swxauthor.js"))
 
-        logger.info("SWXBlock SWXAuthor author_view v={a}".format(a=self.q_definition))
-        logger.info("SWXBlock SWXAuthor author_view v1={a} v2={b} v3={c}".format(a=self.q1_definition,b=self.q2_definition,c=self.q3_definition))
-        logger.info("SWXBlock SWXAuthor author_view v4={a} v5={b} v6={c}".format(a=self.q4_definition,b=self.q5_definition,c=self.q6_definition))
-        logger.info("SWXBlock SWXAuthor author_view v7={a} v8={b} v9={c}".format(a=self.q7_definition,b=self.q8_definition,c=self.q9_definition))
+        logger.debug("SWXBlock SWXAuthor author_view v={a}".format(a=self.q_definition))
+        logger.debug("SWXBlock SWXAuthor author_view v1={a} v2={b} v3={c}".format(a=self.q1_definition,b=self.q2_definition,c=self.q3_definition))
+        logger.debug("SWXBlock SWXAuthor author_view v4={a} v5={b} v6={c}".format(a=self.q4_definition,b=self.q5_definition,c=self.q6_definition))
+        logger.debug("SWXBlock SWXAuthor author_view v7={a} v8={b} v9={c}".format(a=self.q7_definition,b=self.q8_definition,c=self.q9_definition))
 
         # tell author_view how many variants are defined
         if len(self.q_definition)>0 and len(self.q1_definition)>0 and len(self.q2_definition)>0 and len(self.q3_definition)>0 and len(self.q4_definition)>0 and len(self.q5_definition)>0 and len(self.q6_definition)>0 and len(self.q7_definition)>0 and len(self.q8_definition)>0 and len(self.q9_definition)>0:
@@ -947,9 +946,10 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             variants = 1
 
-        logger.info("SWXBlock SWXAuthor author_view variants={a}".format(a=variants))
+        logger.debug("SWXBlock SWXAuthor author_view variants={a}".format(a=variants))
 
         frag.initialize_js('SWXAuthor', variants)
+        logger.info('SWXBlock author_view() entered')
         return frag
 
 
@@ -1116,6 +1116,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
         # mcdaniel jul-2020: fix syntax error in print statement
         print(self.display_name)
+        logger.info('SWXBlock save_question() done')
         return {'result': 'success'}
 
 
@@ -1175,7 +1176,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Subtypes may wish to override this if they need conditional support for
         rescoring.
         """
-        logger.info("SWXBlock allows_rescore() False")
+        logger.debug("SWXBlock allows_rescore() False")
         return False
 
 
@@ -1204,13 +1205,13 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         Returns the count of one bits in an integer variable
         Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
         """
-        logger.info("SWXBlock bit_count_ones var={v}".format(v=var))
+        logger.debug("SWXBlock bit_count_ones var={v}".format(v=var))
         count=0
         bits = var
         for b in range(32):
             lsb = (bits >> b) & 1;
             count = count + lsb;
-        logger.info("SWXBlock bit_count_ones result={c}".format(c=count))
+        logger.debug("SWXBlock bit_count_ones result={c}".format(c=count))
         return count
 
 
@@ -1219,9 +1220,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         return var = var with bit 'bitnum' set
         Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
         """
-        logger.info("SWXBlock bit_set_one var={v} bitnum={b}".format(v=var,b=bitnum))
+        logger.debug("SWXBlock bit_set_one var={v} bitnum={b}".format(v=var,b=bitnum))
         var = var | (1 << bitnum)
-        logger.info("SWXBlock bit_set_one result={v}".format(v=var))
+        logger.debug("SWXBlock bit_set_one result={v}".format(v=var))
         return var
 
 
@@ -1230,9 +1231,9 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         return True if bit bitnum is set in var
         Note that Python ints are full-fledged objects, unlike in C, so ints are plenty long for these operations.
         """
-        logger.info("SWXBlock bit_is_set var={v} bitnum={b}".format(v=var,b=bitnum))
+        logger.debug("SWXBlock bit_is_set var={v} bitnum={b}".format(v=var,b=bitnum))
         result = var & (1 << bitnum)
-        logger.info("SWXBlock bit_is_set result={v} b={b}".format(v=result,b=bool(result)))
+        logger.debug("SWXBlock bit_is_set result={v} b={b}".format(v=result,b=bool(result)))
         return bool(result)
 
 
@@ -1271,7 +1272,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
         while tries<max_tries:
             tries=tries+1
             q_randint = random.randint(0, ((self.variants_count*100)-1))	# 0..999 for 10 variants, 0..100 for 1 variant, etc.
-            logger.info("SWXBlock pick_variant() try {t}: q_randint={r}".format(t=tries,r=q_randint))
+            logger.debug("SWXBlock pick_variant() try {t}: q_randint={r}".format(t=tries,r=q_randint))
  
             if q_randint>=0 and q_randint<100:
                 q_index=0
@@ -1296,16 +1297,16 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
 
             # If there are 2+ variants left and we have more tries left, do not return the same variant we started with.
             if q_index == prev_index and tries<max_tries and self.bit_count_ones(self.variants_attempted) < self.variants_count-1:
-                logger.info("SWXBlock pick_variant() try {t}: with bit_count_ones(variants_attempted)={v} < variants_count={c}-1 we won't use the same variant {q} as prev variant".format(t=tries,v=self.bit_count_ones(self.variants_attempted),c=self.variants_count,q=q_index))
+                logger.debug("SWXBlock pick_variant() try {t}: with bit_count_ones(variants_attempted)={v} < variants_count={c}-1 we won't use the same variant {q} as prev variant".format(t=tries,v=self.bit_count_ones(self.variants_attempted),c=self.variants_count,q=q_index))
                 break
 
             if not self.bit_is_set(self.variants_attempted,q_index):
-                logger.info("SWXBlock pick_variant() try {t}: found unattempted variant {q}".format(t=tries,q=q_index))
+                logger.debug("SWXBlock pick_variant() try {t}: found unattempted variant {q}".format(t=tries,q=q_index))
                 break
             else:
-                logger.info("pick_variant() try {t}: variant {q} has already been attempted".format(t=tries,q=q_index))
+                logger.debug("pick_variant() try {t}: variant {q} has already been attempted".format(t=tries,q=q_index))
                 if self.bit_count_ones(self.variants_attempted) >= self.variants_count:
-                    logger.info("pick_variant() try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=self.bit_count_ones(self.variants_attempted)))
+                    logger.debug("pick_variant() try {t}: we have attempted all {c} variants. clearning self.variants_attempted.".format(t=tries,c=self.bit_count_ones(self.variants_attempted)))
                     q_index = 0		# Default
                     self.variants_attempted = 0;
                     break
@@ -1315,7 +1316,7 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             q_index = 0		# Default
             self.variants_attempted = 0;
 
-        logger.info("pick_variant() Selected variant {v}".format(v=q_index))
+        logger.debug("pick_variant() Selected variant {v}".format(v=q_index))
 
         # Note: we won't set self.variants_attempted for this variant until they actually begin work on it (see start_attempt() below)
 
@@ -1570,6 +1571,6 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
                 "q_grade_min_steps_ded" : self.my_grade_min_steps_ded
             }
 
-        logger.info("SWXBlock pick_variant() returned question q_index={i} question={q}".format(i=question['q_index'],q=question))
+        logger.debug("SWXBlock pick_variant() returned question q_index={i} question={q}".format(i=question['q_index'],q=question))
         return question
 
