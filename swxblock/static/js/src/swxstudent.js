@@ -529,7 +529,7 @@ function SWXStudent(runtime, element, data) {
 
     function updateSolution(){
         console.info("updateSolution. grade=",grade);
-        // if( grade==-1 ){ return; }		// May not want to do this for redisplay of last attempt
+        if( grade==-1 ){ return; }
 
         // kill solution_element's children
         while (solution_element.firstChild) {
