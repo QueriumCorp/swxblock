@@ -1,4 +1,3 @@
-"""This Xblock manages problems for Step-Wise Virtual Tutor(tm) from Querium Corp."""
 
 """
 StepWise xblock questions can contain up to 10 variants.  The xblock remembers which variants the student has attempted and if the student
@@ -72,7 +71,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     # Place to store the UUID for this xblock instance.  Not currently displayed in any view.
     url_name = String(display_name="URL name", default='NONE', scope=Scope.content)
 
-    # PER-QUESTION GRADING OPTIONS (STILL NEED TO ALLOW FOR COURSE DEFAULTS)
+    # PER-QUESTION GRADING OPTIONS (SEPARATE SET FOR COURSE DEFAULTS)
     q_weight = Float(
         display_name="Problem Weight",
         help="Defines the number of points the problem is worth.",
@@ -208,6 +207,9 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     # compare to course.max_attempts which is inherited as an per-question setting or a course-wide setting.
     count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.user_state)
     raw_possible = Float(help="Number of possible points", default=3,scope=Scope.user_state)
+    # The following 'weight' is examined by the standard scoring code, so needs to be set once we determine which weight value to use
+    # (per-Q or per-course). Also used in rescoring by override_score_module_state.
+    weight = Float(help="Defines the number of points the problem is worth.", default=1, scope=Scope.user_state)
 
     my_weight  = Integer(help="Remember weight course setting vs question setting", default=-1, scope=Scope.user_state)
     my_max_attempts  = Integer(help="Remember max_attempts course setting vs question setting", default=-1, scope=Scope.user_state)
@@ -504,6 +506,11 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         else:
             self.my_weight = def_course_stepwise_weight
         logger.info('SWXBlock student_view() self.my_weight={m}'.format(m=self.my_weight))
+
+	# Set the real object weight here how that we know all of the weight settings (per-Q vs. per-course).
+	# weight is used by the real grading code e.g. for overriding student scores.
+	self.weight = self.my_weight
+        logger.info('SWXBlock student_view() self.weight={m}'.format(m=self.weight))
 
         # For max_attempts: If there is a per-question max_attempts setting, use that.
         # Otherwise, if there is a course-wide stepwise_max_attempts setting, use that.
@@ -817,12 +824,13 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             else:
                 logger.error("SWXBlock save_grade record variants_attempted for variant -1")
         except (NameError,AttributeError) as e:
-            logger.error('SWXBlock save_grade() self.q_index was not defined: {e}'.format(e=e))
+            logger.warning('SWXBlock save_grade() self.q_index was not defined: {e}'.format(e=e))
 
         # logger.info("SWXBlock save_grade() final self={a}".format(a=self))
         logger.info("SWXBlock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
         logger.info("SWXBlock save_grade() final self.solution={a}".format(a=self.solution))
         logger.info("SWXBlock save_grade() final self.grade={a}".format(a=self.grade))
+        logger.info("SWXBlock save_grade() final self.weight={a}".format(a=self.weight))
         logger.info("SWXBlock save_grade() final self.variants_attempted={v}".format(v=self.variants_attempted))
         logger.info("SWXBlock save_grade() final self.previous_variant={v}".format(v=self.previous_variant))
 
