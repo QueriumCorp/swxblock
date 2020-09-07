@@ -507,9 +507,9 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             self.my_weight = def_course_stepwise_weight
         logger.info('SWXBlock student_view() self.my_weight={m}'.format(m=self.my_weight))
 
-	# Set the real object weight here how that we know all of the weight settings (per-Q vs. per-course).
-	# weight is used by the real grading code e.g. for overriding student scores.
-	self.weight = self.my_weight
+        # Set the real object weight here how that we know all of the weight settings (per-Q vs. per-course).
+        # weight is used by the real grading code e.g. for overriding student scores.
+        self.weight = self.my_weight
         logger.info('SWXBlock student_view() self.weight={m}'.format(m=self.weight))
 
         # For max_attempts: If there is a per-question max_attempts setting, use that.
