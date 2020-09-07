@@ -681,6 +681,13 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
 
 
+    # SAVE
+    # For rescoring events.  Should be a no-op.
+    def save(self):
+        logger.info("SWXBlock save() self.grade={g} self.weight={w}".format(g=self.grade,w=self.weight))
+
+
+
     # SAVE GRADE
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
