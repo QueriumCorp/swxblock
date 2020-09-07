@@ -529,7 +529,7 @@ function SWXStudent(runtime, element, data) {
 
     function updateSolution(){
         console.info("updateSolution. grade=",grade);
-        if( grade==-1 ){ return; }
+        // if( grade==-1 ){ return; }		// May not want to do this for redisplay of last attempt
 
         // kill solution_element's children
         while (solution_element.firstChild) {
@@ -540,7 +540,7 @@ function SWXStudent(runtime, element, data) {
         // than the one used in the attempt associated with these steps/stats.
         var stimulus_el, stimulus_el_text, stimulus_el_problem, stimulus_el_math;
         if (typeof solution.answered_question === 'undefined') {
-            // console.info("solution.answered_question is undefined");
+            console.info("solution.answered_question is undefined");
         } else {
             stimulus_el = document.createElement("div");
             stimulus_el.classList.add("stimulus");
@@ -613,6 +613,7 @@ function SWXStudent(runtime, element, data) {
         }
         
         if( grade==-1){
+            console.info('grade is -1. hiding solution')
             solution_element.classList.add("preview_hidden");
         }else{
             console.info('showing solution')
