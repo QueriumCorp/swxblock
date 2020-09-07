@@ -528,6 +528,7 @@ function SWXStudent(runtime, element, data) {
     }
 
     function updateSolution(){
+        console.info("updateSolution. grade=",grade);
         if( grade==-1 ){ return; }
 
         // kill solution_element's children
@@ -614,7 +615,7 @@ function SWXStudent(runtime, element, data) {
         if( grade==-1){
             solution_element.classList.add("preview_hidden");
         }else{
-            // console.info('showing solution')
+            console.info('showing solution')
             solution_element.classList.remove("preview_hidden");
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
