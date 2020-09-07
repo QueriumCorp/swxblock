@@ -670,6 +670,17 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         return frag
 
 
+    # PUBLISH_GRADE
+    # For rescoring events
+    def publish_grade(self):
+        logger.info("SWXBlock publish_grade() self.grade={g} self.weight={w}".format(g=self.grade,w=self.weight))
+        self.runtime.publish(self, 'grade',
+            {   'value': (self.grade/3.0)*self.weight,
+                'max_value': 1.0*self.weight
+            })
+
+
+
     # SAVE GRADE
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
@@ -833,6 +844,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         logger.info("SWXBlock save_grade() final self.weight={a}".format(a=self.weight))
         logger.info("SWXBlock save_grade() final self.variants_attempted={v}".format(v=self.variants_attempted))
         logger.info("SWXBlock save_grade() final self.previous_variant={v}".format(v=self.previous_variant))
+
 
 
     # START ATTEMPT
