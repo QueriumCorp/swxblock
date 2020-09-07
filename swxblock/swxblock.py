@@ -674,10 +674,14 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     # For rescoring events
     def publish_grade(self):
         logger.info("SWXBlock publish_grade() self.raw_earned={e} self.weight={w}".format(e=self.raw_earned,w=self.weight))
+        if self.raw_earned < 0.0:
+           self.raw_earned = 0.0
+        if self.raw_earned > self.weight:
+           self.raw_earned = self.weight
         self.runtime.publish(self, 'grade',
-            {   'value': (self.raw_earned/3.0)*self.weight,
-                'max_value': 1.0*self.weight
-            })
+             {   'value': self.raw_earned,
+                 'max_value': self.weight
+             })
 
 
 
