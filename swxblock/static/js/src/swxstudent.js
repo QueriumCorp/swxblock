@@ -105,7 +105,8 @@ function SWXStudent(runtime, element, data) {
 
     // Have to check the due date and the number of attempts
     console.info('SWXStudent due=',due,' Date.now()=',Date.now());
-    if ((due > Date.now()) && (max_attempts == -1 || count_attempts < max_attempts)) {
+    // DISABLE DATE TEST if ((due > Date.now()) && (max_attempts == -1 || count_attempts < max_attempts)) {
+    if (max_attempts == -1 || count_attempts < max_attempts) {
         $('.click-to-begin').show();
         $('.xblock-student_view').onclick = null;		// Can't click on the UI
         $('.too-many-attempts').hide();
