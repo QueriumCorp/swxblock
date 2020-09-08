@@ -1293,15 +1293,19 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                  prev_index = -1
 
         if self.bit_count_ones(self.variants_attempted) >= self.variants_count:
-            logger.warn("SWXBlock pick_variant() seen all variants, clearing variants_attempted")
+            logger.warn("SWXBlock pick_variant() seen all variants attempted={a} count={c}, clearing variants_attempted".format(a=self.variants_attempted,c=self.variants_count))
             self.variants_attempted = 0			# We have not yet attempted any variants
 
         tries = 0					# Make sure we dont try forever to find a new variant
         max_tries = 100
 
+	if self.variants_count <= 0:
+            logger.warn("SWXBlock pick_variant() bad variants_count={c}, setting to 1.".format(c=self.variants_count))
+            self.variants_count = 1;
+
         while tries<max_tries:
             tries=tries+1
-            q_randint = random.randint(0, ((self.variants_count*100)-1))	# 0..999 for 10 variants, 0..100 for 1 variant, etc.
+            q_randint = random.randint(0, ((self.variants_count*100)-1))	# 0..999 for 10 variants, 0..99 for 1 variant, etc.
             logger.info("SWXBlock pick_variant() try {t}: q_randint={r}".format(t=tries,r=q_randint))
  
             if q_randint>=0 and q_randint<100:
