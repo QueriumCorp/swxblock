@@ -640,8 +640,8 @@ class SWXBlock(StudioEditableXBlockMixin, XBlock):
             "grade" :self.grade,
             "solution" : self.solution,
             "count_attempts" : self.count_attempts,
-            "variants_count" : self.variants_count,
-            "due" : ((self.due.replace(tzinfo=None) - datetime(1970,1,1).replace(tzinfo=None)).total_seconds()) * 1000  # Convert to epoch time (with milliseconds) for javascript
+            "variants_count" : self.variants_count
+            # "due" : ((self.due.replace(tzinfo=None) - datetime(1970,1,1).replace(tzinfo=None)).total_seconds()) * 1000  # Convert to epoch time (with milliseconds) for javascript
         }
 
         html = self.resource_string("static/html/swxstudent.html")
