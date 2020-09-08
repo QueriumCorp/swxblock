@@ -1299,7 +1299,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         tries = 0					# Make sure we dont try forever to find a new variant
         max_tries = 100
 
-	if self.variants_count <= 0:
+        if self.variants_count <= 0:
             logger.warn("SWXBlock pick_variant() bad variants_count={c}, setting to 1.".format(c=self.variants_count))
             self.variants_count = 1;
 
