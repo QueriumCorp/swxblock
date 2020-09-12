@@ -689,6 +689,8 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     # For rescoring events.  Should be a no-op.
     def save(self):
         logger.info("SWXBlock save() self.raw_earned={g} self.weight={w}".format(g=self.raw_earned,w=self.weight))
+        XBlock.save()	# Call parent class save()
+        logger.info("SWXBlock save() returned from parent save")
 
 
 
@@ -838,16 +840,13 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         # as they want as long as they don't finish it, then reload the page.
         # self.count_attempts += 1
         # make sure we've recorded this atttempt, but it should have been done in start_attempt():
-        try:
-            if self.q_index != -1:
-                self.variants_attempted = set.bit_set_one(self.variants_attempted,self.q_index)
-                logger.info("SWXBlock save_grade() record variants_attempted for variant {a}".format(v=self.q_index))
-                self.previous_variant = q_index
-                logger.info("SWXBlock save_grade() record previous_variant for variant {a}".format(v=self.previous_variant))
-            else:
-                logger.error("SWXBlock save_grade record variants_attempted for variant -1")
-        except (NameError,AttributeError) as e:
-            logger.warning('SWXBlock save_grade() self.q_index was not defined: {e}'.format(e=e))
+        if q_index != -1:
+            self.variants_attempted = set.bit_set_one(self.variants_attempted,q_index)
+            logger.info("SWXBlock save_grade() record variants_attempted for variant {a}".format(v=q_index))
+            self.previous_variant = q_index
+            logger.info("SWXBlock save_grade() record previous_variant for variant {a}".format(v=self.previous_variant))
+        else:
+            logger.error("SWXBlock save_grade record variants_attempted for variant -1")
 
         # logger.info("SWXBlock save_grade() final self={a}".format(a=self))
         logger.info("SWXBlock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
