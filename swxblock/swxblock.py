@@ -842,9 +842,9 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         q_index = data['answered_question']['q_index']
         if q_index != -1:
             self.variants_attempted = self.bit_set_one(self.variants_attempted,q_index)
-            logger.info("SWXBlock save_grade() record variants_attempted for variant {a}".format(v=q_index))
+            logger.info("SWXBlock save_grade() record variants_attempted for variant {a}".format(a=q_index))
             self.previous_variant = q_index
-            logger.info("SWXBlock save_grade() record previous_variant for variant {a}".format(v=self.previous_variant))
+            logger.info("SWXBlock save_grade() record previous_variant for variant {a}".format(a=self.previous_variant))
         else:
             logger.error("SWXBlock save_grade record variants_attempted for variant -1")
 
