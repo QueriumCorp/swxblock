@@ -855,6 +855,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         logger.info("SWXBlock save_grade() final self.weight={a}".format(a=self.weight))
         logger.info("SWXBlock save_grade() final self.variants_attempted={v}".format(v=self.variants_attempted))
         logger.info("SWXBlock save_grade() final self.previous_variant={v}".format(v=self.previous_variant))
+        logger.info("SWXBlock save_grade() final self={s}".format(s=self))
 
 
 
