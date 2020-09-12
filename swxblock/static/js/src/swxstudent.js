@@ -151,6 +151,7 @@ function SWXStudent(runtime, element, data) {
     }
 
     // Init preview mode
+    console.info('Initial preview grade=',grade,' solution=',solution);
     updateStats();
     updateSolution();
     updateTopInfo();
@@ -272,7 +273,7 @@ function SWXStudent(runtime, element, data) {
             console.info("Celebrate", stats);
             solution = stats;
             solution.answered_question = question; // remember the question we answered for the stats display
-            // console.info("celebrate solution ", solution);
+            console.info("celebrate solution ", solution);
 
             // NOTE: We compute the grade here for display purposes, but the Python code on the server also calculates the grade itself.
             //       We could pass all of this info over to the server to avoid this duplication of code, provided we trust these browser-based calcs.
@@ -330,6 +331,7 @@ function SWXStudent(runtime, element, data) {
                 console.log('did not take min_steps deduction after grade=',grade);
             }
 
+            console.log('Celebration updates grade=',grade,' solution=',solution);
             updateStats();
             updateSolution();
             updateTopInfo();
@@ -528,7 +530,7 @@ function SWXStudent(runtime, element, data) {
     }
 
     function updateSolution(){
-        console.info("updateSolution. grade=",grade);
+        console.info("updateSolution. grade=",grade," solution=",solution);
         if( grade==-1 ){ return; }
 
         // kill solution_element's children

@@ -832,6 +832,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
         self.solution = data
         self.grade = grade
+        logger.info("SWXBlock save_grade() saved self.grade={a} self.solution={b}".format(a=self.grade,b=self.solution))
         # Don't increment attempts on save grade.  We want to increment them when the student starts
         # a question, not when they finish.  Otherwise people can start the question as many times
         # as they want as long as they don't finish it, then reload the page.
