@@ -849,7 +849,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             logger.error("SWXBlock save_grade record variants_attempted for variant -1")
 
         logger.info("SWXBlock save_grade() calling force_save_fields")
-	self.force_save_fields(['solution'])
+        self.force_save_fields(['solution'])
         # logger.info("SWXBlock save_grade() final self={a}".format(a=self))
         logger.info("SWXBlock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
         logger.info("SWXBlock save_grade() final self.solution={a}".format(a=self.solution))
