@@ -531,7 +531,8 @@ function SWXStudent(runtime, element, data) {
 
     function updateSolution(){
         console.info("updateSolution. grade=",grade," solution=",solution);
-        if( grade==-1 ){ return; }
+	// DON'T JUST ABORT FOR NOW - KENT
+        // if( grade==-1 ){ return; }
 
         // kill solution_element's children
         while (solution_element.firstChild) {
