@@ -839,10 +839,11 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         # as they want as long as they don't finish it, then reload the page.
         # self.count_attempts += 1
         # make sure we've recorded this atttempt, but it should have been done in start_attempt():
-        if data['q_index'] != -1:
-            self.variants_attempted = set.bit_set_one(self.variants_attempted,data['q_index'])
-            logger.info("SWXBlock save_grade() record variants_attempted for variant {a}".format(v=data['q_index']))
-            self.previous_variant = data['q_index']
+	q_index = data['answered_question']['q_index']
+        if q_index != -1:
+            self.variants_attempted = set.bit_set_one(self.variants_attempted,q_index)
+            logger.info("SWXBlock save_grade() record variants_attempted for variant {a}".format(v=q_index))
+            self.previous_variant = q_index
             logger.info("SWXBlock save_grade() record previous_variant for variant {a}".format(v=self.previous_variant))
         else:
             logger.error("SWXBlock save_grade record variants_attempted for variant -1")
