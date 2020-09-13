@@ -8,6 +8,7 @@ function SWXStudent(runtime, element, data) {
     var question = data.question;
     var grade = data.grade;
     var solution = data.solution;
+    var redisplay = data.redisplay;
     var count_attempts = data.count_attempts;
     var variants_count = data.variants_count;
     var enable_showme = question.q_option_showme;
@@ -17,6 +18,7 @@ function SWXStudent(runtime, element, data) {
     var min_steps = question.q_grade_min_steps_count;
     var min_steps_ded = question.q_grade_min_steps_ded;
 
+    console.info("SWXStudent redisplay",redisplay);
     console.info("SWXStudent question",question);
     // console.info("SWXStudent enable_showme",enable_showme);
     // console.info("SWXStudent enable_hint",enable_hint);

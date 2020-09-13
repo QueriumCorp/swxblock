@@ -646,6 +646,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             "solution" : self.solution,
             "count_attempts" : self.count_attempts,
             "variants_count" : self.variants_count
+            "redisplay" : False			    # Used to determine whether we are redisplaying a question
         }
 
         html = self.resource_string("static/html/swxstudent.html")
@@ -666,6 +667,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
+        logger.info("SWXBlock student_view() frag.initialize_js data={d}".format(d=data))
         frag.initialize_js('SWXStudent', data)
         return frag
 
@@ -783,8 +785,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 logger.info("SWXBlock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info']={s}".format(c=c,i=i,s=step_details[c]['info']))
                 logger.info("SWXBlock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info'][i]={s}".format(c=c,i=i,s=step_details[c]['info'][i]))
                 step_status = step_details[c]['info'][i]['status']
-                if (step_status == 0):       # victory
-                    valid_steps += 1
+                if (step_status == 0):       # victory valid_steps += 1
                     logger.info("SWXBlock save_grade() count valid_steps c={c} i={i} victory step found".format(c=c,i=i))
                 elif (step_status == 1):     # valid step
                     valid_steps += 1
