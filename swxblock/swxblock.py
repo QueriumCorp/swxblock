@@ -1,4 +1,3 @@
-
 """
 StepWise xblock questions can contain up to 10 variants.  The xblock remembers which variants the student has attempted and if the student
 requests a new variant, we will try to assign one that has not yet been attempted. Once the student has attempted all available variants,
@@ -692,7 +691,9 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     def save(self):
         logger.info("SWXBlock save() self.raw_earned={g} self.weight={w} self.solution={s}".format(g=self.raw_earned,w=self.weight,s=self.solution))
         field_names = ['solution','raw_earned']
-        force_save_fields(field_names)
+        logger.info("SWXBlock save() called force_save_fields for field_names={f}".format(f=field_names))
+        self.force_save_fields(field_names)
+        logger.info("SWXBlock save() back from force_save_fields. Calling parent save()") 
         XBlock.save(self)       # Call parent class save()
         logger.info("SWXBlock save() returned from parent save")
 
