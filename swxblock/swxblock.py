@@ -645,7 +645,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             "grade" :self.grade,
             "solution" : self.solution,
             "count_attempts" : self.count_attempts,
-            "variants_count" : self.variants_count
+            "variants_count" : self.variants_count,
             "redisplay" : False			    # Used to determine whether we are redisplaying a question
         }
 
