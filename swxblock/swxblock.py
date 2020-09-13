@@ -269,7 +269,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         when viewing courses.  We set up the question parameters (referring to course-wide settings), then launch
         the javascript StepWise client.
         """
-        logger.info('SWXBlock student_view() entered')
+        logger.info('SWXBlock student_view() entered. context={c}'.format(context))
 
         # logger.info("SWXBlock student_view() self={a}".format(a=self))
         # logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
