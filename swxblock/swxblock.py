@@ -271,8 +271,8 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         """
         logger.info('SWXBlock student_view() entered. context={c}'.format(context))
 
-        # logger.info("SWXBlock student_view() self={a}".format(a=self))
-        # logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
+        logger.info("SWXBlock student_view() self={a}".format(a=self))
+        logger.info("SWXBlock student_view() self.runtime={a}".format(a=self.runtime))
         logger.info("SWXBlock student_view() self.runtime.course_id={a}".format(a=self.runtime.course_id))
         logger.info("SWXBlock student_view() self.variants_attempted={v}".format(v=self.variants_attempted))
         logger.info("SWXBlock student_view() self.previous_variant={v}".format(v=self.previous_variant))
