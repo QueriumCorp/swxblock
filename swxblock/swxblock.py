@@ -92,7 +92,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     q_option_hint = Boolean(help='Display Hint button if "True"', default=True, scope=Scope.content)
     q_option_showme = Boolean(help='Display ShowSolution button if "True"', default=True, scope=Scope.content)
 
-    # MAX ATTEMPTS PER-QUESTION OVERRIDE OF COURSE DEFAULT
+    # PER-QUESTION MAX ATTEMPTS OVERRIDE OF COURSE DEFAULT
     q_max_attempts = Integer(help="Max question attempts (-1 = Use Course Default)", default=-1, scope=Scope.content)
 
     # STEP-WISE QUESTION DEFINITION FIELDS FOR TEN VARIANTS
@@ -279,8 +279,6 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
         course = get_course_by_id(self.runtime.course_id)
         # logger.info("SWXBlock student_view() course={c}".format(c=course))
-
-        logger.info("SWXBlock student_view() max_attempts={a} q_max_attempts={b}".format(a=self.max_attempts,b=self.q_max_attempts))
 
         # NOTE: Can't set a self.q_* field here if an older imported swxblock doesn't define this field, since it defaults to None
         # (read only?) so we'll use instance vars my_* to remember whether to use the course-wide setting or the per-question setting.
@@ -516,14 +514,15 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         # Otherwise, if there is a course-wide stepwise_max_attempts setting, use that.
         # Otherwise, use the course-wide max_attempts setting that is used for CAPA (non-StepWise) problems.
         if (temp_max_attempts != -1):
-            self.my_max_attempts = temp_max_attempts
+            self.my_grade_max_attempts = temp_max_attempts
+            logger.info('SWXBlock student_view() attempts temp_max_attempts={m}'.format(m=temp_max_attempts))
         elif (temp_course_stepwise_max_attempts != -1):
             self.my_grade_max_attempts = temp_course_stepwise_max_attempts
-            logger.info('SWXBlock student_view() temp_course_stepwise_max_attempts={m}'.format(m=temp_course_stepwise_max_attempts))
+            logger.info('SWXBlock student_view() attempts temp_course_stepwise_max_attempts={m}'.format(m=temp_course_stepwise_max_attempts))
         else:
-            logger.info('SWXBlock student_view() course.max_attempts={m}'.format(m=course.max_attempts))
+            logger.info('SWXBlock student_view() attempts course.max_attempts={m}'.format(m=course.max_attempts))
             self.my_grade_max_attempts = course.max_attempts
-        logger.info('SWXBlock student_view() self.my_max_attempts={m}'.format(m=self.my_max_attempts))
+        logger.info('SWXBlock student_view() self.my_grade_max_attempts={m}'.format(m=self.my_grade_max_attempts))
 
         if (temp_option_hint != -1):
             self.my_option_hint = temp_option_hint
@@ -697,7 +696,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     @XBlock.json_handler
     def save_grade(self, data, suffix=''):
         logger.info('SWXBlock save_grade() entered')
-        logger.info("SWXBlock save_grade() self.max_attempts={a}".format(a=self.max_attempts))
+        logger.info("SWXBlock save_grade() self.my_grade_max_attempts={a}".format(a=self.my_grade_max_attempts))
 
         # Check for missing grading attributes
 
@@ -866,7 +865,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     def start_attempt(self, data, suffix=''):
         logger.info("SWXBlock start_attempt() entered")
         logger.info("SWXBlock start_attempt() data={d}".format(d=data))
-        logger.info("SWXBlock start_attempt() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
+        logger.info("SWXBlock start_attempt() self.count_attempts={c} my_grade_max_attempts={m}".format(c=self.count_attempts,m=self.my_grade_max_attempts))
         logger.info("SWXBlock start_attempt() self.variants_attempted={v}".format(v=self.variants_attempted))
         logger.info("SWXBlock start_attempt() self.previous_variant={v}".format(v=self.previous_variant))
         # logger.info("SWXBlock start_attempt() action={d} sessionId={s} timeMark={t}".format(d=data['status']['action'],s=data['status']['sessionId'],t=data['status']['timeMark']))
@@ -893,7 +892,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     def retry(self, data, suffix=''):
         logger.info("SWXBlock retry() entered")
         logger.info("SWXBlock retry() data={d}".format(d=data))
-        logger.info("SWXBlock retry() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
+        logger.info("SWXBlock retry() self.count_attempts={c} my_grade_max_attempts={m}".format(c=self.count_attempts,m=self.my_grade_max_attempts))
         logger.info("SWXBlock retry() self.variants_attempted={v}".format(v=self.variants_attempted))
         # logger.info("SWXBlock retry() pre-pick_question q_index={i}".format(v=self.question['q_index']))
         self.question = self.pick_variant()
