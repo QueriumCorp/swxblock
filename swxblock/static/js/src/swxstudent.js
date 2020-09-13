@@ -346,7 +346,7 @@ function SWXStudent(runtime, element, data) {
                 type: "POST",
                 url: handlerUrl,
                 data: JSON.stringify(stats),
-                success: null
+                success: window.location.reload(true)
             });
         }
             
