@@ -623,6 +623,7 @@ function SWXStudent(runtime, element, data) {
             solution_element.classList.remove("preview_hidden");
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
+	window.location.reload()	// force reload to avoid redisplay bug for now
     }
 
     // Update question top info
