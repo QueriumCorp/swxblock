@@ -344,7 +344,7 @@ function SWXStudent(runtime, element, data) {
                 type: "POST",
                 url: handlerUrl,
                 data: JSON.stringify(stats),
-                success: window.location.reload(true)    // reload page on victory to avoid bug
+                success: null
             });
         }
             
