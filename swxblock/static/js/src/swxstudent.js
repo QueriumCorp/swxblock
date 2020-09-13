@@ -346,7 +346,8 @@ function SWXStudent(runtime, element, data) {
                 type: "POST",
                 url: handlerUrl,
                 data: JSON.stringify(stats),
-                success: null
+                //success: null
+                success: window.location.reload()	// reload page on victory to avoid bug
             });
         }
             
@@ -623,7 +624,6 @@ function SWXStudent(runtime, element, data) {
             solution_element.classList.remove("preview_hidden");
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
-	window.location.reload()	// force reload to avoid redisplay bug for now
     }
 
     // Update question top info
