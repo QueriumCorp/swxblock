@@ -55,7 +55,7 @@ Note that the student can start an attempt, but never finish (abandoned attempt)
 """
 
 @XBlock.wants('user')
-class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
+class SWXBlock(StudioEditableXBlockMixin, XBlock):
     """
     This xblock provides up to 10 variants of a question for delivery using the StepWise UI.
     """
@@ -673,27 +673,27 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         return frag
 
 
-    # PUBLISH_GRADE
-    # For rescoring events
-    def publish_grade(self):
-        if DEBUG: logger.info("SWXBlock publish_grade() self.raw_earned={e} self.weight={w}".format(e=self.raw_earned,w=self.weight))
-        if self.raw_earned < 0.0:
-           self.raw_earned = 0.0
-        if self.raw_earned > self.weight:
-           self.raw_earned = self.weight
-        self.runtime.publish(self, 'grade',
-             {   'value': self.raw_earned,
-                 'max_value': self.weight
-             })
-
-
-
-    # SAVE
-    # For rescoring events.  Should be a no-op.
-    def save(self):
-        if DEBUG: logger.info("SWXBlock save() self.raw_earned={g} self.weight={w} self.solution={s}".format(g=self.raw_earned,w=self.weight,s=self.solution))
-        XBlock.save(self)       # Call parent class save()
-        if DEBUG: logger.info("SWXBlock save() back from parent save. self.solution={s}".format(s=self.solution))
+#     # PUBLISH_GRADE
+#     # For rescoring events
+#     def publish_grade(self):
+#         if DEBUG: logger.info("SWXBlock publish_grade() self.raw_earned={e} self.weight={w}".format(e=self.raw_earned,w=self.weight))
+#         if self.raw_earned < 0.0:
+#            self.raw_earned = 0.0
+#         if self.raw_earned > self.weight:
+#            self.raw_earned = self.weight
+#         self.runtime.publish(self, 'grade',
+#              {   'value': self.raw_earned,
+#                  'max_value': self.weight
+#              })
+# 
+# 
+# 
+#     # SAVE
+#     # For rescoring events.  Should be a no-op.
+#     def save(self):
+#         if DEBUG: logger.info("SWXBlock save() self.raw_earned={g} self.weight={w} self.solution={s}".format(g=self.raw_earned,w=self.weight,s=self.solution))
+#         XBlock.save(self)       # Call parent class save()
+#         if DEBUG: logger.info("SWXBlock save() back from parent save. self.solution={s}".format(s=self.solution))
 
 
     # SAVE GRADE
