@@ -854,6 +854,8 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         except (NameError,AttributeError) as e:
             if DEBUG: logger.warning('SWXBlock save_grade() self.q_index was not defined: {e}'.format(e=e))
 
+        self.save()     # Time to persist our state!!!
+
         # if DEBUG: logger.info("SWXBlock save_grade() final self={a}".format(a=self))
         if DEBUG: logger.info("SWXBlock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
         if DEBUG: logger.info("SWXBlock save_grade() final self.solution={a}".format(a=self.solution))
