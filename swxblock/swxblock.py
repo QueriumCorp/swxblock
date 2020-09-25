@@ -37,6 +37,9 @@ from web_fragments.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from lms.djangoapps.courseware.courses import get_course_by_id
+
+UNSET = object()
+
 from logging import getLogger
 logger = getLogger(__name__)
 
@@ -261,8 +264,8 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     runtime = None
     field_data = None
     scope_ids=None
-    args = None
-    kwargs = None
+    my_args = None
+    my_kwargs = None
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -273,14 +276,15 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         self.runtime = runtime
         self.field_data = field_data
         self.scope_ids = scope_ids
-        self.args = *args
-        self.kwargs = **kwargs
+        self.my_args = args
+        self.my_kwargs = kwargs
 
         super().__init__(runtime=runtime, scope_ids=scope_ids, field_data=field_data, *args, **kwargs)
 
     def init(self):
         if DEBUG: logger.info('SWXBlock.init() - start')
-        super().__init__(runtime=self.runtime, scope_ids=self.scope_ids, field_data=self.field_data, self.args, self.kwargs)
+
+        super().__init__(runtime=self.runtime, scope_ids=self.scope_ids, field_data=self.field_data, *self.my_args, **self.my_kwargs)
         if DEBUG: logger.info('SWXBlock.init() - finish')
 
     # STUDENT_VIEW
