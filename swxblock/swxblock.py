@@ -40,7 +40,7 @@ from lms.djangoapps.courseware.courses import get_course_by_id
 from logging import getLogger
 logger = getLogger(__name__)
 
-DEBUG=False
+DEBUG=True
 
 """
 The general idea is that we'll determine which question parameters to pass to the StepWise client before invoking it,
@@ -257,11 +257,31 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         enforce_type=True,
     )
 
+    # to store our init stuff
+    runtime = None
+    field_data = None
+    scope_ids=None
+    args = None
+    kwargs = None
+
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
 
+    def __init__(self, runtime, field_data=None, scope_ids=UNSET, *args, **kwargs):
+        self.runtime = runtime
+        self.field_data = field_data
+        self.scope_ids = scope_ids
+        self.args = *args
+        self.kwargs = **kwargs
+
+        super().__init__(runtime=runtime, scope_ids=scope_ids, field_data=field_data, *args, **kwargs)
+
+    def init(self):
+        if DEBUG: logger.info('SWXBlock.init() - start')
+        super().__init__(runtime=self.runtime, scope_ids=self.scope_ids, field_data=self.field_data, self.args, self.kwargs)
+        if DEBUG: logger.info('SWXBlock.init() - finish')
 
     # STUDENT_VIEW
     def student_view(self, context=None):
@@ -640,6 +660,9 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         q_index = question['q_index']
 
         logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=question))
+
+        # PRESTO!!!! we're clean!!! :D
+        self.init()
 
         data = {
             "question" : question,
