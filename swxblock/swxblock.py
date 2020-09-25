@@ -38,6 +38,9 @@ from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from lms.djangoapps.courseware.courses import get_course_by_id
 
+
+from xblock.mixins import ScopedStorageMixin
+
 UNSET = object()
 
 from logging import getLogger
@@ -261,17 +264,20 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     )
 
     # to store our init stuff
+    """
     runtime = None
     field_data = None
     scope_ids=None
     my_args = None
     my_kwargs = None
+    """
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
 
+    """
     def __init__(self, runtime, field_data=None, scope_ids=UNSET, *args, **kwargs):
         self.runtime = runtime
         self.field_data = field_data
@@ -279,12 +285,16 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         self.my_args = args
         self.my_kwargs = kwargs
 
-        super().__init__(runtime=runtime, scope_ids=scope_ids, field_data=field_data, *args, **kwargs)
+        super(XBlock, self).__init__(runtime=self.runtime, scope_ids=self.scope_ids, field_data=field_data, *args, **kwargs)
+        super(ScorableXBlockMixin, self).__init__()
+        super(StudioEditableXBlockMixin, self).__init__()
+    """
 
     def init(self):
         if DEBUG: logger.info('SWXBlock.init() - start')
+        #super(XBlock, self).__init__(runtime=self.runtime, scope_ids=self.scope_ids, field_data=self.fields)
+        super(ScopedStorageMixin, self).__init__(self, scope_ids=self.scope_ids, field_data=self.fields)
 
-        super().__init__(runtime=self.runtime, scope_ids=self.scope_ids, field_data=self.field_data, *self.my_args, **self.my_kwargs)
         if DEBUG: logger.info('SWXBlock.init() - finish')
 
     # STUDENT_VIEW
