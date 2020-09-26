@@ -61,6 +61,13 @@ function SWXStudent(runtime, element) {
                 enable_hint = true;
             };
         
+            var handlerUrl = runtime.handlerUrl(element, 'save_grade');
+            console.info("SWXStudent handlerUrl",handlerUrl);
+            var handlerUrlStart = runtime.handlerUrl(element, 'start_attempt');
+            console.info("SWXStudent handlerUrlStart",handlerUrlStart);
+            var handlerUrlRetry = runtime.handlerUrl(element, 'retry');
+            console.info("SWXStudent handlerUrlRetry",handlerUrlRetry);
+
             // Get Primary Element Handles
             var swxblock_block = $('.swxblock_block', element)[0];
             var stepwise_element = $('querium', element)[0];
