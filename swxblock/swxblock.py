@@ -692,7 +692,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     def get_data(self, msg, suffix=''):
         if DEBUG: logger.info("SWXBlock get_data() entered. msg={msg}".format(msg=msg))
         data = {
-            "question" : self.question,
+            "question" : question,
             "grade" :self.grade,
             "solution" : self.solution,
             "count_attempts" : self.count_attempts,
