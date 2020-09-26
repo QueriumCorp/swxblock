@@ -695,8 +695,17 @@ function SWXStudent(runtime, element) {
                 attempts_string += ' attempts';
                 console.info('initial attempts_string',attempts_string);
                 console.info('and initial made_attempts',made_attempts);
+                console.info('and initial min_steps',min_steps);
                 made_attempts.innerText = attempts_string;
         
+		if (min_steps == null || min_steps <= 0) {
+                     $('.min-steps-box').hide();		// Don't show min-steps box
+                }else{
+                    min_steps_string = min_steps;
+                    min_steps_string += ' minimum steps';
+                    min_steps_element.innerText = min_steps_string;
+                }
+
                 // Show total variants below the Retry button
                 var variants_string = '(';
                 variants_string += variants_count;
