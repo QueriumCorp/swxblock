@@ -40,7 +40,7 @@ from lms.djangoapps.courseware.courses import get_course_by_id
 from logging import getLogger
 logger = getLogger(__name__)
 
-DEBUG=True
+DEBUG=False
 
 """
 The general idea is that we'll determine which question parameters to pass to the StepWise client before invoking it,
@@ -668,7 +668,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     # PUBLISH_GRADE
     # For rescoring events
     def publish_grade(self):
-        if DEBUG: logger.info("SWXBlock publish_grade() self.raw_earned={e} self.weight={w}".format(e=self.raw_earned,w=self.weight))
+        logger.info("SWXBlock publish_grade() self.raw_earned={e} self.weight={w}".format(e=self.raw_earned,w=self.weight))
         if self.raw_earned < 0.0:
            self.raw_earned = 0.0
         if self.raw_earned > self.weight:
