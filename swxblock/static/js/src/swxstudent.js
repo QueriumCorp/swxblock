@@ -8,11 +8,15 @@ function SWXStudent(runtime, element) {
     var handlerUrlGetData = runtime.handlerUrl(element, 'get_data');
 
     console.info("SWXStudent calling get_data at ",handlerUrlGetData);
+
+    get_data_data = {}		// don't need to sent any data to get_data
+        
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: handlerUrlGetData,
+        data: JSON.stringify(get_data_data),
         error: function(XMLHttpRequest, textStatus, errorThrown) { 
-               console.info("SWXstudent GET error textStatus=",textStatus," errorThrown=",errorThrown);
+               console.info("SWXstudent get_data POST error textStatus=",textStatus," errorThrown=",errorThrown);
                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
         },
         success: function (data,msg) {
