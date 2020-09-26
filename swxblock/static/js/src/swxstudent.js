@@ -742,6 +742,7 @@ function SWXStudent(runtime, element) {
        }
     });
     console.info("SWXStudent end");
-    $('.loading-box').show();		// Show loading box while we wait
-    $('.question-info').hide();		// Don't show question info box while we wait
+    $('.loading-box').show();        // Show loading box while we wait
+    $('.question-info').hide();      // Don't show question info box while we wait
+    $('.click-to-begin-box').hide(); // Don't show click to begin msg box while we wait
 }
