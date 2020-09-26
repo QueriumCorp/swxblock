@@ -896,8 +896,12 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             self.previous_variant = variant
             if DEBUG: logger.info("setting previous_variant to {v}".format(v=variant))
             
-        if DEBUG: logger.info("SWXBlock start_attempt() done")
-        return None
+        return_data = {
+            "count_attempts" : self.count_attempts,
+        }
+        if DEBUG: logger.info("SWXBlock start_attempt() done return_data={return_data}".format(return_data=return_data))
+        json_data = json.dumps(return_data)
+        return json_data
 
 
     # RESET: PICK A NEW VARIANT
