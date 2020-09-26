@@ -641,15 +641,6 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
         logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=question))
 
-        data = {
-            "question" : question,
-            "grade" :self.grade,
-            "solution" : self.solution,
-            "count_attempts" : self.count_attempts,
-            "variants_count" : self.variants_count,
-            "redisplay" : False			    # Used to determine whether we are redisplaying a question
-        }
-
         html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
         frag.add_css(self.resource_string("static/css/swxstudent.css"))
@@ -668,8 +659,8 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
-        if DEBUG: logger.info("SWXBlock student_view() frag.initialize_js data={d}".format(d=data))
-        frag.initialize_js('SWXStudent', data)
+        if DEBUG: logger.info("SWXBlock student_view() calling frag.initialize_js")
+        frag.initialize_js('SWXStudent', {})
         return frag
 
 
@@ -695,6 +686,21 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         XBlock.save(self)       # Call parent class save()
         if DEBUG: logger.info("SWXBlock save() back from parent save. self.solution={s}".format(s=self.solution))
 
+
+    # GET_DATA: RETURN DATA FOR THIS QUESTION
+    @XBlock.json_handler
+    def get_data(self, msg, suffix=''):
+        if DEBUG: logger.info("SWXBlock get_data() entered. msg={msg}".format(msg=msg))
+        data = {
+            "question" : self.question,
+            "grade" :self.grade,
+            "solution" : self.solution,
+            "count_attempts" : self.count_attempts,
+            "variants_count" : self.variants_count,
+        }
+        if DEBUG: logger.info("SWXBlock get_data() data={d}".format(d=data))
+        json_data = json.dumps(data)
+        return json_data
 
     # SAVE GRADE
     @XBlock.json_handler
