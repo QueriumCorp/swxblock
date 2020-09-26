@@ -124,7 +124,7 @@ function SWXStudent(runtime, element) {
             $('.click-to-begin').prop('disabled', true);
             $('.click-to-begin-box').prop('disabled', true);
         
-            $('.loading-box').hide();	# Done loading data
+            $('.loading-box').hide();	// Done loading data
 
             if (max_attempts == -1 || count_attempts < max_attempts) {
                 $('.click-to-begin').show();
