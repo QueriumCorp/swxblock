@@ -519,13 +519,14 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         # Otherwise, use the course-wide max_attempts setting that is used for CAPA (non-StepWise) problems.
         if (temp_max_attempts != -1):
             self.my_max_attempts = temp_max_attempts
+            self.my_grade_max_attempts = temp_max_attempts
         elif (temp_course_stepwise_max_attempts != -1):
             self.my_grade_max_attempts = temp_course_stepwise_max_attempts
             if DEBUG: logger.info('SWXBlock student_view() temp_course_stepwise_max_attempts={m}'.format(m=temp_course_stepwise_max_attempts))
         else:
             if DEBUG: logger.info('SWXBlock student_view() course.max_attempts={m}'.format(m=course.max_attempts))
             self.my_grade_max_attempts = course.max_attempts
-        if DEBUG: logger.info('SWXBlock student_view() self.my_max_attempts={m}'.format(m=self.my_max_attempts))
+        if DEBUG: logger.info('SWXBlock student_view() self.my_grade_max_attempts={m}'.format(m=self.my_grade_max_attempts))
 
         if (temp_option_hint != -1):
             self.my_option_hint = temp_option_hint
@@ -698,6 +699,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             "solution" : self.solution,
             "count_attempts" : self.count_attempts,
             "variants_count" : self.variants_count,
+            "max_attempts" : self.my_grade_max_attempts
         }
         if DEBUG: logger.info("SWXBlock get_data() data={d}".format(d=data))
         json_data = json.dumps(data)

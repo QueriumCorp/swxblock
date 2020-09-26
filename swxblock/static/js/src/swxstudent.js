@@ -33,9 +33,9 @@ function SWXStudent(runtime, element) {
             var solution = data_obj.solution;
             var count_attempts = data_obj.count_attempts;
             var variants_count = data_obj.variants_count;
+            var max_attempts = data_obj.max_attempts;
             var enable_showme = question.q_option_showme;
             var enable_hint = question.q_option_hint;
-            var max_attempts = question.q_max_attempts;
             var weight = question.q_weight;
             var min_steps = question.q_grade_min_steps_count;
             var min_steps_ded = question.q_grade_min_steps_ded;
