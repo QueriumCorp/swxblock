@@ -125,6 +125,7 @@ function SWXStudent(runtime, element) {
             $('.click-to-begin-box').prop('disabled', true);
         
             $('.loading-box').hide();	// Done loading data
+            $('.question-info').show();	// Show question info box now that loading is done
 
             if (max_attempts == -1 || count_attempts < max_attempts) {
                 $('.click-to-begin').show();
@@ -724,4 +725,5 @@ function SWXStudent(runtime, element) {
     });
     console.info("SWXStudent end");
     $('.loading-box').show();		// Show loading box while we wait
+    $('.question-info').hide();		// Don't show question info box while we wait
 }
