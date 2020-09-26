@@ -263,39 +263,10 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         enforce_type=True,
     )
 
-    # to store our init stuff
-    """
-    runtime = None
-    field_data = None
-    scope_ids=None
-    my_args = None
-    my_kwargs = None
-    """
-
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
-
-    """
-    def __init__(self, runtime, field_data=None, scope_ids=UNSET, *args, **kwargs):
-        self.runtime = runtime
-        self.field_data = field_data
-        self.scope_ids = scope_ids
-        self.my_args = args
-        self.my_kwargs = kwargs
-
-        super(XBlock, self).__init__(runtime=self.runtime, scope_ids=self.scope_ids, field_data=field_data, *args, **kwargs)
-        super(ScorableXBlockMixin, self).__init__()
-        super(StudioEditableXBlockMixin, self).__init__()
-    """
-
-    def init(self):
-        if DEBUG: logger.info('SWXBlock.init() - start')
-        #super(XBlock, self).__init__(runtime=self.runtime, scope_ids=self.scope_ids, field_data=self.fields)
-        super(ScopedStorageMixin, self).__init__(self, scope_ids=self.scope_ids, field_data=self.fields)
-
-        if DEBUG: logger.info('SWXBlock.init() - finish')
 
     # STUDENT_VIEW
     def student_view(self, context=None):
@@ -674,9 +645,6 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         q_index = question['q_index']
 
         logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=question))
-
-        # PRESTO!!!! we're clean!!! :D
-        self.init()
 
         data = {
             "question" : question,
