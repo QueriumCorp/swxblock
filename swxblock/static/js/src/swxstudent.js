@@ -124,6 +124,8 @@ function SWXStudent(runtime, element) {
             $('.click-to-begin').prop('disabled', true);
             $('.click-to-begin-box').prop('disabled', true);
         
+            $('.loading-box').hide();	# Done loading data
+
             if (max_attempts == -1 || count_attempts < max_attempts) {
                 $('.click-to-begin').show();
                 $('.xblock-student_view').onclick = null;		// Can't click on the UI
@@ -721,4 +723,5 @@ function SWXStudent(runtime, element) {
        }
     });
     console.info("SWXStudent end");
+    $('.loading-box').show();		# Show loading box while we wait
 }
