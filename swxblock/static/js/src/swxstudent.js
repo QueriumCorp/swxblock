@@ -388,7 +388,13 @@ function SWXStudent(runtime, element) {
                         type: "POST",
                         url: handlerUrlStart,
                         data: JSON.stringify(start_attempt_data),
-                        success: null
+                        success: function (data) {
+                          console.info("SWXstudent start_attempt POST success");
+                          start_attempt_obj = JSON.parse(data);
+                          count_attempts = start_attempt_obj.count_attempts;
+                          update_grade_attempts_data();
+                          console.info("SWXstudent start_attempt POST response count_attempts=",count_attempts);
+                      }
                     });
                 }
         
@@ -520,27 +526,7 @@ function SWXStudent(runtime, element) {
                 }else{
                     question_stats.classList.remove("preview_hidden");
                     elapsed_time_count.innerText = solution.time.toFixed(0);
-                    grade_string = '('+((grade/3.0)*weight).toFixed(2)+'/'+weight.toFixed(2)+' point';
-                    if (weight > 1.0) {
-                        grade_string = grade_string + 's)';
-                    } else {
-                        grade_string = ')';
-                    }
-                    grade_val.innerText = grade_string;
-                    error_count.innerText = solution.errors;
-                    hint_count.innerText = solution.hints;
-                    var attempts_string;
-                    attempts_string = count_attempts;
-                    attempts_string += ' of ';
-                    if( max_attempts == -1) {
-                       attempts_string += 'unlimited';
-                    }else{
-                       attempts_string += max_attempts;
-                    }
-                    attempts_string += ' attempts';
-                    console.info('updateStats attempts_string',attempts_string);
-                    made_attempts.innerText = attempts_string;
-            
+                    update_grade_attempts_data();
                     if( solution.usedShowMe ){
                         used_showme.classList.remove("preview_hidden");
                     }else{
@@ -549,6 +535,29 @@ function SWXStudent(runtime, element) {
                 }
             }
         
+            function update_grade_attempts_data(){
+                grade_string = '('+((grade/3.0)*weight).toFixed(2)+'/'+weight.toFixed(2)+' point';
+                if (weight > 1.0) {
+                    grade_string = grade_string + 's)';
+                } else {
+                    grade_string = ')';
+                }
+                grade_val.innerText = grade_string;
+                error_count.innerText = solution.errors;
+                hint_count.innerText = solution.hints;
+                var attempts_string;
+                attempts_string = count_attempts;
+                attempts_string += ' of ';
+                if( max_attempts == -1) {
+                   attempts_string += 'unlimited';
+                }else{
+                   attempts_string += max_attempts;
+                }
+                attempts_string += ' attempts';
+                console.info('update_grade_attempts_data grade_string=',grade_string.' attempts_string=',attempts_string);
+                made_attempts.innerText = attempts_string;
+            }
+
             function updateSolution(){
                 console.info("updateSolution. grade=",grade);
                 if( grade==-1 ){ return; }
@@ -681,9 +690,9 @@ function SWXStudent(runtime, element) {
                 variants_string += variants_count;
                 variants_string += ' variant'
                 if (variants_count > 1) {
-                   variants_string += 'sZ';
+                   variants_string += 's)';
                 } else {
-                   variants_string += 'Z';
+                   variants_string += ')';
                 };
                 retry_button_variants.innerText = variants_string;
             }
