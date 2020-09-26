@@ -95,6 +95,7 @@ function SWXStudent(runtime, element) {
         
             // Get Top Element Handles
             var made_attempts = $('.made-attempts', swxblock_block)[0];
+            var min_steps_element = $('.min-steps', swxblock_block)[0];
             // var variants_left = $('.variants-left', swxblock_block)[0];
             // var click_to_begin = $('.click-to-begin', swxblock_block)[0];
             // var question_info = $('.question-info', swxblock_block)[0];
@@ -559,6 +560,14 @@ function SWXStudent(runtime, element) {
                 attempts_string += ' attempts';
                 console.info('update_grade_attempts_data grade_string=',grade_string,' attempts_string=',attempts_string);
                 made_attempts.innerText = attempts_string;
+
+		if (min_steps == null || min_steps <= 0) {
+                     $('.min-steps-box').hide();		// Don't show min-steps box
+                }else{
+                    min_steps_string = min_steps;
+                    min_steps_string += ' minimum steps';
+                    min_steps_element.innerText = min_steps_string;
+                }
             }
 
             function updateSolution(){
