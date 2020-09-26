@@ -723,5 +723,5 @@ function SWXStudent(runtime, element) {
        }
     });
     console.info("SWXStudent end");
-    $('.loading-box').show();		# Show loading box while we wait
+    $('.loading-box').show();		// Show loading box while we wait
 }
