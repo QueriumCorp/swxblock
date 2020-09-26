@@ -24,12 +24,15 @@ function SWXStudent(runtime, element) {
             console.info("SWXstudent GET data",data);
             console.info("SWXstudent GET msg",msg);
 
+            var data_obj = JSON.parse(data);
+            console.info("SWXstudent GET data_obj",data_obj);
+
             // Set our context variables from the data we receive
-            var question = data.question;
-            var grade = data.grade;
-            var solution = data.solution;
-            var count_attempts = data.count_attempts;
-            var variants_count = data.variants_count;
+            var question = data_obj.question;
+            var grade = data_obj.grade;
+            var solution = data_obj.solution;
+            var count_attempts = data_obj.count_attempts;
+            var variants_count = data_obj.variants_count;
             var enable_showme = question.q_option_showme;
             var enable_hint = question.q_option_hint;
             var max_attempts = question.q_max_attempts;
