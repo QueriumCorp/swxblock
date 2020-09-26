@@ -554,7 +554,7 @@ function SWXStudent(runtime, element) {
                    attempts_string += max_attempts;
                 }
                 attempts_string += ' attempts';
-                console.info('update_grade_attempts_data grade_string=',grade_string.' attempts_string=',attempts_string);
+                console.info('update_grade_attempts_data grade_string=',grade_string,' attempts_string=',attempts_string);
                 made_attempts.innerText = attempts_string;
             }
 
