@@ -204,6 +204,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     xb_user_email = String(help="The user's email addr", default="", scope=Scope.user_state)
     grade = Float(help="The student's grade", default=-1, scope=Scope.user_state)
     solution = Dict(help="The student's last solution", default={}, scope=Scope.user_state)
+    question = Dict(help="The student's current question", default={}, scope=Scope.user_state)
     # count_attempts keeps track of the number of attempts of this question by this student so we can
     # compare to course.max_attempts which is inherited as an per-question setting or a course-wide setting.
     count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.user_state)
@@ -636,10 +637,10 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         random.seed()				# Use the clock to seed the random number generator for picking variants
         self.question = self.pick_variant()
 
-        question = self.question
-        q_index = question['q_index']
+        # question = self.question		# Don't need local var
+        q_index = self.question['q_index']
 
-        logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=question))
+        logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=self.question))
 
         html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
@@ -692,8 +693,8 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     def get_data(self, msg, suffix=''):
         if DEBUG: logger.info("SWXBlock get_data() entered. msg={msg}".format(msg=msg))
         data = {
-            "question" : question,
-            "grade" :self.grade,
+            "question" : self.question,
+            "grade" : self.grade,
             "solution" : self.solution,
             "count_attempts" : self.count_attempts,
             "variants_count" : self.variants_count,
