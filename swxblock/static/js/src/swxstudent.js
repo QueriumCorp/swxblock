@@ -17,7 +17,7 @@ function SWXStudent(runtime, element) {
         data: JSON.stringify(get_data_data),
         error: function(XMLHttpRequest, textStatus, errorThrown) { 
                console.info("SWXstudent get_data POST error textStatus=",textStatus," errorThrown=",errorThrown);
-               alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+               // alert("Status: " + textStatus); alert("Error: " + errorThrown); 
         },
         success: function (data,msg) {
             console.info("SWXstudent GET success");

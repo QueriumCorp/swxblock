@@ -522,6 +522,10 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         # For max_attempts: If there is a per-question max_attempts setting, use that.
         # Otherwise, if there is a course-wide stepwise_max_attempts setting, use that.
         # Otherwise, use the course-wide max_attempts setting that is used for CAPA (non-StepWise) problems.
+
+        if temp_max_attempts is None:
+            temp_max_attempts = -1
+
         if (temp_max_attempts != -1):
             self.my_max_attempts = temp_max_attempts
             if DEBUG: logger.info('SWXBlock student_view() my_max_attempts={a} temp_max_attempts={m}'.format(a=self.my_max_attempts,m=temp_max_attempts))
@@ -697,6 +701,10 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     @XBlock.json_handler
     def get_data(self, msg, suffix=''):
         if DEBUG: logger.info("SWXBlock get_data() entered. msg={msg}".format(msg=msg))
+
+        if self.my_max_attempts is None:
+            self.my_max_attempts = -1
+
         data = {
             "question" : self.question,
             "grade" : self.grade,
