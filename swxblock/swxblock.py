@@ -523,7 +523,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         # Otherwise, if there is a course-wide stepwise_max_attempts setting, use that.
         # Otherwise, use the course-wide max_attempts setting that is used for CAPA (non-StepWise) problems.
 
-	if (temp_max_attempts == null):
+        if (temp_max_attempts == null):
             temp_max_attempts = -1
 
         if (temp_max_attempts != -1):
