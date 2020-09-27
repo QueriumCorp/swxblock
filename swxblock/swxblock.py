@@ -701,6 +701,10 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     @XBlock.json_handler
     def get_data(self, msg, suffix=''):
         if DEBUG: logger.info("SWXBlock get_data() entered. msg={msg}".format(msg=msg))
+
+        if self.my_max_attempts is None:
+            self.my_max_attempts = -1
+
         data = {
             "question" : self.question,
             "grade" : self.grade,
