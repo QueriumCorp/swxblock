@@ -692,9 +692,9 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     # SAVE
     # For rescoring events.  Should be a no-op.
     def save(self):
-        if DEBUG: logger.info("SWXBlock save() self.raw_earned={g} self.weight={w} self.solution={s}".format(g=self.raw_earned,w=self.weight,s=self.solution))
+        # if DEBUG: logger.info("SWXBlock save() self.raw_earned={g} self.weight={w} self.solution={s}".format(g=self.raw_earned,w=self.weight,s=self.solution))
         XBlock.save(self)       # Call parent class save()
-        if DEBUG: logger.info("SWXBlock save() back from parent save. self.solution={s}".format(s=self.solution))
+        # if DEBUG: logger.info("SWXBlock save() back from parent save. self.solution={s}".format(s=self.solution))
 
 
     # GET_DATA: RETURN DATA FOR THIS QUESTION
