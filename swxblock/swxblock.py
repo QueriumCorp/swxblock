@@ -214,6 +214,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     xb_user_email = String(help="The user's email addr", default="", scope=Scope.user_state)
     grade = Float(help="The student's grade", default=-1, scope=Scope.user_state)
     solution = Dict(help="The student's last solution", default={}, scope=Scope.user_state)
+    question = Dict(help="The student's current question", default={}, scope=Scope.user_state)
     # count_attempts keeps track of the number of attempts of this question by this student so we can
     # compare to course.max_attempts which is inherited as an per-question setting or a course-wide setting.
     count_attempts = Integer(help="Counted number of questions attempts", default=0, scope=Scope.user_state)
@@ -525,15 +526,19 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         # For max_attempts: If there is a per-question max_attempts setting, use that.
         # Otherwise, if there is a course-wide stepwise_max_attempts setting, use that.
         # Otherwise, use the course-wide max_attempts setting that is used for CAPA (non-StepWise) problems.
+
+        if temp_max_attempts is None:
+            temp_max_attempts = -1
+
         if (temp_max_attempts != -1):
             self.my_max_attempts = temp_max_attempts
+            if DEBUG: logger.info('SWXBlock student_view() my_max_attempts={a} temp_max_attempts={m}'.format(a=self.my_max_attempts,m=temp_max_attempts))
         elif (temp_course_stepwise_max_attempts != -1):
-            self.my_grade_max_attempts = temp_course_stepwise_max_attempts
-            if DEBUG: logger.info('SWXBlock student_view() temp_course_stepwise_max_attempts={m}'.format(m=temp_course_stepwise_max_attempts))
+            self.my_max_attempts = temp_course_stepwise_max_attempts
+            if DEBUG: logger.info('SWXBlock student_view() my_max_attempts={a} temp_course_stepwise_max_attempts={m}'.format(a=self.my_max_attempts,m=temp_course_stepwise_max_attempts))
         else:
-            if DEBUG: logger.info('SWXBlock student_view() course.max_attempts={m}'.format(m=course.max_attempts))
-            self.my_grade_max_attempts = course.max_attempts
-        if DEBUG: logger.info('SWXBlock student_view() self.my_max_attempts={m}'.format(m=self.my_max_attempts))
+            self.my_max_attempts = course.max_attempts
+            if DEBUG: logger.info('SWXBlock student_view() my_max_attempts={a} course.max_attempts={m}'.format(a=self.my_max_attempts,m=course.max_attempts))
 
         if (temp_option_hint != -1):
             self.my_option_hint = temp_option_hint
@@ -645,19 +650,10 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         random.seed()				# Use the clock to seed the random number generator for picking variants
         self.question = self.pick_variant()
 
-        question = self.question
-        q_index = question['q_index']
+        # question = self.question		# Don't need local var
+        q_index = self.question['q_index']
 
-        logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=question))
-
-        data = {
-            "question" : question,
-            "grade" :self.grade,
-            "solution" : self.solution,
-            "count_attempts" : self.count_attempts,
-            "variants_count" : self.variants_count,
-            "redisplay" : False			    # Used to determine whether we are redisplaying a question
-        }
+        logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=self.question))
 
         html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
@@ -677,15 +673,15 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
 
         frag.add_javascript(self.resource_string("static/js/src/swxstudent.js"))
-        if DEBUG: logger.info("SWXBlock student_view() frag.initialize_js data={d}".format(d=data))
-        frag.initialize_js('SWXStudent', data)
+        if DEBUG: logger.info("SWXBlock student_view() calling frag.initialize_js")
+        frag.initialize_js('SWXStudent', {})
         return frag
 
 
     # PUBLISH_GRADE
     # For rescoring events
     def publish_grade(self):
-        if DEBUG: logger.info("SWXBlock publish_grade() self.raw_earned={e} self.weight={w}".format(e=self.raw_earned,w=self.weight))
+        logger.info("SWXBlock publish_grade() self.raw_earned={e} self.weight={w}".format(e=self.raw_earned,w=self.weight))
         if self.raw_earned < 0.0:
            self.raw_earned = 0.0
         if self.raw_earned > self.weight:
@@ -700,10 +696,30 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     # SAVE
     # For rescoring events.  Should be a no-op.
     def save(self):
-        if DEBUG: logger.info("SWXBlock save() self.raw_earned={g} self.weight={w} self.solution={s}".format(g=self.raw_earned,w=self.weight,s=self.solution))
+        # if DEBUG: logger.info("SWXBlock save() self.raw_earned={g} self.weight={w} self.solution={s}".format(g=self.raw_earned,w=self.weight,s=self.solution))
         XBlock.save(self)       # Call parent class save()
-        if DEBUG: logger.info("SWXBlock save() back from parent save. self.solution={s}".format(s=self.solution))
+        # if DEBUG: logger.info("SWXBlock save() back from parent save. self.solution={s}".format(s=self.solution))
 
+
+    # GET_DATA: RETURN DATA FOR THIS QUESTION
+    @XBlock.json_handler
+    def get_data(self, msg, suffix=''):
+        if DEBUG: logger.info("SWXBlock get_data() entered. msg={msg}".format(msg=msg))
+
+        if self.my_max_attempts is None:
+            self.my_max_attempts = -1
+
+        data = {
+            "question" : self.question,
+            "grade" : self.grade,
+            "solution" : self.solution,
+            "count_attempts" : self.count_attempts,
+            "variants_count" : self.variants_count,
+            "max_attempts" : self.my_max_attempts
+        }
+        if DEBUG: logger.info("SWXBlock get_data() data={d}".format(d=data))
+        json_data = json.dumps(data)
+        return json_data
 
     # SAVE GRADE
     @XBlock.json_handler
@@ -797,6 +813,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 if DEBUG: logger.info("SWXBlock save_grade() count valid_steps examine step c={c} i={i} step_details[c]['info'][i]={s}".format(c=c,i=i,s=step_details[c]['info'][i]))
                 step_status = step_details[c]['info'][i]['status']
                 if (step_status == 0):       # victory valid_steps += 1
+                    valid_steps += 1
                     if DEBUG: logger.info("SWXBlock save_grade() count valid_steps c={c} i={i} victory step found".format(c=c,i=i))
                 elif (step_status == 1):     # valid step
                     valid_steps += 1
@@ -898,8 +915,12 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             self.previous_variant = variant
             if DEBUG: logger.info("setting previous_variant to {v}".format(v=variant))
             
-        if DEBUG: logger.info("SWXBlock start_attempt() done")
-        return None
+        return_data = {
+            "count_attempts" : self.count_attempts,
+        }
+        if DEBUG: logger.info("SWXBlock start_attempt() done return_data={return_data}".format(return_data=return_data))
+        json_data = json.dumps(return_data)
+        return json_data
 
 
     # RESET: PICK A NEW VARIANT
