@@ -1224,7 +1224,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         """
         logger.info("SWXBlock set_score() earned {e} possible {p}".format(e=score.raw_earned,p=score.raw_possible))
         self.raw_earned = score.raw_earned
-	self.raw_possible = score.raw_possible
+        self.raw_possible = score.raw_possible
 
 
     def calculate_score(self):
