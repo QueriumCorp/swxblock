@@ -50,7 +50,8 @@ UNSET = object()
 
 logger = getLogger(__name__)
 
-DEBUG=settings.ROVER_DEBUG
+#DEBUG=settings.ROVER_DEBUG
+DEBUG=True
 
 """
 The general idea is that we'll determine which question parameters to pass to the StepWise client before invoking it,
