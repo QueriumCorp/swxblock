@@ -25,10 +25,16 @@ here in Python, you need to check the Javascript source in js/src/swxstudent.js 
 logic there.
 """
 
+# Python stuff
 import pkg_resources
 import random
 import json
+from logging import getLogger
 
+# Django Stuff
+from django.conf import settings
+
+# Open edX stuff
 from xblock.core import XBlock
 from xblock.fields import Integer, String, Scope, Dict, Float, Boolean
 from web_fragments.fragment import Fragment
@@ -37,15 +43,14 @@ from web_fragments.fragment import Fragment
 from xblock.scorable import ScorableXBlockMixin, Score
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 from lms.djangoapps.courseware.courses import get_course_by_id
-
-
 from xblock.mixins import ScopedStorageMixin
+
 
 UNSET = object()
 
-from logging import getLogger
 logger = getLogger(__name__)
 
+#DEBUG=settings.ROVER_DEBUG
 DEBUG=True
 
 """
