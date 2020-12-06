@@ -1222,8 +1222,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         Returns:
             None
         """
-        logger.info("SWXBlock set_score() earned {e}".format(e=score.raw_earned))
-        logger.info("SWXBlock set_score() possible {e}".format(e=score.raw_possible))
+        logger.info("SWXBlock set_score() earned {e} possible {p}".format(e=score.raw_earned,p=score.raw_possible))
         self.raw_earned = score.raw_earned
 	self.raw_possible = score.raw_possible
 
