@@ -51,7 +51,7 @@ UNSET = object()
 logger = getLogger(__name__)
 
 #DEBUG=settings.ROVER_DEBUG
-DEBUG=True
+DEBUG=False
 
 """
 The general idea is that we'll determine which question parameters to pass to the StepWise client before invoking it,
@@ -645,7 +645,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         else:
             self.variants_count = 1
 
-        logger.info("SWXBlock student_view() self.variants_count={c}".format(c=self.variants_count))
+        if DEBUG: logger.info("SWXBlock student_view() self.variants_count={c}".format(c=self.variants_count))
         # Pick a variant at random, and make sure that it is one we haven't attempted before.
 
         random.seed()				# Use the clock to seed the random number generator for picking variants
@@ -654,7 +654,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         # question = self.question		# Don't need local var
         q_index = self.question['q_index']
 
-        logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=self.question))
+        if DEBUG: logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=self.question))
 
         html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
@@ -682,7 +682,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     # PUBLISH_GRADE
     # For rescoring events
     def publish_grade(self):
-        logger.info("SWXBlock publish_grade() self.raw_earned={e} self.weight={w}".format(e=self.raw_earned,w=self.weight))
+        if DEBUG: logger.info("SWXBlock publish_grade() self.raw_earned={e} self.weight={w}".format(e=self.raw_earned,w=self.weight))
         if self.raw_earned < 0.0:
            self.raw_earned = 0.0
         if self.raw_earned > self.weight:
@@ -886,7 +886,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         # if DEBUG: logger.info("SWXBlock save_grade() final self={a}".format(a=self))
         if DEBUG: logger.info("SWXBlock save_grade() final self.count_attempts={a}".format(a=self.count_attempts))
         if DEBUG: logger.info("SWXBlock save_grade() final self.solution={a}".format(a=self.solution))
-        logger.info("SWXBlock save_grade() final self.grade={a}".format(a=self.grade))
+        if DEBUG: logger.info("SWXBlock save_grade() final self.grade={a}".format(a=self.grade))
         if DEBUG: logger.info("SWXBlock save_grade() final self.weight={a}".format(a=self.weight))
         if DEBUG: logger.info("SWXBlock save_grade() final self.variants_attempted={v}".format(v=self.variants_attempted))
         if DEBUG: logger.info("SWXBlock save_grade() final self.previous_variant={v}".format(v=self.previous_variant))
@@ -931,7 +931,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         if DEBUG: logger.info("SWXBlock retry() data={d}".format(d=data))
         if DEBUG: logger.info("SWXBlock retry() self.count_attempts={c} max_attempts={m}".format(c=self.count_attempts,m=self.max_attempts))
         if DEBUG: logger.info("SWXBlock retry() self.variants_attempted={v}".format(v=self.variants_attempted))
-        # logger.info("SWXBlock retry() pre-pick_question q_index={i}".format(v=self.question['q_index']))
+        if DEBUG: logger.info("SWXBlock retry() pre-pick_question q_index={i}".format(v=self.question['q_index']))
         self.question = self.pick_variant()
 
         return_data = {
@@ -947,7 +947,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     # workbench while developing your XBlock.
     @staticmethod
     def workbench_scenarios():
-        logger.info('SWXBlock workbench_scenarios() entered')
+        if DEBUG: logger.info('SWXBlock workbench_scenarios() entered')
         """A canned scenario for display in the workbench."""
         return [
             ("SWXBlock",
@@ -964,7 +964,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
 
     def studio_view(self, context=None):
-        logger.info('SWXBlock studio_view() entered')
+        if DEBUG: logger.info('SWXBlock studio_view() entered')
         """
         The STUDIO view of the SWXBlock, shown to instructors
         when authoring courses.
@@ -979,7 +979,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
 
     def author_view(self, context=None):
-        logger.info('SWXBlock author_view() entered')
+        if DEBUG: logger.info('SWXBlock author_view() entered')
         """
         The AUTHOR view of the SWXBlock, shown to instructors
         when previewing courses.
@@ -1026,7 +1026,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     # SAVE QUESTION
     @XBlock.json_handler
     def save_question(self, data, suffix=''):
-        logger.info('SWXBlock save_question() entered')
+        if DEBUG: logger.info('SWXBlock save_question() entered')
         self.q_max_attempts = int(data['q_max_attempts'])
         self.q_weight = float(data['q_weight'])
         if data['q_option_showme'].lower() == u'true':
