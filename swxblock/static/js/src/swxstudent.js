@@ -544,7 +544,7 @@ function SWXStudent(runtime, element) {
                 if (weight > 1.0) {
                     grade_string = grade_string + 's)';
                 } else {
-                    grade_string = ')';
+                    grade_string = grade_string + ')';
                 }
                 grade_val.innerText = grade_string;
                 error_count.innerText = solution.errors;
