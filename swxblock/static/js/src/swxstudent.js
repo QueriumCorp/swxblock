@@ -349,7 +349,7 @@ function SWXStudent(runtime, element) {
         
                     // console.log('question.q_definition=',question.q_definition);
                     // console.log('question.q_definition.indexOf("MatchSpec")=',question.q_definition.indexOf('MatchSpec'));
-                    if (grade >= 3.0 && valid_step_count < question.q_grade_min_steps_count && question.q_definition.indexOf('MatchSpec') == -1 ) {
+                    if (grade >= 3.0 && valid_step_count < question.q_grade_min_steps_count && question.q_definition.indexOf('MatchSpec') == -1 && question.q_definition.indexOf('DomainOf') == -1) {
                         grade=grade-question.q_grade_min_steps_ded;
                         console.log('took min_steps deduction after grade=',grade);
                     } else {
