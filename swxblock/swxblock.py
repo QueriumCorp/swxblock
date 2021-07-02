@@ -840,10 +840,10 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             grade=grade-q_grade_showme_ded
             if DEBUG: logger.info('SWXBlock save_grade() showme test showme_ded={a} grade={b}'.format(a=q_grade_showme_ded,b=grade))
         
-        # Don't subtract min_steps points on a MatchSpec problem
+        # Don't subtract min_steps points on a MatchSpec problem or DomainOf
         self.my_q_definition = data['answered_question']['q_definition']
         if DEBUG: logger.info('SWXBlock save_grade() check on min_steps deduction grade={g} max_grade={m} q_grade_min_steps_count={c} q_grade_min_steps_ded={d} self.my_q_definition={q}'.format(g=grade,m=max_grade,c=q_grade_min_steps_count,d=q_grade_min_steps_ded,q=self.my_q_definition))
-        if (grade >= max_grade and valid_steps < q_grade_min_steps_count and self.my_q_definition.count('MatchSpec') == 0 ):
+        if (grade >= max_grade and valid_steps < q_grade_min_steps_count and self.my_q_definition.count('MatchSpec') == 0 and self.my_q_definition.count('DomainOf') == 0 ):
             grade=grade-q_grade_min_steps_ded
             if DEBUG: logger.info('SWXBlock save_grade() took min_steps deduction after grade={g}'.format(g=grade))
         else:
