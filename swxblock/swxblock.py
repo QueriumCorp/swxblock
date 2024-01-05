@@ -30,6 +30,8 @@ import pkg_resources
 import random
 import json
 from logging import getLogger
+import urllib.parse
+import requests
 
 # Django Stuff
 from django.conf import settings
@@ -52,6 +54,7 @@ logger = getLogger(__name__)
 
 #DEBUG=settings.ROVER_DEBUG
 DEBUG=False
+STATIC_CDN_URL = "https://cdn.web.stepwisemath.ai/swxblock/"
 
 """
 The general idea is that we'll determine which question parameters to pass to the StepWise client before invoking it,
@@ -271,6 +274,13 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
+        parsed_path = urllib.parse.urlparse(path)
+        if parsed_path.scheme in ('http', 'https'):
+            response = requests.get(path)
+            response.raise_for_status()  # Raise exception if the request failed
+            response.encoding = 'utf-8'
+            return response.text
+        
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
 
@@ -658,7 +668,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
         html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
-        frag.add_css(self.resource_string("static/css/swxstudent.css"))
+        frag.add_css(self.resource_string(STATIC_CDN_URL.join("static/css/swxstudent.css")))
 
         frag.add_css_url("//stepwise.querium.com/libs/mathquill/mathquill.css")
         frag.add_css_url("//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css")
@@ -971,7 +981,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         """
         html = self.resource_string("static/html/swxstudio.html")
         frag = Fragment(html.format(self=self))
-        frag.add_css(self.resource_string("static/css/swxstudio.css"))
+        frag.add_css(self.resource_string(STATIC_CDN_URL.join("static/css/swxstudio.css")))
         frag.add_javascript(self.resource_string("static/js/src/swxstudio.js"))
 
         frag.initialize_js('SWXStudio')
@@ -986,7 +996,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         """
         html = self.resource_string("static/html/swxauthor.html")
         frag = Fragment(html.format(self=self))
-        frag.add_css(self.resource_string("static/css/swxauthor.css"))
+        frag.add_css(self.resource_string(STATIC_CDN_URL.join("static/css/swxauthor.css")))
         frag.add_javascript_url("//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML")
         frag.add_javascript(self.resource_string("static/js/src/swxauthor.js"))
 
