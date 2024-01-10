@@ -657,11 +657,17 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         q_index = self.question['q_index']
 
         if DEBUG: logger.info("SWXBlock student_view() pick_variant selected q_index={i} question={q}".format(i=q_index,q=self.question))
-
         html = self.resource_string("static/html/swxstudent.html")
         frag = Fragment(html.format(self=self))
 
-        frag.add_css_url("//cdn.web.stepwisemath.ai/swxblock/static/css/swxstudent.css")
+        try:
+            url = f"https://cdn.{settings.LMS_BASE}/swxblock/static/css/swxstudent.css"
+            response = requests.get(url)
+            if response.status_code == 200:
+                frag.add_css_url(f"//cdn.{settings.LMS_BASE}/swxblock/static/css/swxstudent.css")
+        except requests.exceptions.RequestException as e:
+            pass
+
         frag.add_css_url("//stepwise.querium.com/libs/mathquill/mathquill.css")
         frag.add_css_url("//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css")
         frag.add_css_url("//stepwiseai.querium.com/client/querium-stepwise-1.6.9.css")
