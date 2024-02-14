@@ -665,8 +665,10 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             response = requests.get(url)
             if response.status_code == 200:
                 frag.add_css_url(f"//cdn.{settings.LMS_BASE}/swxblock/static/css/swxstudent.css")
+            else:
+                logger.warning(f"SWXBlock student_view() failed to load css: {response.status_code}")
         except requests.exceptions.RequestException as e:
-            pass
+            logger.warning(f"SWXBlock student_view() failed to load css: {e}")
 
         frag.add_css_url("//stepwise.querium.com/libs/mathquill/mathquill.css")
         frag.add_css_url("//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css")
