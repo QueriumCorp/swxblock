@@ -35,7 +35,7 @@ function SWXStudent(runtime, element) {
             var variants_count = data_obj.variants_count;
             var max_attempts = data_obj.max_attempts;
             var enable_showme = question.q_option_showme;
-            var policy = question.q_option_policy;
+            var policies = question.q_option_policy;
             var enable_hint = question.q_option_hint;
             var weight = question.q_weight;
             var min_steps = question.q_grade_min_steps_count;
@@ -44,7 +44,7 @@ function SWXStudent(runtime, element) {
             console.info("SWXStudent question",question);
             // console.info("SWXStudent enable_showme",enable_showme);
             // console.info("SWXStudent enable_hint",enable_hint);
-            console.info("SWXStudent policy",policy);
+            console.info("SWXStudent policies",policies);
             console.info("SWXStudent solution",solution);
             console.info("SWXStudent count_attempts",count_attempts);
             console.info("SWXStudent variants_count",variants_count);
@@ -58,9 +58,9 @@ function SWXStudent(runtime, element) {
                 // console.info("enable_showme is undefined");
                 enable_showme = true;
             };
-            if (typeof policy === 'undefined') {
-                console.info("policy is undefined");
-                policy = '-1';
+            if (typeof policies === 'undefined') {
+                console.info("policies is undefined");
+                policies = '-1';
             };
             if (typeof enable_hint === 'undefined') {
                 // console.info("enable_hint is undefined");
