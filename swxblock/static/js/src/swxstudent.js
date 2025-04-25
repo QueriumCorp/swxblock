@@ -35,6 +35,7 @@ function SWXStudent(runtime, element) {
             var variants_count = data_obj.variants_count;
             var max_attempts = data_obj.max_attempts;
             var enable_showme = question.q_option_showme;
+            var policy = question.q_option_policy;
             var enable_hint = question.q_option_hint;
             var weight = question.q_weight;
             var min_steps = question.q_grade_min_steps_count;
@@ -43,9 +44,10 @@ function SWXStudent(runtime, element) {
             console.info("SWXStudent question",question);
             // console.info("SWXStudent enable_showme",enable_showme);
             // console.info("SWXStudent enable_hint",enable_hint);
+            console.info("SWXStudent policy",policy);
             console.info("SWXStudent solution",solution);
             console.info("SWXStudent count_attempts",count_attempts);
-            console.info("SWXStudent variants_counnt",variants_count);
+            console.info("SWXStudent variants_count",variants_count);
             console.info("SWXStudent max_attempts",max_attempts);
             console.info("SWXStudent weight ",weight);
             console.info("SWXStudent min steps",min_steps);
@@ -55,6 +57,10 @@ function SWXStudent(runtime, element) {
             if (typeof enable_showme === 'undefined') {
                 // console.info("enable_showme is undefined");
                 enable_showme = true;
+            };
+            if (typeof policy === 'undefined') {
+                console.info("policy is undefined");
+                policy = '-1';
             };
             if (typeof enable_hint === 'undefined') {
                 // console.info("enable_hint is undefined");
@@ -280,14 +286,20 @@ function SWXStudent(runtime, element) {
                 };
                 // count_attempts++;  // no need to do this here, since the Python code does update this
         
-                if (enable_showme == true && enable_hint == true) {
-                    options.policies = '$A1$';
-                } else if (enable_showme == true && enable_hint == false) {
-                    options.policies = '{$A1$, Hold[clearPolicy[showMeAvailable]] }';   // There is no standard name for this
-                } else if (enable_showme == false && enable_hint == true) {
-                    options.policies = '$A2$';
-                } else {  // false and false
-                    options.policies = '$A5$';
+                if (policies != '-1') {
+                    options.policies = policies;
+                    console.info("SWXstudent policies based on passed-in policy data ",option.policies);
+                } else {
+                    if (enable_showme == true && enable_hint == true) {
+                        options.policies = '$A1$';
+                    } else if (enable_showme == true && enable_hint == false) {
+                        options.policies = '{$A1$, Hold[clearPolicy[showMeAvailable]] }';   // There is no standard name for this
+                    } else if (enable_showme == false && enable_hint == true) {
+                        options.policies = '$A2$';
+                    } else {  // false and false
+                        options.policies = '$A5$';
+                    };
+                    console.info("SWXstudent policies based on enable_showme and enable_hint",options.policies);
                 };
                 console.info("SWXstudent previewClicked() options.policies set to",options.policies);
         

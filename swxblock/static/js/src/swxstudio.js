@@ -13,6 +13,7 @@ function SWXStudio(runtime, element, question) {
             q_weight : $('#q_weight', element).val(),
             q_max_attempts : $('#q_max_attempts', element).val(),
             q_option_showme : $('#q_option_showme', element).val(),
+            q_option_policy : $('#q_option_policy', element).val(),
             q_option_hint : $('#q_option_hint', element).val(),
             q_grade_showme_ded : $('#q_grade_showme_ded', element).val(),
             q_grade_hints_count : $('#q_grade_hints_count', element).val(),
