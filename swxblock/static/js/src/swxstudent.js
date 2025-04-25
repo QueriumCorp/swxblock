@@ -288,7 +288,7 @@ function SWXStudent(runtime, element) {
         
                 if (policies != '-1') {
                     options.policies = policies;
-                    console.info("SWXstudent policies based on passed-in policy data ",option.policies);
+                    console.info("SWXstudent policies based on passed-in policy data ",options.policies);
                 } else {
                     if (enable_showme == true && enable_hint == true) {
                         options.policies = '$A1$';
