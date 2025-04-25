@@ -22,19 +22,19 @@ def package_data(pkg, roots):
 
 
 setup(
-    name='swxblock-xblock',
-    version='0.1',
-    description='swxblock XBlock',   # TODO: write a better description.
-    license='UNKNOWN',          # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
+    name="swxblock-xblock",
+    version="0.1",
+    description="swxblock XBlock",  # TODO: write a better description.
+    license="UNKNOWN",  # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
     packages=[
-        'swxblock',
+        "swxblock",
     ],
     install_requires=[
-        'XBlock',
+        "XBlock",
     ],
     entry_points={
-        'xblock.v1': [
-            'swxblock = swxblock:SWXBlock',
+        "xblock.v1": [
+            "swxblock = swxblock:SWXBlock",
         ]
     },
     package_data=package_data("swxblock", ["static", "public"]),
