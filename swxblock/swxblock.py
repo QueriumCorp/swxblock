@@ -105,6 +105,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     # PER-QUESTION HINTS/SHOW SOLUTION OPTIONS
     q_option_hint = Boolean(help='Display Hint button if "True"', default=True, scope=Scope.content)
     q_option_showme = Boolean(help='Display ShowSolution button if "True"', default=True, scope=Scope.content)
+    q_option_policy = String(help='Question Policy Variable', default='$A1$', scope=Scope.content)
 
     # MAX ATTEMPTS PER-QUESTION OVERRIDE OF COURSE DEFAULT
     q_max_attempts = Integer(help="Max question attempts (-1 = Use Course Default)", default=-1, scope=Scope.content)
@@ -229,6 +230,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
     my_weight  = Integer(help="Remember weight course setting vs question setting", default=-1, scope=Scope.user_state)
     my_max_attempts  = Integer(help="Remember max_attempts course setting vs question setting", default=-1, scope=Scope.user_state)
     my_option_showme  = Integer(help="Remember option_showme course setting vs question setting", default=-1, scope=Scope.user_state)
+    my_option_policy  = String(help="Remember option_showme course setting vs question setting", default="-1", scope=Scope.user_state)
     my_option_hint  = Integer(help="Remember option_hint course setting vs question setting", default=-1, scope=Scope.user_state)
     my_grade_showme_ded  = Integer(help="Remember grade_showme_ded course setting vs question setting", default=-1, scope=Scope.user_state)
     my_grade_hints_count  = Integer(help="Remember grade_hints_count course setting vs question setting", default=-1, scope=Scope.user_state)
@@ -305,6 +307,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         temp_max_attempts = -1
         temp_option_hint = -1
         temp_option_showme = -1
+        temp_option_showme = "-1"
         temp_grade_shome_ded = -1
         temp_grade_hints_count = -1
         temp_grade_hints_ded = -1
@@ -318,6 +321,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         temp_course_stepwise_max_attempts = -1
         temp_course_stepwise_option_hint = -1
         temp_course_stepwise_option_showme = -1
+        temp_course_stepwise_option_policy = "-1"
         temp_course_stepwise_grade_showme_ded = -1
         temp_course_stepwise_grade_hints_count = -1
         temp_course_stepwise_grade_hints_ded = -1
@@ -331,6 +335,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         def_course_stepwise_max_attempts = None
         def_course_stepwise_option_hint = True
         def_course_stepwise_option_showme = True
+        def_course_stepwise_option_showme = '$A1$'
         def_course_stepwise_grade_showme_ded = 3.0
         def_course_stepwise_grade_hints_count = 2
         def_course_stepwise_grade_hints_ded = 1.0
@@ -343,6 +348,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         self.my_weight = -1
         self.my_max_attempts = -1
         self.my_option_showme = -1
+        self.my_option_policy = "-1"
         self.my_option_hint = -1
         self.my_grade_showme_ded = -1
         self.my_grade_hints_count = -1
@@ -380,6 +386,13 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             if DEBUG: logger.info('SWXBlock student_view() self.option_showme was not defined in this instance: {e}'.format(e=e))
             temp_option_showme = -1
         if DEBUG: logger.info('SWXBlock student_view() temp_option_showme: {t}'.format(t=temp_option_showme))
+
+        try:
+            temp_option_policy = self.q_option_policy
+        except (NameError,AttributeError) as e:
+            if DEBUG: logger.info('SWXBlock student_view() self.option_policy was not defined in this instance: {e}'.format(e=e))
+            temp_option_policy = '$A1$'
+        if DEBUG: logger.info('SWXBlock student_view() temp_option_policy: {t}'.format(t=temp_option_policy))
 
         try:
             temp_grade_showme_ded = self.q_grade_showme_ded
@@ -452,6 +465,13 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             if DEBUG: logger.info('SWXBlock student_view() course.stepwise_option_showme was not defined in this instance: {e}'.format(e=e))
             temp_course_stepwise_option_showme = -1
         if DEBUG: logger.info('SWXBlock student_view() temp_course_stepwise_option_showme: {s}'.format(s=temp_course_stepwise_option_showme))
+
+        try:
+            temp_course_stepwise_option_policy = course.stepwise_option_policy
+        except (NameError,AttributeError) as e:
+            if DEBUG: logger.info('SWXBlock student_view() course.stepwise_option_policy was not defined in this instance: {e}'.format(e=e))
+            temp_course_stepwise_option_policy = -1
+        if DEBUG: logger.info('SWXBlock student_view() temp_course_stepwise_option_policy: {s}'.format(s=temp_course_stepwise_option_policy))
 
         try:
             temp_course_stepwise_option_hint = course.stepwise_option_hint
@@ -558,6 +578,14 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
         else:
             self.my_option_showme = def_course_stepwise_option_showme
         if DEBUG: logger.info('SWXBlock student_view() self.my_option_showme={m}'.format(m=self.my_option_showme))
+
+        if (temp_option_policy != "-1"):
+            self.my_option_policy = temp_option_policy
+        elif (temp_course_stepwise_option_policy != -1):
+            self.my_option_policy = temp_course_stepwise_option_policy
+        else:
+            self.my_option_policy = def_course_stepwise_option_policy
+        if DEBUG: logger.info('SWXBlock student_view() self.my_option_policy={m}'.format(m=self.my_option_policy))
 
         if (temp_grade_showme_ded != -1):
             self.my_grade_showme_ded = temp_grade_showme_ded
@@ -1047,6 +1075,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             self.q_option_hint = True
         else:
             self.q_option_hint = False
+        self.q_option_policy = data['q_option_policy']
         self.q_grade_showme_ded = float(data['q_grade_showme_ded'])
         self.q_grade_hints_count = int(data['q_grade_hints_count'])
         self.q_grade_hints_ded = float(data['q_grade_hints_ded'])
@@ -1420,6 +1449,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 "q_max_attempts" : self.my_max_attempts,
                 "q_option_hint" : self.my_option_hint,
                 "q_option_showme" : self.my_option_showme,
+                "q_option_policy" : self.my_option_policy,
                 "q_grade_showme_ded" : self.my_grade_showme_ded,
                 "q_grade_hints_count" : self.my_grade_hints_count,
                 "q_grade_hints_ded" : self.my_grade_hints_ded,
@@ -1445,6 +1475,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 "q_max_attempts" : self.my_max_attempts,
                 "q_option_hint" : self.my_option_hint,
                 "q_option_showme" : self.my_option_showme,
+                "q_option_policy" : self.my_option_policy,
                 "q_grade_showme_ded" : self.my_grade_showme_ded,
                 "q_grade_hints_count" : self.my_grade_hints_count,
                 "q_grade_hints_ded" : self.my_grade_hints_ded,
@@ -1470,6 +1501,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 "q_max_attempts" : self.my_max_attempts,
                 "q_option_hint" : self.my_option_hint,
                 "q_option_showme" : self.my_option_showme,
+                "q_option_policy" : self.my_option_policy,
                 "q_grade_showme_ded" : self.my_grade_showme_ded,
                 "q_grade_hints_count" : self.my_grade_hints_count,
                 "q_grade_hints_ded" : self.my_grade_hints_ded,
@@ -1495,6 +1527,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 "q_max_attempts" : self.my_max_attempts,
                 "q_option_hint" : self.my_option_hint,
                 "q_option_showme" : self.my_option_showme,
+                "q_option_policy" : self.my_option_policy,
                 "q_grade_showme_ded" : self.my_grade_showme_ded,
                 "q_grade_hints_count" : self.my_grade_hints_count,
                 "q_grade_hints_ded" : self.my_grade_hints_ded,
@@ -1520,6 +1553,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 "q_max_attempts" : self.my_max_attempts,
                 "q_option_hint" : self.my_option_hint,
                 "q_option_showme" : self.my_option_showme,
+                "q_option_policy" : self.my_option_policy,
                 "q_grade_showme_ded" : self.my_grade_showme_ded,
                 "q_grade_hints_count" : self.my_grade_hints_count,
                 "q_grade_hints_ded" : self.my_grade_hints_ded,
@@ -1545,6 +1579,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 "q_max_attempts" : self.my_max_attempts,
                 "q_option_hint" : self.my_option_hint,
                 "q_option_showme" : self.my_option_showme,
+                "q_option_policy" : self.my_option_policy,
                 "q_grade_showme_ded" : self.my_grade_showme_ded,
                 "q_grade_hints_count" : self.my_grade_hints_count,
                 "q_grade_hints_ded" : self.my_grade_hints_ded,
@@ -1570,6 +1605,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 "q_max_attempts" : self.my_max_attempts,
                 "q_option_hint" : self.my_option_hint,
                 "q_option_showme" : self.my_option_showme,
+                "q_option_policy" : self.my_option_policy,
                 "q_grade_showme_ded" : self.my_grade_showme_ded,
                 "q_grade_hints_count" : self.my_grade_hints_count,
                 "q_grade_hints_ded" : self.my_grade_hints_ded,
@@ -1595,6 +1631,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 "q_max_attempts" : self.my_max_attempts,
                 "q_option_hint" : self.my_option_hint,
                 "q_option_showme" : self.my_option_showme,
+                "q_option_policy" : self.my_option_policy,
                 "q_grade_showme_ded" : self.my_grade_showme_ded,
                 "q_grade_hints_count" : self.my_grade_hints_count,
                 "q_grade_hints_ded" : self.my_grade_hints_ded,
@@ -1620,6 +1657,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 "q_max_attempts" : self.my_max_attempts,
                 "q_option_hint" : self.my_option_hint,
                 "q_option_showme" : self.my_option_showme,
+                "q_option_policy" : self.my_option_policy,
                 "q_grade_showme_ded" : self.my_grade_showme_ded,
                 "q_grade_hints_count" : self.my_grade_hints_count,
                 "q_grade_hints_ded" : self.my_grade_hints_ded,
@@ -1645,6 +1683,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
                 "q_max_attempts" : self.my_max_attempts,
                 "q_option_hint" : self.my_option_hint,
                 "q_option_showme" : self.my_option_showme,
+                "q_option_policy" : self.my_option_policy,
                 "q_grade_showme_ded" : self.my_grade_showme_ded,
                 "q_grade_hints_count" : self.my_grade_hints_count,
                 "q_grade_hints_ded" : self.my_grade_hints_ded,
