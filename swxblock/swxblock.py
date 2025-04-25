@@ -749,7 +749,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
             temp_course_stepwise_option_policy = course.stepwise_option_policy
         except (NameError,AttributeError) as e:
             if DEBUG: logger.info('SWXBlock student_view() course.stepwise_option_policy was not defined in this instance: {e}'.format(e=e))
-            temp_course_stepwise_option_policy = -1
+            temp_course_stepwise_option_policy = "-1"
         if DEBUG: logger.info('SWXBlock student_view() temp_course_stepwise_option_policy: {s}'.format(s=temp_course_stepwise_option_policy))
 
         try:
@@ -974,7 +974,7 @@ class SWXBlock(StudioEditableXBlockMixin, ScorableXBlockMixin, XBlock):
 
         if (temp_option_policy != "-1"):
             self.my_option_policy = temp_option_policy
-        elif (temp_course_stepwise_option_policy != -1):
+        elif (temp_course_stepwise_option_policy != "-1"):
             self.my_option_policy = temp_course_stepwise_option_policy
         else:
             self.my_option_policy = def_course_stepwise_option_policy
